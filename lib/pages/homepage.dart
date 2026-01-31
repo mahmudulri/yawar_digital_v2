@@ -11,7 +11,6 @@ import 'package:yawar_digital/screens/order_details.dart';
 import 'package:yawar_digital/utils/colors.dart';
 import 'package:yawar_digital/widgets/drawer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

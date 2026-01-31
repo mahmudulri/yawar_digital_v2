@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
+import '../global_controller/languages_controller.dart';
+
 class PasteRestrictionFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
@@ -52,6 +54,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   final serviceController = Get.find<ServiceController>();
   final bundleController = Get.find<BundleController>();
+  final languageController = Get.find<LanguagesController>();
 
   String? errorMessage;
 
@@ -78,14 +81,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
     if (!isValid) {
       setState(() {
         errorMessage =
-            getText(
-              "PLEASE_ENTER_A_CORRECT_NUMBER",
-              defaultValue: "Please enter a correct",
-            ) +
+            languageController.tr("PLEASE_ENTER_A_CORRECT_NUMBER") +
             " ${box.read("maxlength")} " +
-            getText("DIGIT", defaultValue: "digit") +
+            languageController.tr("DIGIT") +
             " " +
-            getText("NUMBER", defaultValue: "Number");
+            languageController.tr("NUMBER");
         box.write("permission", "no");
       });
     } else {

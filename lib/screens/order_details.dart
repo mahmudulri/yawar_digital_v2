@@ -19,6 +19,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'dart:ui' as ui;
 
+import '../global_controller/languages_controller.dart';
 import '../helpers/capture_image_helper.dart';
 import '../helpers/share_image_helper.dart';
 
@@ -60,7 +61,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
     DashboardController(),
   );
 
-  final LanguageController languageController = Get.put(LanguageController());
+  final languageController = Get.find<LanguagesController>();
 
   final box = GetStorage();
   final TimeZoneController timeZoneController = Get.put(TimeZoneController());
@@ -168,11 +169,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      languageController
-                                          .alllanguageData
-                                          .value
-                                          .languageData!["ORDER_STATUS"]
-                                          .toString(),
+                                      languageController.tr("ORDER_STATUS"),
+
                                       style: TextStyle(
                                         color: Colors.green,
                                         fontSize: 17,
@@ -180,22 +178,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     ),
                                     Text(
                                       widget.status.toString() == "0"
-                                          ? languageController
-                                                .alllanguageData
-                                                .value
-                                                .languageData!["PENDING"]
-                                                .toString()
+                                          ? languageController.tr("PENDING")
                                           : widget.status.toString() == "1"
-                                          ? languageController
-                                                .alllanguageData
-                                                .value
-                                                .languageData!["CONFIRMED"]
-                                                .toString()
-                                          : languageController
-                                                .alllanguageData
-                                                .value
-                                                .languageData!["REJECTED"]
-                                                .toString(),
+                                          ? languageController.tr("CONFIRMED")
+                                          : languageController.tr("REJECTED"),
                                       style: TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.w400,
@@ -224,11 +210,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      languageController
-                                          .alllanguageData
-                                          .value
-                                          .languageData!["NETWORK_TYPE"]
-                                          .toString(),
+                                      languageController.tr("NETWORK_TYPE"),
+
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -250,11 +233,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        languageController
-                                            .alllanguageData
-                                            .value
-                                            .languageData!["BUNDLE_TYPE"]
-                                            .toString(),
+                                        languageController.tr("BUNDLE_TYPE"),
+
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -275,11 +255,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      languageController
-                                          .alllanguageData
-                                          .value
-                                          .languageData!["PHONE_NUMBER"]
-                                          .toString(),
+                                      languageController.tr("PHONE_NUMBER"),
+
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -301,11 +278,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        languageController
-                                            .alllanguageData
-                                            .value
-                                            .languageData!["VALIDITY_TYPE"]
-                                            .toString(),
+                                        languageController.tr("VALIDITY_TYPE"),
+
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.black,
@@ -326,10 +300,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      getText(
-                                        "SELLING_PRICE",
-                                        defaultValue: "Selling Price",
-                                      ),
+                                      languageController.tr("SELLING_PRICE"),
+
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -372,18 +344,15 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      languageController
-                                          .alllanguageData
-                                          .value
-                                          .languageData!["ORDER_ID"]
-                                          .toString(),
+                                      languageController.tr("ORDER_ID"),
+
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
                                       ),
                                     ),
                                     Text(
-                                      "WT#- " + widget.orderID.toString(),
+                                      "YD#- " + widget.orderID.toString(),
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,
@@ -482,7 +451,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    getText("SHARE", defaultValue: "Share"),
+                                    languageController.tr("SHARE"),
+
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.white,
@@ -518,10 +488,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    getText(
-                                      "SAVE_AS_IMAGE",
-                                      defaultValue: "Save as image",
-                                    ),
+                                    languageController.tr("SAVE_AS_IMAGE"),
+
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.white,
@@ -557,7 +525,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    getText("CLOSE", defaultValue: "Close"),
+                                    languageController.tr("CLOSE"),
+
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Colors.white,

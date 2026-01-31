@@ -1,7 +1,6 @@
 import 'package:yawar_digital/dependency_injection.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
@@ -30,7 +29,7 @@ void main() async {
         Locale('tr', 'TR'),
         Locale('bn', 'BD'),
       ],
-      path: 'assets/translations',
+      path: 'assets/langs',
       fallbackLocale: Locale('en', 'US'),
       child: MyApp(),
     ),
@@ -72,9 +71,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: false),
-      navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
-      ],
+
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

@@ -21,6 +21,7 @@ import 'package:yawar_digital/widgets/rechange_number_box.dart';
 
 import '../controllers/confirm_pin_controller.dart';
 import '../controllers/operator_controller.dart';
+import '../global_controller/languages_controller.dart';
 import '../utils/colors.dart';
 
 class RechargeScreen extends StatefulWidget {
@@ -34,53 +35,18 @@ class _RechargeScreenState extends State<RechargeScreen> {
   int selectedIndex = -1;
   int duration_selectedIndex = 0;
 
+  final languageController = Get.find<LanguagesController>();
+
   List<Map<String, String>> duration = [];
   void initializeDuration() {
     duration = [
-      {
-        "Name": languageController.alllanguageData.value.languageData!["ALL"]
-            .toString(),
-        "Value": "",
-      },
-      {
-        "Name": languageController
-            .alllanguageData
-            .value
-            .languageData!["UNLIMITED"]
-            .toString(),
-        "Value": "unlimited",
-      },
-      {
-        "Name": languageController
-            .alllanguageData
-            .value
-            .languageData!["MONTHLY"]
-            .toString(),
-        "Value": "monthly",
-      },
-      {
-        "Name": languageController.alllanguageData.value.languageData!["WEEKLY"]
-            .toString(),
-        "Value": "weekly",
-      },
-      {
-        "Name": languageController.alllanguageData.value.languageData!["DAILY"]
-            .toString(),
-        "Value": "daily",
-      },
-      {
-        "Name": languageController.alllanguageData.value.languageData!["HOURLY"]
-            .toString(),
-        "Value": "hourly",
-      },
-      {
-        "Name": languageController
-            .alllanguageData
-            .value
-            .languageData!["NIGHTLY"]
-            .toString(),
-        "Value": "nightly",
-      },
+      {"Name": languageController.tr("ALL"), "Value": ""},
+      {"Name": languageController.tr("UNLIMITED"), "Value": "unlimited"},
+      {"Name": languageController.tr("MONTHLY"), "Value": "monthly"},
+      {"Name": languageController.tr("WEEKLY"), "Value": "weekly"},
+      {"Name": languageController.tr("DAILY"), "Value": "daily"},
+      {"Name": languageController.tr("HOURLY"), "Value": "hourly"},
+      {"Name": languageController.tr("NIGHTLY"), "Value": "nightly"},
     ];
   }
 
@@ -89,7 +55,6 @@ class _RechargeScreenState extends State<RechargeScreen> {
   final bundleController = Get.find<BundleController>();
   final box = GetStorage();
   final confirmPinController = Get.find<ConfirmPinController>();
-  final languageController = Get.find<LanguageController>();
 
   TextEditingController searchController = TextEditingController();
 
@@ -240,11 +205,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                 print(box.read("maxlength"));
               },
               child: Text(
-                languageController
-                    .alllanguageData
-                    .value
-                    .languageData!["RECHARGE"]
-                    .toString(),
+                languageController.tr("RECHARGE"),
+
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -270,11 +232,9 @@ class _RechargeScreenState extends State<RechargeScreen> {
                             confirmPinController:
                                 confirmPinController.numberController,
                             // numberLength: widget.numberlength,
-                            languageData: languageController
-                                .alllanguageData
-                                .value
-                                .languageData!["ENTER_YOUR_NUMBER"]
-                                .toString(),
+                            languageData: languageController.tr(
+                              "ENTER_YOUR_NUMBER",
+                            ),
                           ),
                           SizedBox(height: 20),
                           Container(
@@ -488,11 +448,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                     ),
                                   ),
                                   border: InputBorder.none,
-                                  hintText: languageController
-                                      .alllanguageData
-                                      .value
-                                      .languageData!["SEARCH"]
-                                      .toString(),
+                                  hintText: languageController.tr("SEARCH"),
+
                                   hintStyle: TextStyle(fontSize: 14),
                                 ),
                               ),
@@ -663,51 +620,42 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                               data.validityType
                                                                           .toString() ==
                                                                       "unlimited"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["UNLIMITED"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "UNLIMITED",
+                                                                    )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "monthly"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["MONTHLY"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "MONTHLY",
+                                                                    )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "weekly"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["WEEKLY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "WEEKLY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "daily"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["DAILY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "DAILY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "hourly"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["HOURLY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "HOURLY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "nightly"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["NIGHTLY"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "NIGHTLY",
+                                                                    )
                                                                   : "",
                                                               style: TextStyle(
                                                                 fontWeight:
@@ -737,10 +685,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                             children: [
                                                               Text(
                                                                 languageController
-                                                                    .alllanguageData
-                                                                    .value
-                                                                    .languageData!["SELL"]
-                                                                    .toString(),
+                                                                    .tr("SELL"),
+
                                                                 style: TextStyle(
                                                                   fontSize: 8,
                                                                   color: Colors
@@ -789,10 +735,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                             children: [
                                                               Text(
                                                                 languageController
-                                                                    .alllanguageData
-                                                                    .value
-                                                                    .languageData!["BUY"]
-                                                                    .toString(),
+                                                                    .tr("BUY"),
+
                                                                 style: TextStyle(
                                                                   fontSize: 8,
                                                                   color: Colors
@@ -984,51 +928,42 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                               data.validityType
                                                                           .toString() ==
                                                                       "unlimited"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["UNLIMITED"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "UNLIMITED",
+                                                                    )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "monthly"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["MONTHLY"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "MONTHLY",
+                                                                    )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "weekly"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["WEEKLY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "WEEKLY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "daily"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["DAILY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "DAILY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "hourly"
                                                                   ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["HOURLY"]
-                                                                        .toString()
+                                                                        .tr(
+                                                                          "HOURLY",
+                                                                        )
                                                                   : data.validityType
                                                                             .toString() ==
                                                                         "nightly"
-                                                                  ? languageController
-                                                                        .alllanguageData
-                                                                        .value
-                                                                        .languageData!["NIGHTLY"]
-                                                                        .toString()
+                                                                  ? languageController.tr(
+                                                                      "NIGHTLY",
+                                                                    )
                                                                   : "",
                                                               style: TextStyle(
                                                                 fontWeight:
@@ -1058,10 +993,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                             children: [
                                                               Text(
                                                                 languageController
-                                                                    .alllanguageData
-                                                                    .value
-                                                                    .languageData!["SELL"]
-                                                                    .toString(),
+                                                                    .tr("SELL"),
+
                                                                 style: TextStyle(
                                                                   fontSize: 8,
                                                                   color: Colors
@@ -1110,10 +1043,8 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                             children: [
                                                               Text(
                                                                 languageController
-                                                                    .alllanguageData
-                                                                    .value
-                                                                    .languageData!["BUY"]
-                                                                    .toString(),
+                                                                    .tr("BUY"),
+
                                                                 style: TextStyle(
                                                                   fontSize: 8,
                                                                   color: Colors

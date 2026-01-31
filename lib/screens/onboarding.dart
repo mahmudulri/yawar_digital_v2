@@ -15,6 +15,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../global_controller/languages_controller.dart';
+
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
 
@@ -117,6 +119,7 @@ class _OnboardingState extends State<Onboarding> {
 
   final historyController = Get.find<HistoryController>();
   final dashboardController = Get.find<DashboardController>();
+  final languageController = Get.find<LanguagesController>();
 
   @override
   Widget build(BuildContext context) {
@@ -231,13 +234,7 @@ class _OnboardingState extends State<Onboarding> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Obx(
-                          () => Text(
-                            languageController.isLoading.value == false
-                                ? getText("SIGN_IN", defaultValue: "Sign In")
-                                : "",
-                          ),
-                        ),
+                        Obx(() => Text(languageController.tr("SIGN_IN"))),
                       ],
                     ),
                     SizedBox(height: 50),
@@ -258,35 +255,23 @@ class _OnboardingState extends State<Onboarding> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Obx(
-                              () => Text(
-                                languageController.isLoading.value == false
-                                    ? getText(
-                                        "ENTER_YOUR_CREDENTIAL",
-                                        defaultValue: "Enter your credential",
-                                      )
-                                    : "",
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            Text(
+                              languageController.tr("ENTER_YOUR_CREDENTIAL"),
+
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 25),
+
                             Obx(
                               () => TextField(
                                 controller: signInController.usernameController,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      languageController.isLoading.value ==
-                                          false
-                                      ? getText(
-                                          "USERNAME",
-                                          defaultValue: "Username",
-                                        )
-                                      : "",
+                                  hintText: languageController.tr("USERNAME"),
+
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.black,
@@ -304,14 +289,8 @@ class _OnboardingState extends State<Onboarding> {
                                 controller: signInController.passwordController,
                                 style: TextStyle(color: Colors.black),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      languageController.isLoading.value ==
-                                          false
-                                      ? getText(
-                                          "PASSWORD",
-                                          defaultValue: "Password",
-                                        )
-                                      : "",
+                                  hintText: languageController.tr("PASSWORD"),
+
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.black,
@@ -340,10 +319,6 @@ class _OnboardingState extends State<Onboarding> {
                             GestureDetector(
                               onTap: () async {
                                 historyController.initialpage = 1;
-
-                                languageController.fetchlanData(
-                                  box.read("isoCode"),
-                                );
 
                                 if (signInController
                                         .usernameController
@@ -376,19 +351,19 @@ class _OnboardingState extends State<Onboarding> {
                                     dashboardController.fetchDashboardData();
                                     Get.toNamed(bottomnavscreen);
 
-                                    if (box.read("direction") == "rtl") {
-                                      setState(() {
-                                        EasyLocalization.of(
-                                          context,
-                                        )!.setLocale(Locale('ar', 'AE'));
-                                      });
-                                    } else {
-                                      setState(() {
-                                        EasyLocalization.of(
-                                          context,
-                                        )!.setLocale(Locale('en', 'US'));
-                                      });
-                                    }
+                                    // if (box.read("direction") == "rtl") {
+                                    //   setState(() {
+                                    //     EasyLocalization.of(
+                                    //       context,
+                                    //     )!.setLocale(Locale('ar', 'AE'));
+                                    //   });
+                                    // } else {
+                                    //   setState(() {
+                                    //     EasyLocalization.of(
+                                    //       context,
+                                    //     )!.setLocale(Locale('en', 'US'));
+                                    //   });
+                                    // }
                                   } else {
                                     print("Navigation conditions not met.");
                                   }
@@ -405,14 +380,11 @@ class _OnboardingState extends State<Onboarding> {
                                   child: Obx(
                                     () => Text(
                                       signInController.isLoading.value == false
-                                          ? getText(
-                                              "SIGN_IN",
-                                              defaultValue: "Sign in",
-                                            )
-                                          : getText(
+                                          ? languageController.tr("SIGN_IN")
+                                          : languageController.tr(
                                               "PLEASE_WAIT",
-                                              defaultValue: "Please wait",
                                             ),
+
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
@@ -449,12 +421,8 @@ class _OnboardingState extends State<Onboarding> {
                             SizedBox(width: 10),
                             Obx(
                               () => Text(
-                                languageController.isLoading.value == false
-                                    ? getText(
-                                        "SUPPORT",
-                                        defaultValue: "Support",
-                                      )
-                                    : "",
+                                languageController.tr("SUPPORT"),
+
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black,
@@ -497,13 +465,10 @@ class _OnboardingState extends State<Onboarding> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Obx(
-                          () => Text(
-                            languageController.isLoading.value == false
-                                ? getText("REGISTER", defaultValue: "Register")
-                                : "",
-                            style: TextStyle(color: Colors.black),
-                          ),
+                        Text(
+                          languageController.tr("REGISTER"),
+
+                          style: TextStyle(color: Colors.black),
                         ),
                       ],
                     ),
@@ -521,33 +486,25 @@ class _OnboardingState extends State<Onboarding> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Obx(
-                              () => Text(
-                                languageController.isLoading.value == false
-                                    ? getText(
-                                        "ENTER_YOUR_DATA_TO_REGISTER",
-                                        defaultValue:
-                                            "Enter your Data to Register",
-                                      )
-                                    : "",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            Text(
+                              languageController.tr(
+                                "ENTER_YOUR_DATA_TO_REGISTER",
+                              ),
+
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            SizedBox(height: 10),
+
                             Obx(
                               () => TextField(
                                 controller: signInController.passwordController,
                                 style: TextStyle(color: Colors.white54),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      languageController.isLoading.value ==
-                                          false
-                                      ? getText("NAME", defaultValue: "Name")
-                                      : "",
+                                  hintText: languageController.tr("NAME"),
+
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white54,
@@ -565,11 +522,8 @@ class _OnboardingState extends State<Onboarding> {
                                 controller: signInController.passwordController,
                                 style: TextStyle(color: Colors.white54),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      languageController.isLoading.value ==
-                                          false
-                                      ? getText("EMAIL", defaultValue: "Email")
-                                      : "",
+                                  hintText: languageController.tr("EMAIL"),
+
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white54,
@@ -587,14 +541,8 @@ class _OnboardingState extends State<Onboarding> {
                                 controller: signInController.passwordController,
                                 style: TextStyle(color: Colors.white54),
                                 decoration: InputDecoration(
-                                  hintText:
-                                      languageController.isLoading.value ==
-                                          false
-                                      ? getText(
-                                          "PASSWORD",
-                                          defaultValue: "Password",
-                                        )
-                                      : "",
+                                  hintText: languageController.tr("PASSWORD"),
+
                                   hintStyle: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white54,
@@ -619,16 +567,12 @@ class _OnboardingState extends State<Onboarding> {
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 child: Center(
-                                  child: Obx(
-                                    () => Text(
-                                      getText(
-                                        "REGISTER",
-                                        defaultValue: "Register",
-                                      ),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                  child: Text(
+                                    languageController.tr("REGISTER"),
+
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
                                 ),

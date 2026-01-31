@@ -37,24 +37,83 @@ class _SplashScreenState extends State<SplashScreen> {
   final historyController = Get.find<HistoryController>();
   final dashboardController = Get.find<DashboardController>();
 
+  // checkData() async {
+  //   if (box.read('userToken') == null) {
+  //     box.write("isoCode", "fa");
+  //     box.write("direction", "rtl");
+
+  //     // languageController.fetchlanData(box.read("isoCode"));
+
+  //     setState(() {
+  //       EasyLocalization.of(context)!.setLocale(Locale('ar', 'AE'));
+  //     });
+
+  //     Get.toNamed(onboardingscreen);
+  //   } else {
+  //     sliderController.fetchSliderData();
+  //     historyController.finalList.clear();
+  //     historyController.initialpage = 1;
+  //     historyController.fetchHistory();
+  //     dashboardController.fetchDashboardData();
+
+  //     Get.toNamed(bottomnavscreen);
+  //   }
+  // }
+
   checkData() async {
+    String languageShortName = box.read("language") ?? "Fa";
+
+    // Find selected language details from the list
+    final matchedLang = languageController.alllanguagedata.firstWhere(
+      (lang) => lang["name"] == languageShortName,
+      orElse: () => {"isoCode": "fa", "direction": "rtl"},
+    );
+
+    final isoCode = matchedLang["isoCode"] ?? "fa";
+    final direction = matchedLang["direction"] ?? "rtl";
+
+    // Save language and direction
+    box.write("language", languageShortName);
+    box.write("direction", direction);
+
+    // Load translations manually
+    languageController.changeLanguage(languageShortName);
+
+    // Set EasyLocalization locale using proper region code
+    Locale locale;
+    switch (isoCode) {
+      case "fa":
+        locale = Locale("fa", "IR");
+        break;
+      case "en":
+        locale = Locale("en", "US");
+        break;
+      case "ar":
+        locale = Locale("ar", "AE");
+        break;
+      case "ps":
+        locale = Locale("ps", "AF");
+        break;
+      case "tr":
+        locale = Locale("tr", "TR");
+        break;
+      case "bn":
+        locale = Locale("bn", "BD");
+        break;
+      default:
+        locale = Locale("fa", "IR");
+    }
+
+    setState(() {
+      EasyLocalization.of(context)!.setLocale(locale);
+    });
+
+    // If no token, go to onboarding
     if (box.read('userToken') == null) {
-      box.write("isoCode", "fa");
-      box.write("direction", "rtl");
-
-      // languageController.fetchlanData(box.read("isoCode"));
-
-      setState(() {
-        EasyLocalization.of(context)!.setLocale(Locale('ar', 'AE'));
-      });
-
       Get.toNamed(onboardingscreen);
     } else {
-      sliderController.fetchSliderData();
-      historyController.finalList.clear();
-      historyController.initialpage = 1;
-      historyController.fetchHistory();
-      dashboardController.fetchDashboardData();
+      // Fetch initial data
+      // dashboardController.fetchDashboardData();
 
       Get.toNamed(bottomnavscreen);
     }
