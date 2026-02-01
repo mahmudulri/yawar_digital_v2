@@ -100,24 +100,6 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.defaultColor,
           onPressed: () {
-            if (countryListController.finalCountryList.isNotEmpty) {
-              // Find the country where the name is "Afghanistan"
-              var afghanistan = countryListController.finalCountryList
-                  .firstWhere(
-                    (country) => country['country_name'] == "Afghanistan",
-                    orElse: () => null, // Return null if not found
-                  );
-
-              if (afghanistan != null) {
-                print("The ID for Afghanistan is: ${afghanistan['id']}");
-                box.write("country_id", "${afghanistan['id']}");
-                box.write("maxlength", "10");
-              } else {
-                print("Afghanistan not found in the list");
-              }
-            } else {
-              print("Country list is empty.");
-            }
             categorisListController.fetchcategories();
             aCategorisListController.fetchcategories();
 
@@ -148,13 +130,9 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                         onPressed: () {
                           box.write("orderstatus", "");
                           setState(() {
-                            dashboardController.fetchDashboardData();
-                            historyController.finalList.clear();
-                            historyController.initialpage = 1;
-                            historyController.fetchHistory();
+                            // dashboardController.fetchDashboardData();
+
                             currentPage = Homepage();
-                            orderlistController.finalList.clear();
-                            orderlistController.initialpage = 1;
 
                             currentIndex = 0;
                           });
@@ -190,8 +168,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                         onPressed: () {
                           box.write("orderstatus", "");
                           setState(() {
-                            historyController.initialpage = 1;
-                            historyController.finalList.clear();
+                            // historyController.initialpage = 1;
+                            // historyController.finalList.clear();
 
                             currentPage = TransactionsPage();
                             currentIndex = 1;
@@ -239,15 +217,14 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                         minWidth: 40,
                         onPressed: () {
                           box.write("orderstatus", "");
-                          orderlistController.finalList.clear();
-                          orderlistController.initialpage = 1;
+
                           setState(() {
-                            historyController.finalList.clear();
-                            orderlistController.finalList.clear();
+                            // historyController.finalList.clear();
+                            // orderlistController.finalList.clear();
                             currentPage = OrdersPage();
                             currentIndex = 2;
                           });
-                          orderlistController.fetchOrderlistdata();
+                          // orderlistController.fetchOrderlistdata();
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

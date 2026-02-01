@@ -9,32 +9,29 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../global_controller/languages_controller.dart';
+
 class CustomRechargeController extends GetxController {
   TextEditingController numberController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+
+  LanguagesController languagesController = Get.put(LanguagesController());
   final box = GetStorage();
 
-  TextEditingController pinController = TextEditingController();
   final customhistoryController = Get.find<CustomHistoryController>();
 
   RxBool isLoading = false.obs;
 
-  RxBool loadsuccess = false.obs;
-  RxBool showanimation = false.obs;
-  void placeOrder() async {
+  Future<void> placeOrder(BuildContext context) async {
     try {
       isLoading.value = true;
-      loadsuccess.value = false; // Default to false until success
-
-      var url = Uri.parse(
-        "${ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.customrecharge}",
-      );
-      print(url);
+      var url = Uri.parse("${ApiEndPoints.baseUrl}custom-recharge");
       Map body = {
-        'country_id': box.read("country_id"),
+        'country_id': box.read("afghanistan_id"),
         'rechargeble_account': numberController.text,
         'amount': amountController.text,
       };
+      print(body.toString());
 
       http.Response response = await http.post(
         url,
@@ -46,38 +43,145 @@ class CustomRechargeController extends GetxController {
         },
       );
 
-      final orderresults = jsonDecode(response.body);
-      if (response.statusCode == 201 && orderresults["success"] == true) {
-        loadsuccess.value = true; // Indicate success
-        isLoading.value = false;
+      final orderResults = jsonDecode(response.body);
+      // print(response.statusCode.toString());
+      // print(response.body.toString());
+      if (response.statusCode == 201 && orderResults["success"] == true) {
         customhistoryController.finalList.clear();
         customhistoryController.initialpage = 1;
         customhistoryController.fetchHistory();
+        isLoading.value = false;
 
-        Get.snackbar("Success", orderresults["message"]);
-        clearInputs();
+        numberController.clear();
+        box.remove("bundleID");
+
+        showSuccessDialog(context);
       } else {
-        handleFailure(orderresults["message"]);
+        isLoading.value = false;
+        showErrorDialog(context, orderResults["message"]);
       }
     } catch (e) {
-      handleFailure(e.toString());
+      isLoading.value = false;
+      showErrorDialog(context, e.toString());
     }
   }
 
   void handleFailure(String message) {
-    loadsuccess.value = false;
-
     isLoading.value = false;
-    Get.snackbar(
-      "Error",
-      message,
-      backgroundColor: Colors.red,
-      colorText: Colors.white,
+  }
+
+  void showSuccessDialog(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+
+    numberController.clear();
+    amountController.clear();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(17),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            height: 350,
+            width: screenWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(17),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(languagesController.tr("SUCCESS")),
+                SizedBox(height: 15),
+                Text(
+                  languagesController.tr("RECHARGE_SUCCESSFULL"),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close success dialog
+                    Navigator.pop(context); // Close main dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  child: Text(
+                    languagesController.tr("CLOSE"),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  void clearInputs() {
-    numberController.clear();
-    amountController.clear();
+  void showErrorDialog(BuildContext context, String errorMessage) {
+    var screenWidth = MediaQuery.of(context).size.width;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(17),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            height: 350,
+            width: screenWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(17),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(languagesController.tr("FAILED")),
+                SizedBox(height: 15),
+                Text(
+                  languagesController.tr("RECHARGE_FAILED"),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close error dialog
+                    Navigator.pop(context); // Close main dialog
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text(
+                    languagesController.tr("CLOSE"),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final countryListModel = countryListModelFromJson(jsonString);
-
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -36,36 +32,35 @@ class CountryListModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "code": code,
-        "message": message,
-        "data": data!.toJson(),
-        "payload": List<dynamic>.from(payload!.map((x) => x)),
-      };
+    "success": success,
+    "code": code,
+    "message": message,
+    "data": data!.toJson(),
+    "payload": List<dynamic>.from(payload!.map((x) => x)),
+  };
 }
 
 class Data {
   final List<Country> countries;
 
-  Data({
-    required this.countries,
-  });
+  Data({required this.countries});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        countries: List<Country>.from(
-            json["countries"].map((x) => Country.fromJson(x))),
-      );
+    countries: List<Country>.from(
+      json["countries"].map((x) => Country.fromJson(x)),
+    ),
+  );
 
   Map<String, dynamic> toJson() => {
-        "countries": List<dynamic>.from(countries.map((x) => x.toJson())),
-      };
+    "countries": List<dynamic>.from(countries.map((x) => x.toJson())),
+  };
 }
 
 class Country {
   final int? id;
   final String? countryName;
   final String? countryFlagImageUrl;
-  final int? languageId;
+  final String? languageId;
   String? phoneNumberLength;
   final String? countryTelecomCode;
   final DateTime? createdAt;
@@ -85,32 +80,32 @@ class Country {
   });
 
   factory Country.fromJson(Map<String, dynamic> json) => Country(
-        id: json["id"] == null ? null : json["id"],
-        countryName: json["country_name"] == null ? null : json["country_name"],
-        countryFlagImageUrl: json["country_flag_image_url"] == null
-            ? null
-            : json["country_flag_image_url"],
-        languageId: json["language_id"] == null ? null : json["language_id"],
-        phoneNumberLength: json["phone_number_length"] == null
-            ? null
-            : json["phone_number_length"],
-        countryTelecomCode: json["country_telecom_code"] == null
-            ? null
-            : json["country_telecom_code"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        deletedAt: json["deleted_at"] == null ? null : json["deleted_at"],
-      );
+    id: json["id"] == null ? null : json["id"],
+    countryName: json["country_name"] == null ? null : json["country_name"],
+    countryFlagImageUrl: json["country_flag_image_url"] == null
+        ? null
+        : json["country_flag_image_url"],
+    languageId: json["language_id"] == null ? null : json["language_id"],
+    phoneNumberLength: json["phone_number_length"] == null
+        ? null
+        : json["phone_number_length"],
+    countryTelecomCode: json["country_telecom_code"] == null
+        ? null
+        : json["country_telecom_code"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    deletedAt: json["deleted_at"] == null ? null : json["deleted_at"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "country_name": countryName,
-        "country_flag_image_url": countryFlagImageUrl,
-        "language_id": languageId,
-        "phone_number_length": phoneNumberLength,
-        "country_telecom_code": countryTelecomCode,
-        "created_at": createdAt!.toIso8601String(),
-        "updated_at": updatedAt!.toIso8601String(),
-        "deleted_at": deletedAt,
-      };
+    "id": id,
+    "country_name": countryName,
+    "country_flag_image_url": countryFlagImageUrl,
+    "language_id": languageId,
+    "phone_number_length": phoneNumberLength,
+    "country_telecom_code": countryTelecomCode,
+    "created_at": createdAt!.toIso8601String(),
+    "updated_at": updatedAt!.toIso8601String(),
+    "deleted_at": deletedAt,
+  };
 }

@@ -27,11 +27,23 @@ class OtherendPoints {
   final String transactions = "balance_transactions";
   final String subresellerDetails = "sub-resellers/";
   final String servicecategories = "service_categories";
+  final String companies = "companies";
   final String services = "services";
   final String currency = "currency";
   final String province = "provinces";
   final String district = "districts";
   final String languages = "languages";
   final String sliders = "advertisements";
+  final String commsiongrouplist = "sub-reseller-commission-group";
   final String customrecharge = "custom-recharge";
+  final String appsetting = "app-setting";
+  final String rechargeconfig = "get-afg-custom-recharge-config";
+  final String hawalalist = "hawala-orders";
+  final String branch = "hawala-branches";
+  final String sellingprice = "reseller-customer-pricing";
+  final String createselling = "reseller-customer-pricing";
+  final String paymentmethod = "payment-methods";
+  final String paymenttypes = "payment-types";
+  final String hawalacurrency = "hawala-currency";
+  final String earningtransfer = "earning-transfer";
 }

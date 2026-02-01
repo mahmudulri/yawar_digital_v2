@@ -42,6 +42,12 @@ class _SubResellerScreenState extends State<SubResellerScreen> {
   String search = "";
 
   @override
+  void initState() {
+    super.initState();
+    subresellerController.fetchSubReseller();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // subresellerController.fetchSubReseller();
     var screenHeight = MediaQuery.of(context).size.height;
@@ -56,6 +62,7 @@ class _SubResellerScreenState extends State<SubResellerScreen> {
         centerTitle: true,
         title: GestureDetector(
           onTap: () {
+            subresellerController.fetchSubReseller();
             // print(box.read("subresellerID"));
           },
           child: Text(

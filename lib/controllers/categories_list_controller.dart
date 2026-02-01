@@ -39,7 +39,7 @@ class ACategorisListController extends GetxController {
           if (type != null && categoryId != null && categoryName != null) {
             for (var service in category.services ?? []) {
               final String? country = service.company?.country?.countryName;
-              final int? countryId = service.company?.countryId;
+              final String? countryId = service.company?.countryId;
               final String? countryImage =
                   service.company?.country?.countryFlagImageUrl;
               final String? phoneNumberLength =
@@ -53,14 +53,14 @@ class ACategorisListController extends GetxController {
                       'country_id': countryId,
                       'countryImage': countryImage,
                       'phone_number_length': phoneNumberLength,
-                      'categories': <int, dynamic>{},
+                      'categories': <String, dynamic>{},
                     };
                   });
 
                   // Access and update categories map
                   final categories =
-                      nonsocial[country]['categories'] as Map<int, dynamic>;
-                  categories.putIfAbsent(categoryId, () {
+                      nonsocial[country]['categories'] as Map<String, dynamic>;
+                  categories.putIfAbsent(categoryId.toString(), () {
                     return {
                       'categoryName': categoryName,
                       'country_id': countryId,
@@ -79,11 +79,11 @@ class ACategorisListController extends GetxController {
           final String countryName = entry.key;
           final Map<String, dynamic> countryValue = entry.value;
 
-          final int? countryId = countryValue['country_id'];
+          final String? countryId = countryValue['country_id'];
           final String? countryImage = countryValue['countryImage'];
           final String? phoneNumberLength = countryValue['phone_number_length'];
-          final Map<int, dynamic> categories =
-              countryValue['categories'] as Map<int, dynamic>;
+          final Map<String, dynamic> categories =
+              countryValue['categories'] as Map<String, dynamic>;
 
           categories.forEach((categoryId, categoryValue) {
             nonsocialArray.add({
@@ -104,7 +104,7 @@ class ACategorisListController extends GetxController {
 
         // Print finalArrayCatList length for verification
 
-        print("Nonsocial Categories: ${nonsocialArray}");
+        // print("Nonsocial Categories: ${nonsocialArray}");
 
         isLoading(false);
       });

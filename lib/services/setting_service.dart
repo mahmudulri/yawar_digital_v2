@@ -1,18 +1,14 @@
 import 'dart:convert';
-
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-
-import '../models/dashboard_data_model.dart';
-import '../models/sub_reseller_model.dart';
-import '../models/transaction_model.dart';
+import '../models/setting_model.dart';
 import '../utils/api_endpoints.dart';
 
-class TransactionApi {
+class SettingServiceApi {
   final box = GetStorage();
-  Future<TransactionModel> fetchTransaction() async {
+  Future<SettingModel> fetchsetting() async {
     final url = Uri.parse(
-      ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.transactions,
+      "${ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.appsetting}",
     );
     print(url);
 
@@ -23,11 +19,9 @@ class TransactionApi {
 
     if (response.statusCode == 200) {
       // print(response.body.toString());
-      final transactionModel = TransactionModel.fromJson(
-        json.decode(response.body),
-      );
+      final settingModel = SettingModel.fromJson(json.decode(response.body));
 
-      return transactionModel;
+      return settingModel;
     } else {
       throw Exception('Failed to fetch gateway');
     }

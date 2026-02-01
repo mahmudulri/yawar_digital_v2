@@ -14,20 +14,20 @@ class CustomRechargeHistoryApi {
   final box = GetStorage();
   Future<CustomHistoryModel> fetchcustomhistory(int pageNo) async {
     final url = Uri.parse(
-        "${ApiEndPoints.baseUrl}orders?page=${pageNo}&order_type=custom_recharge");
+      "${ApiEndPoints.baseUrl}orders?page=${pageNo}&order_type=custom_recharge",
+    );
     print("order Url : " + url.toString());
 
     var response = await http.get(
       url,
-      headers: {
-        'Authorization': 'Bearer ${box.read("userToken")}',
-      },
+      headers: {'Authorization': 'Bearer ${box.read("userToken")}'},
     );
 
     if (response.statusCode == 200) {
-      // print(response.body.toString());
-      final customhistorymodel =
-          CustomHistoryModel.fromJson(json.decode(response.body));
+      print(response.body.toString());
+      final customhistorymodel = CustomHistoryModel.fromJson(
+        json.decode(response.body),
+      );
 
       return customhistorymodel;
     } else {

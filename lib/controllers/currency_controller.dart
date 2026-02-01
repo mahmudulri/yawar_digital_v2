@@ -1,26 +1,48 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:yawar_digital/models/currency_model.dart';
 import 'package:yawar_digital/services/country_list_service.dart';
 import 'package:yawar_digital/services/currency_list_service.dart';
 
+import '../global_controller/conversation_controller.dart';
 import '../models/country_list_model.dart';
 
 class CurrencyListController extends GetxController {
-  @override
-  void onInit() {
-    fetchCurrencyList();
-    super.onInit();
-  }
-
+  ConversationController conversationController = Get.put(
+    ConversationController(),
+  );
   var isLoading = false.obs;
 
-  var allcurrencylist = CurrencyModel().obs;
+  final box = GetStorage();
 
-  void fetchCurrencyList() async {
+  var allcurrency = CurrencyModel().obs;
+
+  void fetchCurrency() async {
     try {
       isLoading(true);
       await CurrencyApi().fetchCurrency().then((value) {
-        allcurrencylist.value = value;
+        allcurrency.value = value;
+
+        if (allcurrency.value.data?.currencies != null) {
+          conversationController.currencies.addAll(
+            allcurrency.value.data!.currencies!,
+          );
+
+          String codeFromBox = box.read("currency_code") ?? "";
+
+          Currency? matchedCurrency = allcurrency.value.data!.currencies!
+              .firstWhereOrNull((currency) => currency.code == codeFromBox);
+          if (matchedCurrency != null) {
+            conversationController.resellerRate =
+                double.tryParse(matchedCurrency.exchangeRatePerUsd!) ?? 0.0;
+            print(
+              "Matched Exchange Rate: ${matchedCurrency.exchangeRatePerUsd}",
+            );
+          } else {
+            print("Currency with code $codeFromBox not found.");
+          }
+          print(allcurrency.toString());
+        }
 
         isLoading(false);
       });

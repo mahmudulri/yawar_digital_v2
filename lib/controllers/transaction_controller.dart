@@ -21,6 +21,7 @@ class TransactionController extends GetxController {
       isLoading(true);
       await TransactionApi().fetchTransaction().then((value) {
         alltransactionlist.value = value;
+        // print(alltransactionlist.toJson());
 
         isLoading(false);
       });

@@ -11,19 +11,20 @@ class CategoriesListApi {
   final box = GetStorage();
   Future<NewServiceCatModel> fetchcategoriesList() async {
     final url = Uri.parse(
-        ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.servicecategories);
+      ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.servicecategories,
+    );
+    print(url);
 
     var response = await http.get(
       url,
-      headers: {
-        'Authorization': 'Bearer ${box.read("userToken")}',
-      },
+      headers: {'Authorization': 'Bearer ${box.read("userToken")}'},
     );
 
     if (response.statusCode == 200) {
       // print(response.body.toString());
-      final categorieslistModel =
-          NewServiceCatModel.fromJson(json.decode(response.body));
+      final categorieslistModel = NewServiceCatModel.fromJson(
+        json.decode(response.body),
+      );
 
       return categorieslistModel;
     } else {

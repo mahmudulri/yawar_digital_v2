@@ -9,6 +9,10 @@ import 'package:yawar_digital/routes/routes.dart';
 import 'package:yawar_digital/splash_screen.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'controllers/company_controller.dart';
+import 'controllers/currency_controller.dart';
+import 'controllers/recharge_config_controller.dart';
+import 'controllers/setting_controller.dart';
 import 'controllers/time_zone_controller.dart';
 import 'global_controller/languages_controller.dart';
 
@@ -16,8 +20,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await GetStorage.init();
-  DependencyInjection.init();
   Get.put(LanguagesController(), permanent: true);
+  Get.put(SettingController(), permanent: true);
+  Get.put(RechargeConfigController(), permanent: true);
+  Get.put(CurrencyListController(), permanent: true);
+  Get.put(CompanyController(), permanent: true);
+
+  DependencyInjection.init();
 
   runApp(
     EasyLocalization(

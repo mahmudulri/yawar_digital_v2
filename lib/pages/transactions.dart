@@ -23,8 +23,6 @@ class TransactionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // transactionController.fetchTransactionData();
-
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -35,13 +33,18 @@ class TransactionsPage extends StatelessWidget {
         backgroundColor: AppColors.backgroundColor,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text(
-          languageController.tr("TRANSACTIONS"),
+        title: GestureDetector(
+          onTap: () {
+            transactionController.fetchTransactionData();
+          },
+          child: Text(
+            languageController.tr("TRANSACTIONS"),
 
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
       ),
@@ -142,14 +145,14 @@ class TransactionsPage extends StatelessWidget {
                               .alltransactionlist
                               .value
                               .data!
-                              .resellerBalanceTransactions
+                              .resellerBalanceTransactions!
                               .length,
                           itemBuilder: (context, index) {
                             final data = transactionController
                                 .alltransactionlist
                                 .value
                                 .data!
-                                .resellerBalanceTransactions[index];
+                                .resellerBalanceTransactions![index];
                             return Card(
                               color: Colors.white,
                               child: Container(
@@ -226,22 +229,7 @@ class TransactionsPage extends StatelessWidget {
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
-                                                          children: [
-                                                            Text(
-                                                              data
-                                                                  .reseller!
-                                                                  .contactName
-                                                                  .toString(),
-                                                              style: TextStyle(
-                                                                fontSize: 13,
-                                                                color:
-                                                                    Colors.grey,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ],
+                                                          children: [],
                                                         ),
                                                       ),
                                                     ),

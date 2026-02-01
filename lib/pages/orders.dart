@@ -31,9 +31,11 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   void initState() {
     super.initState();
-    orderlistController.initialpage = 1;
+
     orderlistController.finalList.clear();
-    // orderlistController.fetchOrderlistdata();
+    orderlistController.initialpage = 1;
+
+    orderlistController.fetchOrderlistdata();
 
     scrollController.addListener(refresh);
   }

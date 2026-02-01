@@ -63,8 +63,10 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     // _startAutoSlide();
+    historyController.finalList.clear();
+    historyController.initialpage = 1;
+    historyController.fetchHistory();
 
-    // languageController.fetchlanData(box.read("isoCode"));
     dashboardController.fetchDashboardData();
   }
 
@@ -904,34 +906,9 @@ class _HomepageState extends State<Homepage> {
                         padding: EdgeInsets.symmetric(horizontal: 13),
                         child: GestureDetector(
                           onTap: () async {
-                            if (countryListController
-                                .finalCountryList
-                                .isNotEmpty) {
-                              // Find the country where the name is "Afghanistan"
-                              var afghanistan = countryListController
-                                  .finalCountryList
-                                  .firstWhere(
-                                    (country) =>
-                                        country['country_name'] ==
-                                        "Afghanistan",
-                                    orElse: () =>
-                                        null, // Return null if not found
-                                  );
-
-                              if (afghanistan != null) {
-                                print(
-                                  "The ID for Afghanistan is: ${afghanistan['id']}",
-                                );
-                                box.write("country_id", "${afghanistan['id']}");
-                                box.write("maxlength", "10");
-                              } else {
-                                print("Afghanistan not found in the list");
-                              }
-                            } else {
-                              print("Country list is empty.");
-                            }
-
-                            // Get.toNamed(customrechargescreen);
+                            Get.toNamed(customrechargescreen);
+                            // countryListController.fetchCountryData();
+                            // historyController.fetchHistory();
                           },
                           child: Container(
                             width: screenWidth,
