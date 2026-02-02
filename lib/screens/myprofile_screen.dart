@@ -24,203 +24,169 @@ class MyprofileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0.0,
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.white,
-          leading: GestureDetector(
-            onTap: () {
-              Get.back();
-            },
-            child: Icon(Icons.arrow_back, color: Colors.black),
-          ),
-
-          centerTitle: true,
-          title: Text(
-            languageController.tr("PERSONAL_INFO"),
-
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          // actions: [
-          //   GestureDetector(
-          //     onTap: () {
-          //       Get.to(() => EditProfileScreen());
-          //     },
-          //     child: Icon(
-          //       FontAwesomeIcons.penToSquare,
-          //       color: Colors.black,
-          //     ),
-          //   ),
-          //   SizedBox(
-          //     width: 15,
-          //   ),
-          // ],
+        leading: GestureDetector(
+          onTap: () {
+            Get.back();
+          },
+          child: Icon(Icons.arrow_back, color: Colors.black),
         ),
-        body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18),
-            child: Column(
-              children: [
-                SizedBox(height: 20),
-                dashboardController
-                            .alldashboardData
-                            .value
-                            .data!
-                            .userInfo!
-                            .profileImageUrl !=
-                        null
-                    ? Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              dashboardController
-                                  .alldashboardData
-                                  .value
-                                  .data!
-                                  .userInfo!
-                                  .profileImageUrl
-                                  .toString(),
-                            ),
-                            fit: BoxFit.cover,
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                      )
-                    : Container(
-                        height: 130,
-                        width: 130,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.person,
-                            color: Colors.white,
-                            size: 100,
-                          ),
-                        ),
-                      ),
-                SizedBox(height: 5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.toNamed(changepinscreen);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.defaultColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 5,
-                            ),
-                            child: Text(
-                              languageController.tr("CHANGE_PIN"),
 
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+        centerTitle: true,
+        title: Text(
+          languageController.tr("PERSONAL_INFO"),
+
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        // actions: [
+        //   GestureDetector(
+        //     onTap: () {
+        //       Get.to(() => EditProfileScreen());
+        //     },
+        //     child: Icon(
+        //       FontAwesomeIcons.penToSquare,
+        //       color: Colors.black,
+        //     ),
+        //   ),
+        //   SizedBox(
+        //     width: 15,
+        //   ),
+        // ],
+      ),
+      body: Container(
+        height: screenHeight,
+        width: screenWidth,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              dashboardController
+                          .alldashboardData
+                          .value
+                          .data!
+                          .userInfo!
+                          .profileImageUrl !=
+                      null
+                  ? Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            dashboardController
+                                .alldashboardData
+                                .value
+                                .data!
+                                .userInfo!
+                                .profileImageUrl
+                                .toString(),
                           ),
+                          fit: BoxFit.cover,
+                        ),
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                  : Container(
+                      height: 120,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                          size: 100,
                         ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Name",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .userInfo!
-                      .resellerName
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Email",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .userInfo!
-                      .email
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Name",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .userInfo!
-                      .phone
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Balance",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .userInfo!
-                      .balance
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Loan Balance",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .userInfo!
-                      .loanBalance
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Total sold amount",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .totalSoldAmount
-                      .toString(),
-                ),
-                SizedBox(height: 5),
-                MyProfileboxwidget(
-                  boxname: "Total revenue",
-                  title: dashboardController
-                      .alldashboardData
-                      .value
-                      .data!
-                      .totalRevenue
-                      .toString(),
-                ),
-              ],
-            ),
+
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Name",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .userInfo!
+                    .resellerName
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Email",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .userInfo!
+                    .email
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Name",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .userInfo!
+                    .phone
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Balance",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .userInfo!
+                    .balance
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Loan Balance",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .userInfo!
+                    .loanBalance
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Total sold amount",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .totalSoldAmount
+                    .toString(),
+              ),
+              SizedBox(height: 5),
+              MyProfileboxwidget(
+                boxname: "Total revenue",
+                title: dashboardController
+                    .alldashboardData
+                    .value
+                    .data!
+                    .totalRevenue
+                    .toString(),
+              ),
+            ],
           ),
         ),
       ),

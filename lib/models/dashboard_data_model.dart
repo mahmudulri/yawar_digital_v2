@@ -17,11 +17,7 @@ class DashboardDataModel {
   final String? message;
   final Data? data;
 
-  DashboardDataModel({
-    this.success,
-    this.message,
-    this.data,
-  });
+  DashboardDataModel({this.success, this.message, this.data});
 
   factory DashboardDataModel.fromJson(Map<String, dynamic> json) =>
       DashboardDataModel(
@@ -31,10 +27,10 @@ class DashboardDataModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "message": message,
-        "data": data!.toJson(),
-      };
+    "success": success,
+    "message": message,
+    "data": data!.toJson(),
+  };
 }
 
 class Data {
@@ -59,32 +55,32 @@ class Data {
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-        userInfo: UserInfo.fromJson(json["user_info"]),
-        advertisementSliders: List<AdvertisementSlider>.from(
-            json["advertisement_sliders"]
-                .map((x) => AdvertisementSlider.fromJson(x))),
-        balance: json["balance"] == null ? null : json["balance"],
-        loanBalance: json["loan_balance"] == null ? null : json["loan_balance"],
-        totalSoldAmount: json["total_sold_amount"] == null
-            ? null
-            : json["total_sold_amount"],
-        totalRevenue:
-            json["total_revenue"] == null ? null : json["total_revenue"],
-        todaySale: json["today_sale"] == null ? null : json["today_sale"],
-        todayProfit: json["today_profit"] == null ? null : json["today_profit"],
-      );
+    userInfo: UserInfo.fromJson(json["user_info"]),
+    advertisementSliders: List<AdvertisementSlider>.from(
+      json["advertisement_sliders"].map((x) => AdvertisementSlider.fromJson(x)),
+    ),
+    balance: json["balance"] == null ? null : json["balance"],
+    loanBalance: json["loan_balance"] == null ? null : json["loan_balance"],
+    totalSoldAmount: json["total_sold_amount"] == null
+        ? null
+        : json["total_sold_amount"],
+    totalRevenue: json["total_revenue"] == null ? null : json["total_revenue"],
+    todaySale: json["today_sale"] == null ? null : json["today_sale"],
+    todayProfit: json["today_profit"] == null ? null : json["today_profit"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "user_info": userInfo!.toJson(),
-        "advertisement_sliders":
-            List<dynamic>.from(advertisementSliders!.map((x) => x.toJson())),
-        "balance": balance,
-        "loan_balance": loanBalance,
-        "total_sold_amount": totalSoldAmount,
-        "total_revenue": totalRevenue,
-        "today_sale": todaySale,
-        "today_profit": todayProfit,
-      };
+    "user_info": userInfo!.toJson(),
+    "advertisement_sliders": List<dynamic>.from(
+      advertisementSliders!.map((x) => x.toJson()),
+    ),
+    "balance": balance,
+    "loan_balance": loanBalance,
+    "total_sold_amount": totalSoldAmount,
+    "total_revenue": totalRevenue,
+    "today_sale": todaySale,
+    "today_profit": todayProfit,
+  };
 }
 
 class AdvertisementSlider {
@@ -110,10 +106,10 @@ class AdvertisementSlider {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "advertisement_title": advertisementTitle,
-        "ad_slider_image_url": adSliderImageUrl,
-      };
+    "id": id,
+    "advertisement_title": advertisementTitle,
+    "ad_slider_image_url": adSliderImageUrl,
+  };
 }
 
 class UserInfo {
@@ -134,6 +130,7 @@ class UserInfo {
   final dynamic? status;
   final dynamic? balance;
   final dynamic? loanBalance;
+  final String? totalearning;
 
   UserInfo({
     this.id,
@@ -151,47 +148,50 @@ class UserInfo {
     this.status,
     this.balance,
     this.loanBalance,
+    this.totalearning,
   });
 
   factory UserInfo.fromJson(Map<String, dynamic> json) => UserInfo(
-        id: json["id"] == null ? null : json["id"],
-        userId: json["user_id"] == null ? null : json["user_id"],
-        resellerName:
-            json["reseller_name"] == null ? null : json["reseller_name"],
-        contactName: json["contact_name"] == null ? null : json["contact_name"],
-        resellerType:
-            json["reseller_type"] == null ? null : json["reseller_type"],
-        profileImageUrl: json["profile_image_url"] == null
-            ? null
-            : json["profile_image_url"],
-        email: json["email"] == null ? null : json["email"],
-        phone: json["phone"] == null ? null : json["phone"],
-        countryId: json["country_id"] == null ? null : json["country_id"],
-        provinceId: json["province_id"] == null ? null : json["province_id"],
-        districtsId: json["districts_id"] == null ? null : json["districts_id"],
-        isResellerVerified: json["is_reseller_verified"] == null
-            ? null
-            : json["is_reseller_verified"],
-        status: json["status"] == null ? null : json["status"],
-        balance: json["balance"] == null ? null : json["balance"],
-        loanBalance: json["loan_balance"] == null ? null : json["loan_balance"],
-      );
+    id: json["id"] == null ? null : json["id"],
+    userId: json["user_id"] == null ? null : json["user_id"],
+    resellerName: json["reseller_name"] == null ? null : json["reseller_name"],
+    contactName: json["contact_name"] == null ? null : json["contact_name"],
+    resellerType: json["reseller_type"] == null ? null : json["reseller_type"],
+    profileImageUrl: json["profile_image_url"] == null
+        ? null
+        : json["profile_image_url"],
+    email: json["email"] == null ? null : json["email"],
+    phone: json["phone"] == null ? null : json["phone"],
+    countryId: json["country_id"] == null ? null : json["country_id"],
+    provinceId: json["province_id"] == null ? null : json["province_id"],
+    districtsId: json["districts_id"] == null ? null : json["districts_id"],
+    isResellerVerified: json["is_reseller_verified"] == null
+        ? null
+        : json["is_reseller_verified"],
+    status: json["status"] == null ? null : json["status"],
+    balance: json["balance"] == null ? null : json["balance"],
+    loanBalance: json["loan_balance"] == null ? null : json["loan_balance"],
+    totalearning: json["total_earning_balance"] == null
+        ? null
+        : json["total_earning_balance"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "reseller_name": resellerName,
-        "contact_name": contactName,
-        "reseller_type": resellerType,
-        "profile_image_url": profileImageUrl,
-        "email": email,
-        "phone": phone,
-        "country_id": countryId,
-        "province_id": provinceId,
-        "districts_id": districtsId,
-        "is_reseller_verified": isResellerVerified,
-        "status": status,
-        "balance": balance,
-        "loan_balance": loanBalance,
-      };
+    "id": id,
+    "user_id": userId,
+    "reseller_name": resellerName,
+    "contact_name": contactName,
+    "reseller_type": resellerType,
+    "profile_image_url": profileImageUrl,
+    "email": email,
+    "phone": phone,
+    "country_id": countryId,
+    "province_id": provinceId,
+    "districts_id": districtsId,
+    "is_reseller_verified": isResellerVerified,
+    "status": status,
+    "balance": balance,
+    "loan_balance": loanBalance,
+    "total_earning_balance": totalearning,
+  };
 }

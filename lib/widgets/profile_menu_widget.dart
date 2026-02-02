@@ -15,7 +15,7 @@ class ProfileMenuWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        height: 42,
+        height: 40,
         width: screenWidth,
         decoration: BoxDecoration(
           // color: AppColors.socialButtonColor,
@@ -25,13 +25,8 @@ class ProfileMenuWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              Image.asset(
-                imageLink.toString(),
-                height: 24,
-              ),
-              SizedBox(
-                width: 20,
-              ),
+              Image.asset(imageLink.toString(), color: Colors.grey, height: 24),
+              SizedBox(width: 20),
               Text(
                 itemName.toString(),
                 style: TextStyle(
@@ -57,11 +52,7 @@ class ThemeButton extends StatefulWidget {
   String? itemName;
   String? imageLink;
 
-  ThemeButton({
-    super.key,
-    this.itemName,
-    this.imageLink,
-  });
+  ThemeButton({super.key, this.itemName, this.imageLink});
 
   @override
   State<ThemeButton> createState() => _ThemeButtonState();
@@ -83,19 +74,11 @@ class _ThemeButtonState extends State<ThemeButton> {
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: [
-            Image.asset(
-              widget.imageLink.toString(),
-              height: 24,
-            ),
-            SizedBox(
-              width: 20,
-            ),
+            Image.asset(widget.imageLink.toString(), height: 24),
+            SizedBox(width: 20),
             Text(
               widget.itemName.toString(),
-              style: TextStyle(
-                fontSize: 15,
-                color: AppColors.borderColor,
-              ),
+              style: TextStyle(fontSize: 15, color: AppColors.borderColor),
             ),
             Spacer(),
             Padding(

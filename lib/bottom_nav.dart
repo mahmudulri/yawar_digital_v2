@@ -17,6 +17,7 @@ import 'global_controller/languages_controller.dart';
 import 'pages/homepage.dart';
 import 'pages/orders.dart';
 import 'pages/sub_reseller_screen.dart';
+import 'pages/transaction_type.dart';
 import 'pages/transactions.dart';
 
 class BottomNavScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class BottomNavScreen extends StatefulWidget {
 class _BottomNavScreenState extends State<BottomNavScreen> {
   List pages = [
     Homepage(),
-    TransactionsPage(),
+    TransactionsType(),
     OrdersPage(),
     SubResellerScreen(),
   ];
@@ -171,10 +172,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                             // historyController.initialpage = 1;
                             // historyController.finalList.clear();
 
-                            currentPage = TransactionsPage();
-                            currentIndex = 1;
+                            currentPage = TransactionsType();
                           });
-                          transactionController.fetchTransactionData();
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

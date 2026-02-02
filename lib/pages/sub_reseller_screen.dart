@@ -17,7 +17,10 @@ import 'package:yawar_digital/widgets/auth_textfield.dart';
 import 'package:yawar_digital/widgets/default_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../controllers/commission_group_controller.dart';
+import '../controllers/set_commission_group_controller.dart';
 import '../global_controller/languages_controller.dart';
+import '../screens/set_subreseller_pin.dart';
 import '../widgets/myprofile_box_widget.dart';
 import '../screens/change_balance_screen.dart';
 import '../screens/change_sub_pass_screen.dart';
@@ -200,6 +203,8 @@ class _SubResellerScreenState extends State<SubResellerScreen> {
                                 id: data.id.toString(),
                                 status: data.status.toString(),
                                 imagelink: data.profileImageUrl,
+                                subResellerCommissionGroupId:
+                                    data.subResellerCommissionGroupId,
                               );
                             } else {
                               return Container();
@@ -231,6 +236,7 @@ class dataBoxname extends StatefulWidget {
   String id;
   String? status;
   String? imagelink;
+  String? subResellerCommissionGroupId;
 
   dataBoxname({
     super.key,
@@ -247,6 +253,7 @@ class dataBoxname extends StatefulWidget {
     required this.id,
     this.status,
     this.imagelink,
+    this.subResellerCommissionGroupId,
   });
 
   @override
@@ -264,6 +271,13 @@ class _dataBoxnameState extends State<dataBoxname> {
 
   final ChangeStatusController changeStatusController = Get.put(
     ChangeStatusController(),
+  );
+
+  CommissionGroupController commissionlistController = Get.put(
+    CommissionGroupController(),
+  );
+  SetCommissionGroupController controller = Get.put(
+    SetCommissionGroupController(),
   );
 
   final languageController = Get.find<LanguagesController>();
@@ -316,12 +330,13 @@ class _dataBoxnameState extends State<dataBoxname> {
                     return AlertDialog(
                       contentPadding: EdgeInsets.all(0.0),
                       content: Container(
-                        height: 180,
+                        height: 270,
                         width: screenWidth - 100,
                         decoration: BoxDecoration(color: Colors.white),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               // GestureDetector(
                               //   onTap: () {
@@ -381,6 +396,98 @@ class _dataBoxnameState extends State<dataBoxname> {
                                     Icon(Icons.delete),
                                     SizedBox(width: 10),
                                     Text(languageController.tr("DELETE")),
+                                  ],
+                                ),
+                              ),
+                              Divider(thickness: 1, color: Colors.grey),
+                              GestureDetector(
+                                onTap: () async {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20),
+                                      ),
+                                    ),
+                                    builder: (context) {
+                                      return Obx(() {
+                                        if (commissionlistController
+                                            .isLoading
+                                            .value) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }
+
+                                        final groups =
+                                            commissionlistController
+                                                .allgrouplist
+                                                .value
+                                                .data
+                                                ?.groups ??
+                                            [];
+
+                                        return ListView.builder(
+                                          itemCount: groups.length,
+                                          itemBuilder: (context, index) {
+                                            final group = groups[index];
+                                            return ListTile(
+                                              title: Text(
+                                                group.groupName ?? '',
+                                              ),
+                                              subtitle: Text(
+                                                "${group.amount} ${group.commissionType == 'percentage' ? '%' : ''}",
+                                              ),
+                                              trailing:
+                                                  widget.subResellerCommissionGroupId
+                                                          .toString() ==
+                                                      group.id.toString()
+                                                  ? Icon(
+                                                      Icons.check,
+                                                      color: Colors.green,
+                                                    )
+                                                  : null,
+                                              onTap: () async {
+                                                Navigator.pop(context);
+                                                await controller.setgroup(
+                                                  widget.id.toString(),
+                                                  group.id.toString(),
+                                                );
+                                              },
+                                            );
+                                          },
+                                        );
+                                      });
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.group),
+                                    SizedBox(width: 10),
+                                    Text(
+                                      languageController.tr(
+                                        "SET_COMMISSION_GROUP",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Divider(thickness: 1, color: Colors.grey),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                    () => SetSubresellerPin(
+                                      subID: widget.id.toString(),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.key),
+                                    SizedBox(width: 10),
+                                    Text(languageController.tr("SET_PIN")),
                                   ],
                                 ),
                               ),

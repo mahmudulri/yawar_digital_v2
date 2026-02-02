@@ -12,14 +12,18 @@ import 'package:yawar_digital/controllers/iso_code_controller.dart';
 import 'package:yawar_digital/controllers/language_controller.dart';
 import 'package:yawar_digital/controllers/sign_in_controller.dart';
 import 'package:yawar_digital/screens/add_card_screen.dart';
+import 'package:yawar_digital/screens/change_password_screen.dart';
+import 'package:yawar_digital/screens/commission_group_screen.dart';
 import 'package:yawar_digital/screens/myprofile_screen.dart';
 
 import 'package:yawar_digital/pages/sub_reseller_screen.dart';
+import 'package:yawar_digital/screens/selling_price_screen.dart';
 import 'package:yawar_digital/utils/colors.dart';
 import 'package:yawar_digital/widgets/profile_menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../global_controller/languages_controller.dart';
+import '../screens/helpscreen.dart';
 import '../screens/onboarding.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -70,10 +74,10 @@ class _DrawerWidgetState extends State<DrawerWidget> {
       width: screenWidth - 80,
       child: Padding(
         padding: EdgeInsets.all(8.0),
-        child: Column(
+        child: ListView(
           children: [
-            SizedBox(height: 40),
             Text(
+              textAlign: TextAlign.center,
               languageController.tr("PROFILE"),
 
               style: TextStyle(
@@ -82,28 +86,31 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Container(
-              height: 110,
-              width: 110,
+              alignment: Alignment.center,
+              height: 80,
+              width: 80,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    dashboardController
-                        .alldashboardData
-                        .value
-                        .data!
-                        .userInfo!
-                        .profileImageUrl
-                        .toString(),
-                  ),
-                  fit: BoxFit.cover,
-                ),
+                color: Colors.red,
+                // image: DecorationImage(
+                //   image: NetworkImage(
+                //     dashboardController
+                //         .alldashboardData
+                //         .value
+                //         .data!
+                //         .userInfo!
+                //         .profileImageUrl
+                //         .toString(),
+                //   ),
+                //   fit: BoxFit.cover,
+                // ),
                 shape: BoxShape.circle,
               ),
             ),
             SizedBox(height: 5),
             Text(
+              textAlign: TextAlign.center,
               dashboardController
                   .alldashboardData
                   .value
@@ -113,12 +120,13 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                   .toString(),
               style: GoogleFonts.rubik(
                 color: Colors.black,
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(height: 5),
+
             Text(
+              textAlign: TextAlign.center,
               dashboardController.alldashboardData.value.data!.userInfo!.email
                   .toString(),
               style: GoogleFonts.rubik(
@@ -133,7 +141,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               endIndent: 10,
               color: Colors.grey,
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 10),
             ProfileMenuWidget(
               itemName: languageController.tr("PERSONAL_INFO"),
 
@@ -142,40 +150,59 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                 Get.toNamed(myprofilescreen);
               },
             ),
-            SizedBox(height: 5),
-            ProfileMenuWidget(
-              itemName: languageController.tr("ADD_CARD"),
 
-              imageLink: "assets/icons/add_card.png",
+            ProfileMenuWidget(
+              itemName: languageController.tr("SET_SALE_PRICE"),
+
+              imageLink: "assets/icons/set_sell_price.png",
               onPressed: () {
-                Get.toNamed(addcardScreen);
+                Get.to(SellingPriceScreen());
               },
             ),
-            // SizedBox(
-            //   height: 5,
-            // ),
-            // ProfileMenuWidget(
-            //   itemName: languageController
-            //       .alllanguageData.value.languageData!["SUB_RESELLER"]
-            //       .toString(),
-            //   imageLink: "assets/icons/sub_reseller.png",
-            //   onPressed: () {
-            //     Navigator.pushReplacement(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => SubResellerScreen(),
-            //       ),
-            //     );
-            //   },
-            // ),
-            SizedBox(height: 5),
+
+            ProfileMenuWidget(
+              itemName: languageController.tr("COMMISSION_GROUP"),
+
+              imageLink: "assets/icons/set_vendor_sell_price.png",
+              onPressed: () {
+                Get.to(CommissionGroupScreen());
+              },
+            ),
+
+            ProfileMenuWidget(
+              itemName: languageController.tr("CHANGE_PIN"),
+
+              imageLink: "assets/icons/key.png",
+              onPressed: () {
+                Get.toNamed(changepinscreen);
+              },
+            ),
+
+            ProfileMenuWidget(
+              itemName: languageController.tr("CHANGE_PASSWORD"),
+
+              imageLink: "assets/icons/key.png",
+              onPressed: () {
+                Get.to(ChangePasswordScreen());
+              },
+            ),
+
+            ProfileMenuWidget(
+              itemName: languageController.tr("HELP"),
+
+              imageLink: "assets/icons/support.png",
+              onPressed: () {
+                Get.to(Helpscreen());
+              },
+            ),
+
             ProfileMenuWidget(
               itemName: languageController.tr("TERMS_AND_CONDITIONS"),
 
               imageLink: "assets/icons/terms.png",
               onPressed: () {},
             ),
-            SizedBox(height: 5),
+
             ProfileMenuWidget(
               itemName: languageController.tr("CONTACTUS"),
 

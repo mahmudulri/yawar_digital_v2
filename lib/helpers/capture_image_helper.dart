@@ -1,3 +1,4 @@
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:yawar_digital/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -7,6 +8,7 @@ import 'dart:ui' as ui;
 
 import '../global_controller/languages_controller.dart';
 
+/// Use this GlobalKey in your widget to wrap the part you want to capture.
 GlobalKey catpureKey = GlobalKey();
 
 final languageController = Get.find<LanguagesController>();
@@ -30,7 +32,6 @@ Future<void> capturePng(GlobalKey captureKey) async {
     }
 
     Uint8List pngBytes = byteData.buffer.asUint8List();
-    var ImageGallerySaverPlus;
     final result = await ImageGallerySaverPlus.saveImage(
       pngBytes,
       quality: 100,
