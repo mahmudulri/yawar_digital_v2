@@ -1,5 +1,5 @@
-import 'package:yawar_digital/models/slider_model.dart';
-import 'package:yawar_digital/services/slider_service.dart';
+import 'package:arzan_digital/models/slider_model.dart';
+import 'package:arzan_digital/services/slider_service.dart';
 import 'package:get/get.dart';
 
 class SliderController extends GetxController {

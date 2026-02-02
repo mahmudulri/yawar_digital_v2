@@ -1,17 +1,17 @@
-import 'package:yawar_digital/controllers/categories_list_controller.dart';
-import 'package:yawar_digital/controllers/change_status_controller.dart';
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/controllers/custom_history_controller.dart';
-import 'package:yawar_digital/controllers/custom_recharge_controller.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/delete_sub_reseller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/controllers/operator_controller.dart';
-import 'package:yawar_digital/controllers/order_list_controller.dart';
-import 'package:yawar_digital/controllers/sign_in_controller.dart';
-import 'package:yawar_digital/controllers/sub_reseller_controller.dart';
-import 'package:yawar_digital/controllers/subreseller_details_controller.dart';
-import 'package:yawar_digital/controllers/transaction_controller.dart';
+import 'package:arzan_digital/controllers/categories_list_controller.dart';
+import 'package:arzan_digital/controllers/change_status_controller.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/controllers/custom_history_controller.dart';
+import 'package:arzan_digital/controllers/custom_recharge_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/delete_sub_reseller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/controllers/operator_controller.dart';
+import 'package:arzan_digital/controllers/order_list_controller.dart';
+import 'package:arzan_digital/controllers/sign_in_controller.dart';
+import 'package:arzan_digital/controllers/sub_reseller_controller.dart';
+import 'package:arzan_digital/controllers/subreseller_details_controller.dart';
+import 'package:arzan_digital/controllers/transaction_controller.dart';
 import 'package:get/get.dart';
 
 class BaseViewBinding implements Bindings {

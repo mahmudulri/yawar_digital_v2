@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:yawar_digital/controllers/custom_history_controller.dart';
-import 'package:yawar_digital/utils/api_endpoints.dart';
+import 'package:arzan_digital/controllers/custom_history_controller.dart';
+import 'package:arzan_digital/utils/api_endpoints.dart';
 
 import 'package:flutter/material.dart';
 

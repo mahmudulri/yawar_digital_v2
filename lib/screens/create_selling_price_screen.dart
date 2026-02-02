@@ -201,7 +201,7 @@ class _CreateSellingPriceScreenState extends State<CreateSellingPriceScreen> {
               Row(
                 children: [
                   Text(
-                    languagesController.tr("SERVICE"),
+                    languagesController.tr("SERVICES"),
                     style: TextStyle(
                       color: Colors.grey.shade600,
                       fontSize: screenHeight * 0.020,
@@ -292,7 +292,7 @@ class _CreateSellingPriceScreenState extends State<CreateSellingPriceScreen> {
                       addSellingPriceController.createnow();
                     } else {
                       Fluttertoast.showToast(
-                        msg: "Fill data",
+                        msg: languagesController.tr("FILL_THE_DATA"),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,

@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:yawar_digital/controllers/iso_code_controller.dart';
-// import 'package:yawar_digital/controllers/language_controller.dart';
+// import 'package:arzan_digital/controllers/iso_code_controller.dart';
+// import 'package:arzan_digital/controllers/language_controller.dart';
 
 // import '../global_controller/languages_controller.dart';
 

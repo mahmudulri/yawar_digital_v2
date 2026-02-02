@@ -8,7 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-import 'package:yawar_digital/controllers/currency_controller.dart';
+import 'package:arzan_digital/controllers/currency_controller.dart';
 
 import '../controllers/add_hawala_controller.dart';
 import '../controllers/branch_controller.dart';
@@ -721,7 +721,7 @@ class _HawalaScreenState extends State<HawalaScreen> {
                       }
                     } else {
                       Fluttertoast.showToast(
-                        msg: "Enter All data",
+                        msg: languagesController.tr("FILL_THE_DATA"),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.TOP,
                         timeInSecForIosWeb: 1,

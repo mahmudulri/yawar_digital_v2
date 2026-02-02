@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/models/bundle_model.dart';
-import 'package:yawar_digital/models/isocode_model.dart';
-import 'package:yawar_digital/models/language_model.dart';
-import 'package:yawar_digital/services/isocode_service.dart';
-import 'package:yawar_digital/services/language_service.dart';
+import 'package:arzan_digital/models/bundle_model.dart';
+import 'package:arzan_digital/models/isocode_model.dart';
+import 'package:arzan_digital/models/language_model.dart';
+import 'package:arzan_digital/services/isocode_service.dart';
+import 'package:arzan_digital/services/language_service.dart';
 
 class IscoCodeController extends GetxController {
   @override

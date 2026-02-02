@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/models/categories_service_model.dart';
-import 'package:yawar_digital/models/service_model.dart';
-import 'package:yawar_digital/services/categoris_service_list.dart';
-import 'package:yawar_digital/services/service_service.dart';
+import 'package:arzan_digital/models/categories_service_model.dart';
+import 'package:arzan_digital/models/service_model.dart';
+import 'package:arzan_digital/services/categoris_service_list.dart';
+import 'package:arzan_digital/services/service_service.dart';
 
 class ServiceController extends GetxController {
   @override

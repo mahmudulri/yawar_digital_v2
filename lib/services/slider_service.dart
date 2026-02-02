@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:yawar_digital/models/slider_model.dart';
+import 'package:arzan_digital/models/slider_model.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 

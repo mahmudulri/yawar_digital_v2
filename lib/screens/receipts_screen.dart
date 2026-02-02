@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/screens/create_payments_screen.dart';
+import 'package:arzan_digital/screens/create_payments_screen.dart';
 
 import '../controllers/dashboard_controller.dart';
 

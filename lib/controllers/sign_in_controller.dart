@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:yawar_digital/controllers/slider_controller.dart';
+import 'package:arzan_digital/controllers/slider_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/utils/api_endpoints.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/utils/api_endpoints.dart';
 
 class SignInController extends GetxController {
   final box = GetStorage();

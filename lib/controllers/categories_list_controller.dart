@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/models/categories_service_model.dart';
-import 'package:yawar_digital/services/categoris_service_list.dart';
-import 'package:yawar_digital/services/country_list_service.dart';
+import 'package:arzan_digital/models/categories_service_model.dart';
+import 'package:arzan_digital/services/categoris_service_list.dart';
+import 'package:arzan_digital/services/country_list_service.dart';
 
 import '../models/country_list_model.dart';
 

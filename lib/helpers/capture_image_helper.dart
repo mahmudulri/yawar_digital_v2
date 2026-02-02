@@ -1,5 +1,5 @@
 import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
+import 'package:arzan_digital/controllers/language_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';

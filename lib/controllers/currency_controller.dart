@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/models/currency_model.dart';
-import 'package:yawar_digital/services/country_list_service.dart';
-import 'package:yawar_digital/services/currency_list_service.dart';
+import 'package:arzan_digital/models/currency_model.dart';
+import 'package:arzan_digital/services/country_list_service.dart';
+import 'package:arzan_digital/services/currency_list_service.dart';
 
 import '../global_controller/conversation_controller.dart';
 import '../models/country_list_model.dart';

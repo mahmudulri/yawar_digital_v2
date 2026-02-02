@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
-import 'package:yawar_digital/widgets/social_button.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
+import 'package:arzan_digital/widgets/social_button.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import '../widgets/auth_textfield.dart';
 

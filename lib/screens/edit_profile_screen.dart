@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../widgets/myprofile_box_widget.dart';

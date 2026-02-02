@@ -1,13 +1,13 @@
-import 'package:yawar_digital/helpers/language_helper.dart';
-import 'package:yawar_digital/routes/routes.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../global_controller/languages_controller.dart';

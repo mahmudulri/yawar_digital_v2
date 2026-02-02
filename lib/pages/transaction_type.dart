@@ -57,7 +57,7 @@ class _TransactionsTypeState extends State<TransactionsType> {
       ),
 
       body: Container(
-        decoration: BoxDecoration(color: Color(0xffF1F3FF)),
+        color: Colors.white,
         height: screenHeight,
         width: screenWidth,
         child: ListView(
@@ -66,10 +66,7 @@ class _TransactionsTypeState extends State<TransactionsType> {
             Container(
               width: screenWidth,
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 12,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                 child: Column(
                   children: [
                     TransTypeButton(

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/models/history_model.dart';
+import 'package:arzan_digital/models/history_model.dart';
 
-import 'package:yawar_digital/services/history_service.dart';
+import 'package:arzan_digital/services/history_service.dart';
 
 class HistoryController extends GetxController {
   RxList finalList = <Order>[].obs;

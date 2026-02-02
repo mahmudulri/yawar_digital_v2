@@ -53,6 +53,7 @@ class Order {
   final String? resellerId;
   final dynamic? hawalaBranchId;
   final String? hawalaNumber;
+  final dynamic hawalaCustomNumber;
   final String? senderName;
   final String? receiverName;
   final dynamic? receiverFatherName;
@@ -81,6 +82,7 @@ class Order {
     this.resellerId,
     this.hawalaBranchId,
     this.hawalaNumber,
+    this.hawalaCustomNumber,
     this.senderName,
     this.receiverName,
     this.receiverFatherName,
@@ -112,6 +114,9 @@ class Order {
         ? null
         : json["hawala_branch_id"],
     hawalaNumber: json["hawala_number"] == null ? null : json["hawala_number"],
+    hawalaCustomNumber: json["hawala_custom_number"] == null
+        ? null
+        : json["hawala_custom_number"],
     senderName: json["sender_name"] == null ? null : json["sender_name"],
     receiverName: json["receiver_name"] == null ? null : json["receiver_name"],
     receiverFatherName: json["receiver_father_name"] == null
@@ -178,6 +183,7 @@ class Order {
     "reseller_id": resellerId,
     "hawala_branch_id": hawalaBranchId,
     "hawala_number": hawalaNumber,
+    "hawala_custom_number": hawalaCustomNumber,
     "sender_name": senderName,
     "receiver_name": receiverName,
     "receiver_father_name": receiverFatherName,

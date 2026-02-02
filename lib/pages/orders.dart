@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/global_controller/languages_controller.dart';
-import 'package:yawar_digital/helpers/localtime_helper.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/global_controller/languages_controller.dart';
+import 'package:arzan_digital/helpers/localtime_helper.dart';
 
 import 'package:flutter/material.dart';
 
@@ -11,10 +11,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:intl/intl.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
-import 'package:yawar_digital/controllers/order_list_controller.dart';
-import 'package:yawar_digital/screens/order_details.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/controllers/order_list_controller.dart';
+import 'package:arzan_digital/screens/order_details.dart';
+import 'package:arzan_digital/utils/colors.dart';
 
 import 'package:dotted_line/dotted_line.dart';
 

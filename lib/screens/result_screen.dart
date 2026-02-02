@@ -1,17 +1,17 @@
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/routes/routes.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/routes/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import 'package:yawar_digital/controllers/bundles_controller.dart';
-import 'package:yawar_digital/controllers/confirm_pin_controller.dart';
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/place_order_controller.dart';
-import 'package:yawar_digital/controllers/service_controller.dart';
-import 'package:yawar_digital/controllers/sub_reseller_controller.dart';
+import 'package:arzan_digital/controllers/bundles_controller.dart';
+import 'package:arzan_digital/controllers/place_order_controller.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/place_order_controller.dart';
+import 'package:arzan_digital/controllers/service_controller.dart';
+import 'package:arzan_digital/controllers/sub_reseller_controller.dart';
 
 class ResultScreen extends StatelessWidget {
   ResultScreen({super.key});
@@ -22,7 +22,7 @@ class ResultScreen extends StatelessWidget {
   final historyController = Get.find<HistoryController>();
   final countryListController = Get.find<CountryListController>();
 
-  final confirmPinController = Get.find<ConfirmPinController>();
+  final placeOrderController = Get.find<PlaceOrderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +87,7 @@ class ResultScreen extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            confirmPinController.numberController.clear();
+                            placeOrderController.numberController.clear();
                             dashboardController.fetchDashboardData();
                             // countryListController.fetchCountryData();
                             // subresellerController.fetchSubReseller();

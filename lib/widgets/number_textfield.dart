@@ -1,13 +1,15 @@
-import 'package:yawar_digital/controllers/bundles_controller.dart';
-import 'package:yawar_digital/controllers/reserve_digit_controller.dart';
-import 'package:yawar_digital/controllers/service_controller.dart';
-import 'package:yawar_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/controllers/bundles_controller.dart';
+import 'package:arzan_digital/controllers/reserve_digit_controller.dart';
+import 'package:arzan_digital/controllers/service_controller.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../global_controller/languages_controller.dart';
+
+final languageController = Get.find<LanguagesController>();
 
 class PasteRestrictionFormatter extends TextInputFormatter {
   @override
@@ -21,8 +23,8 @@ class PasteRestrictionFormatter extends TextInputFormatter {
       if (int.tryParse(newValue.text) == null) {
         // If it's not an integer, return the old value (block paste)
         Get.snackbar(
-          "Error",
-          "Only allow english number format",
+          languageController.tr("ERROR"),
+          languageController.tr("ONLY_ALLOW_ENGLISH_NUMBER"),
           colorText: Colors.white,
           duration: Duration(milliseconds: 1000),
           backgroundColor: Colors.black,
@@ -36,12 +38,12 @@ class PasteRestrictionFormatter extends TextInputFormatter {
 }
 
 class CustomTextField extends StatefulWidget {
-  final TextEditingController confirmPinController;
+  final TextEditingController placeOrderController;
 
   final String languageData;
 
   CustomTextField({
-    required this.confirmPinController,
+    required this.placeOrderController,
     required this.languageData,
   });
 
@@ -54,7 +56,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   final serviceController = Get.find<ServiceController>();
   final bundleController = Get.find<BundleController>();
-  final languageController = Get.find<LanguagesController>();
 
   String? errorMessage;
 
@@ -156,7 +157,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             child: TextField(
               maxLength: int.parse(box.read("maxlength")),
               style: TextStyle(color: Colors.white),
-              controller: widget.confirmPinController,
+              controller: widget.placeOrderController,
               keyboardType: TextInputType.phone,
               inputFormatters: [
                 PasteRestrictionFormatter(), // Custom formatter to restrict paste

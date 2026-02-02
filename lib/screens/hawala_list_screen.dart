@@ -167,6 +167,8 @@ class _HawalaListScreenState extends State<HawalaListScreen> {
                                       content: HawalaDetailsDialog(
                                         id: data.id.toString(),
                                         hawalaNumber: data.hawalaNumber,
+                                        hawalaCustomNumber:
+                                            data.hawalaCustomNumber,
                                         status: data.status,
                                         branchID: data.hawalaBranchId,
                                         senderName: data.senderName,
@@ -233,18 +235,35 @@ class _HawalaListScreenState extends State<HawalaListScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              languagesController.tr(
-                                                    "HAWALA_NUMBER",
-                                                  ) +
-                                                  " - " +
-                                                  data.hawalaNumber.toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
+                                            data.hawalaCustomNumber == null
+                                                ? Text(
+                                                    languagesController.tr(
+                                                          "HAWALA_NUMBER",
+                                                        ) +
+                                                        " - " +
+                                                        data.hawalaNumber
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  )
+                                                : Text(
+                                                    languagesController.tr(
+                                                          "HAWALA_NUMBER",
+                                                        ) +
+                                                        " - " +
+                                                        data.hawalaCustomNumber
+                                                            .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
                                             Text(
                                               data.status.toString(),
                                               style: TextStyle(
@@ -386,6 +405,7 @@ class HawalaDetailsDialog extends StatelessWidget {
     super.key,
     this.id,
     this.hawalaNumber,
+    this.hawalaCustomNumber,
     this.status,
     this.branchID,
     this.senderName,
@@ -402,6 +422,7 @@ class HawalaDetailsDialog extends StatelessWidget {
   });
   String? id;
   String? hawalaNumber;
+  String? hawalaCustomNumber;
   String? status;
   String? branchID;
   String? senderName;
@@ -500,7 +521,9 @@ class HawalaDetailsDialog extends StatelessWidget {
                                 style: TextStyle(fontSize: 14),
                               ),
                               Text(
-                                hawalaNumber.toString(),
+                                hawalaCustomNumber == null
+                                    ? hawalaNumber.toString()
+                                    : hawalaCustomNumber.toString(),
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],

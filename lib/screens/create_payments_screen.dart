@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/controllers/currency_controller.dart';
+import 'package:arzan_digital/controllers/currency_controller.dart';
 import '../controllers/add_payment_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../controllers/payment_method_controller.dart';

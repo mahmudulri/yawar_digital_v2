@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/models/currency_model.dart';
-import 'package:yawar_digital/models/province_model.dart';
-import 'package:yawar_digital/services/country_list_service.dart';
-import 'package:yawar_digital/services/currency_list_service.dart';
-import 'package:yawar_digital/services/province_service.dart';
+import 'package:arzan_digital/models/currency_model.dart';
+import 'package:arzan_digital/models/province_model.dart';
+import 'package:arzan_digital/services/country_list_service.dart';
+import 'package:arzan_digital/services/currency_list_service.dart';
+import 'package:arzan_digital/services/province_service.dart';
 
 import '../models/country_list_model.dart';
 

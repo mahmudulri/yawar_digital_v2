@@ -1,8 +1,8 @@
-import 'package:yawar_digital/controllers/bundles_controller.dart';
-import 'package:yawar_digital/controllers/categories_list_controller.dart';
-import 'package:yawar_digital/controllers/confirm_pin_controller.dart';
+import 'package:arzan_digital/controllers/bundles_controller.dart';
+import 'package:arzan_digital/controllers/categories_list_controller.dart';
+import 'package:arzan_digital/controllers/place_order_controller.dart';
 
-import 'package:yawar_digital/controllers/service_controller.dart';
+import 'package:arzan_digital/controllers/service_controller.dart';
 import 'package:get/get.dart';
 
 class NewServiceBinding implements Bindings {
@@ -12,6 +12,6 @@ class NewServiceBinding implements Bindings {
     Get.lazyPut<CategorisListController>(() => CategorisListController());
     Get.lazyPut<ServiceController>(() => ServiceController());
     // Get.lazyPut<ReserveDigitController>(() => ReserveDigitController());
-    Get.lazyPut<ConfirmPinController>(() => ConfirmPinController());
+    Get.lazyPut<PlaceOrderController>(() => PlaceOrderController());
   }
 }

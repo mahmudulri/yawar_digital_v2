@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/controllers/sign_in_controller.dart';
-import 'package:yawar_digital/helpers/language_helper.dart';
-import 'package:yawar_digital/routes/routes.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/controllers/sign_in_controller.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/routes/routes.dart';
+import 'package:arzan_digital/utils/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -129,18 +129,18 @@ class _OnboardingState extends State<Onboarding> {
       return await showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Exit App'),
-              content: Text('Do you want to exit an App?'),
+              title: Text(languageController.tr("EXIT_APP")),
+              content: Text('DO_YOU_WANT_TO_EXIT_APP'),
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
-                  child: Text('No'),
+                  child: Text('NO'),
                 ),
                 ElevatedButton(
                   onPressed: () {
                     SystemNavigator.pop();
                   },
-                  child: Text('Yes'),
+                  child: Text('YES'),
                 ),
               ],
             ),
@@ -169,6 +169,7 @@ class _OnboardingState extends State<Onboarding> {
                       children: [
                         Expanded(
                           child: PageView.builder(
+                            physics: BouncingScrollPhysics(),
                             controller: _pageController,
                             itemCount: pagelist.length,
                             onPageChanged: (value) {
@@ -237,7 +238,7 @@ class _OnboardingState extends State<Onboarding> {
                         Obx(() => Text(languageController.tr("SIGN_IN"))),
                       ],
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 40),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 30),
                       height: 300,
@@ -264,6 +265,7 @@ class _OnboardingState extends State<Onboarding> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
+                            SizedBox(height: 20),
 
                             Obx(
                               () => TextField(
@@ -329,41 +331,20 @@ class _OnboardingState extends State<Onboarding> {
                                         .text
                                         .isEmpty) {
                                   Get.snackbar(
-                                    "Oops!",
-                                    "Fill the text fields",
+                                    languageController.tr("ERROR"),
+                                    languageController.tr("FILL_THE_DATA"),
                                     colorText: Colors.white,
                                     duration: Duration(seconds: 1),
                                   );
                                 } else {
                                   await signInController.signIn();
-                                  // print(
-                                  //     signInController.usernameController.text);
-                                  // print(
-                                  //     signInController.passwordController.text);
 
                                   if (signInController.loginsuccess.value ==
                                       false) {
-                                    // Navigating to the BottomNavigationbar page
                                     countryListController.fetchCountryData();
-                                    historyController.finalList.clear();
-                                    historyController.initialpage = 1;
-                                    historyController.fetchHistory();
+
                                     dashboardController.fetchDashboardData();
                                     Get.toNamed(bottomnavscreen);
-
-                                    // if (box.read("direction") == "rtl") {
-                                    //   setState(() {
-                                    //     EasyLocalization.of(
-                                    //       context,
-                                    //     )!.setLocale(Locale('ar', 'AE'));
-                                    //   });
-                                    // } else {
-                                    //   setState(() {
-                                    //     EasyLocalization.of(
-                                    //       context,
-                                    //     )!.setLocale(Locale('en', 'US'));
-                                    //   });
-                                    // }
                                   } else {
                                     print("Navigation conditions not met.");
                                   }
@@ -616,6 +597,7 @@ class pageOne extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Welcome to Yawar Digital",
@@ -681,6 +663,7 @@ class pageTwo extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Welcome to Yawar Digital",
@@ -746,6 +729,7 @@ class pageThree extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Welcome to Yawar Digital",

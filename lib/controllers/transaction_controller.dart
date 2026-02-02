@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:yawar_digital/services/dashboard_service.dart';
+import 'package:arzan_digital/services/dashboard_service.dart';
 
 import '../models/dashboard_data_model.dart';
 import '../models/transaction_model.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/utils/colors.dart';
 
 class RechargeNumberBox extends StatelessWidget {
   String? hintText;

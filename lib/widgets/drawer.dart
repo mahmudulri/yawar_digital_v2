@@ -1,25 +1,25 @@
 import 'dart:io';
 
-import 'package:yawar_digital/routes/routes.dart';
+import 'package:arzan_digital/routes/routes.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/controllers/iso_code_controller.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
-import 'package:yawar_digital/controllers/sign_in_controller.dart';
-import 'package:yawar_digital/screens/add_card_screen.dart';
-import 'package:yawar_digital/screens/change_password_screen.dart';
-import 'package:yawar_digital/screens/commission_group_screen.dart';
-import 'package:yawar_digital/screens/myprofile_screen.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/controllers/iso_code_controller.dart';
+import 'package:arzan_digital/controllers/language_controller.dart';
+import 'package:arzan_digital/controllers/sign_in_controller.dart';
+import 'package:arzan_digital/screens/add_card_screen.dart';
+import 'package:arzan_digital/screens/change_password_screen.dart';
+import 'package:arzan_digital/screens/commission_group_screen.dart';
+import 'package:arzan_digital/screens/myprofile_screen.dart';
 
-import 'package:yawar_digital/pages/sub_reseller_screen.dart';
-import 'package:yawar_digital/screens/selling_price_screen.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/profile_menu_widget.dart';
+import 'package:arzan_digital/pages/sub_reseller_screen.dart';
+import 'package:arzan_digital/screens/selling_price_screen.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/profile_menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../global_controller/languages_controller.dart';
@@ -37,9 +37,9 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final box = GetStorage();
 
   final signInController = Get.find<SignInController>();
-  final iscoCodeController = Get.find<IscoCodeController>();
+
   final languageController = Get.find<LanguagesController>();
-  final historyController = Get.find<HistoryController>();
+
   final dashboardController = Get.find<DashboardController>();
 
   whatsapp() async {
@@ -196,13 +196,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               },
             ),
 
-            ProfileMenuWidget(
-              itemName: languageController.tr("TERMS_AND_CONDITIONS"),
+            // ProfileMenuWidget(
+            //   itemName: languageController.tr("TERMS_AND_CONDITIONS"),
 
-              imageLink: "assets/icons/terms.png",
-              onPressed: () {},
-            ),
-
+            //   imageLink: "assets/icons/terms.png",
+            //   onPressed: () {},
+            // ),
             ProfileMenuWidget(
               itemName: languageController.tr("CONTACTUS"),
 
@@ -333,14 +332,12 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
               imageLink: "assets/icons/logout.png",
               onPressed: () {
-                historyController.finalList.clear();
-                historyController.finalList.clear();
-                Get.toNamed(onboardingscreen);
-
+                Get.offAllNamed(onboardingscreen);
                 signInController.usernameController.clear();
                 signInController.passwordController.clear();
 
                 box.remove("userToken");
+
                 // showDialog(
                 //   context: context,
                 //   builder: (context) {

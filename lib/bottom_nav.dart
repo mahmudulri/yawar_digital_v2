@@ -1,7 +1,7 @@
-import 'package:yawar_digital/controllers/categories_list_controller.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/routes/routes.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/controllers/categories_list_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/routes/routes.dart';
+import 'package:arzan_digital/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

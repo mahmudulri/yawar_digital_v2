@@ -8,8 +8,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:yawar_digital/controllers/sub_reseller_controller.dart';
-import 'package:yawar_digital/models/transaction_model.dart';
+import 'package:arzan_digital/controllers/sub_reseller_controller.dart';
+import 'package:arzan_digital/models/transaction_model.dart';
 
 import '../utils/api_endpoints.dart';
 

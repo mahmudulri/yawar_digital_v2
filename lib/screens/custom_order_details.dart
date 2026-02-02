@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
-import 'package:yawar_digital/controllers/time_zone_controller.dart';
-import 'package:yawar_digital/helpers/language_helper.dart';
-import 'package:yawar_digital/pages/orders.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/language_controller.dart';
+import 'package:arzan_digital/controllers/time_zone_controller.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/pages/orders.dart';
+import 'package:arzan_digital/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';

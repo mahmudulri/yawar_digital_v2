@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/screens/create_selling_price_screen.dart';
+import 'package:arzan_digital/screens/create_selling_price_screen.dart';
 
 import '../controllers/categories_list_controller.dart';
 

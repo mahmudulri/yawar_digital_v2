@@ -59,72 +59,171 @@ class _HawalaCurrencyScreenState extends State<HawalaCurrencyScreen> {
       body: Container(
         height: screenHeight,
         width: screenWidth,
-        decoration: BoxDecoration(),
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: Obx(
-                  () => hawalacurrencycontroller.isLoading.value == false
-                      ? ListView.builder(
-                          itemCount: hawalacurrencycontroller
-                              .allcurrencylist
-                              .value
-                              .data!
-                              .rates!
-                              .length,
-                          itemBuilder: (context, index) {
-                            final data = hawalacurrencycontroller
-                                .allcurrencylist
-                                .value
-                                .data!
-                                .rates![index];
-                            return Container(
-                              margin: EdgeInsets.only(bottom: 5),
-                              width: screenWidth,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(6),
+        padding: EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+
+            Expanded(
+              child: Obx(
+                () => hawalacurrencycontroller.isLoading.value == false
+                    ? SingleChildScrollView(
+                        // vertical scroll only
+                        child: DataTable(
+                          columnSpacing: 10,
+                          headingRowHeight: 36,
+                          dataRowMinHeight: 34,
+                          dataRowMaxHeight: 40,
+                          headingRowColor: WidgetStateProperty.all(
+                            Colors.white,
+                          ),
+                          border: TableBorder.all(
+                            color: AppColors.defaultColor,
+                            width: 1,
+                          ),
+
+                          // 👇 This aligns text vertically in the middle
+                          headingTextStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+
+                          // 👇 Forces centered header text alignment
+                          columns: [
+                            DataColumn(
+                              label: Text(
+                                languagesController.tr("AMOUNT"),
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
+                            ),
+                            DataColumn(
+                              label: Expanded(
                                 child: Center(
-                                  child: Obx(
-                                    () => Text(
-                                      data.amount.toString() +
-                                          " " +
-                                          data.fromCurrency!.name.toString() +
-                                          " To " +
-                                          data.toCurrency!.name.toString() +
-                                          " " +
-                                          languagesController.tr("BUYING") +
-                                          " " +
-                                          data.buyRate.toString() +
-                                          " " +
-                                          data.toCurrency!.symbol.toString() +
-                                          " " +
-                                          languagesController.tr("SELLING") +
-                                          " " +
-                                          data.sellRate.toString() +
-                                          " " +
-                                          data.toCurrency!.symbol.toString(),
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: screenHeight * 0.020,
-                                      ),
+                                  child: Text(
+                                    languagesController.tr("FROM"),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
                                     ),
                                   ),
                                 ),
                               ),
-                            );
-                          },
-                        )
-                      : Center(child: CircularProgressIndicator()),
-                ),
+                            ),
+                            DataColumn(
+                              label: Expanded(
+                                child: Center(
+                                  child: Text(
+                                    languagesController.tr("TO"),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Expanded(
+                                child: Center(
+                                  child: Text(
+                                    languagesController.tr("BUY"),
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DataColumn(
+                              label: Expanded(
+                                child: Center(
+                                  child: Text(
+                                    languagesController.tr("SELL"),
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+
+                          rows: hawalacurrencycontroller
+                              .allcurrencylist
+                              .value
+                              .data!
+                              .rates!
+                              .map(
+                                (data) => DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Center(
+                                        child: Text(
+                                          data.amount.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Center(
+                                        child: Text(
+                                          data.fromCurrency?.name ?? "-",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Center(
+                                        child: Text(
+                                          data.toCurrency?.name ?? "-",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Center(
+                                        child: Text(
+                                          "${data.buyRate ?? '-'} ${data.toCurrency?.symbol ?? ''}",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Center(
+                                        child: Text(
+                                          "${data.sellRate ?? '-'} ${data.toCurrency?.symbol ?? ''}",
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      )
+                    : const Center(child: CircularProgressIndicator()),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,8 +1,8 @@
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/controllers/iso_code_controller.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
-import 'package:yawar_digital/controllers/slider_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/controllers/iso_code_controller.dart';
+import 'package:arzan_digital/controllers/language_controller.dart';
+import 'package:arzan_digital/controllers/slider_controller.dart';
 import 'package:get/get.dart';
 
 class SplashBinding implements Bindings {

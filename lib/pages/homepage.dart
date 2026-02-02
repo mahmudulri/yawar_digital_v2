@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/controllers/dashboard_controller.dart';
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/controllers/language_controller.dart';
-import 'package:yawar_digital/controllers/slider_controller.dart';
-import 'package:yawar_digital/helpers/language_helper.dart';
-import 'package:yawar_digital/routes/routes.dart';
-import 'package:yawar_digital/screens/order_details.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/drawer.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/controllers/language_controller.dart';
+import 'package:arzan_digital/controllers/slider_controller.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/routes/routes.dart';
+import 'package:arzan_digital/screens/order_details.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/drawer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

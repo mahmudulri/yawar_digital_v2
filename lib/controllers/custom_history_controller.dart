@@ -1,4 +1,4 @@
-import 'package:yawar_digital/services/custom_recharge_history_service.dart';
+import 'package:arzan_digital/services/custom_recharge_history_service.dart';
 import 'package:get/get.dart';
 
 import '../models/custom_history_model.dart';

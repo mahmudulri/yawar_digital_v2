@@ -1,10 +1,10 @@
-import 'package:yawar_digital/helpers/language_helper.dart';
+import 'package:arzan_digital/helpers/language_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:yawar_digital/controllers/change_pin_controller.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/controllers/change_pin_controller.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 
 import '../global_controller/languages_controller.dart';
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:yawar_digital/controllers/history_controller.dart';
-import 'package:yawar_digital/widgets/add_card_widget.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:arzan_digital/widgets/add_card_widget.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 
 import '../utils/colors.dart';
 

@@ -1,4 +1,4 @@
-import 'package:yawar_digital/controllers/time_zone_controller.dart';
+import 'package:arzan_digital/controllers/time_zone_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

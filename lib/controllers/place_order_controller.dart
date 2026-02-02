@@ -1,108 +1,183 @@
-// import 'dart:convert';
+import 'dart:convert';
+import 'package:arzan_digital/controllers/history_controller.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:arzan_digital/utils/api_endpoints.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter/scheduler.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:get/get.dart';
-// import 'package:get_storage/get_storage.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:yaktelecom/bottom_nav_screen.dart';
-// import 'package:yaktelecom/controllers/confirm_pin_controller.dart';
-// import 'package:yaktelecom/controllers/country_list_controller.dart';
-// import 'package:yaktelecom/utils/api_endpoints.dart';
+import '../global_controller/languages_controller.dart';
 
-// final ConfirmPinController controller = Get.put(ConfirmPinController());
+class PlaceOrderController extends GetxController {
+  TextEditingController numberController = TextEditingController();
 
-// class PlaceOrderController extends GetxController {
-//   TextEditingController numberController = TextEditingController();
+  LanguagesController languagesController = Get.put(LanguagesController());
+  final box = GetStorage();
 
-//   RxBool isLoading = false.obs;
-//   RxBool loginsuccess = false.obs;
-//   final box = GetStorage();
+  TextEditingController pinController = TextEditingController();
 
-//   Future<void> placeOrder() async {
-//     try {
-//       isLoading.value = true;
-//       loginsuccess.value = true;
+  RxBool isLoading = false.obs;
 
-//       // var headers = {'Content-Type': 'application/json'};
-//       var headers = {
-//         'Content-Type': 'application/json',
-//         'Accept': 'application/json',
-//       };
-//       var url = Uri.parse("${ApiEndPoints.baseUrl}place_order");
-//       Map body = {
-//         'bundle_id': box.read("bundleID"),
-//         'rechargeble_account': numberController.text,
-//       };
-//       // print(url);
+  RxBool loadsuccess = false.obs;
 
-//       // Map body = {
-//       //   'username': usernameController.text,
-//       //   'password': passwordController.text,
-//       // };
-//       http.Response response = await http.post(
-//         url,
-//         body: body,
-//         headers: {
-//           'Authorization': 'Bearer ${box.read("userToken")}',
-//         },
-//       );
-//       // print(box.read("userToken"));
-//       print("body" + body.toString());
+  Future<void> placeOrder(BuildContext context) async {
+    try {
+      isLoading.value = true;
 
-//       // print(response.body.toString());
-//       print("statuscode" + response.statusCode.toString());
-//       final results = jsonDecode(response.body);
-//       if (response.statusCode == 200) {
-//         controller.pinController.clear();
-//         if (results["success"] == true) {
-//           controller.pinController.clear();
-//           numberController.clear();
-//           box.remove("bundleID");
-//           Fluttertoast.showToast(
-//               msg: results["message"],
-//               toastLength: Toast.LENGTH_SHORT,
-//               gravity: ToastGravity.BOTTOM,
-//               timeInSecForIosWeb: 1,
-//               backgroundColor: Colors.green,
-//               textColor: Colors.white,
-//               fontSize: 16.0);
+      var url = Uri.parse("${ApiEndPoints.baseUrl}place_order");
+      Map body = {
+        'bundle_id': box.read("bundleID"),
+        'rechargeble_account': numberController.text,
+        'pin': pinController.text,
+      };
 
-//           isLoading.value = false;
-//           loginsuccess.value = false;
+      http.Response response = await http.post(
+        url,
+        body: jsonEncode(body),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${box.read("userToken")}',
+        },
+      );
+      print("checkurl" + url.toString());
+      print(body.toString());
 
-//           // emailController.clear();
-//           // passwordController.clear();
-//         } else {
-//           controller.pinController.clear();
-//           numberController.clear();
-//           box.remove("bundleID");
-//           Get.snackbar(
-//             "",
-//             results["message"],
-//             backgroundColor: Colors.green,
-//             colorText: Colors.white,
-//           );
-//           isLoading.value = false;
-//           loginsuccess.value = true;
-//         }
-//       } else {
-//         controller.pinController.clear();
-//         numberController.clear();
-//         box.remove("bundleID");
+      final orderResults = jsonDecode(response.body);
+      if (response.statusCode == 201 && orderResults["success"] == true) {
+        // loadsuccess.value = false;
+        isLoading.value = false;
+        pinController.clear();
+        numberController.clear();
+        box.remove("bundleID");
 
-//         Get.snackbar(
-//           "",
-//           results["message"],
-//           backgroundColor: Colors.green,
-//           colorText: Colors.white,
-//         );
-//         isLoading.value = false;
-//         loginsuccess.value = true;
-//       }
-//     } catch (e) {
-//       print(e.toString());
-//     }
-//   }
-// }
+        showSuccessDialog(context);
+      } else {
+        showErrorDialog(context, orderResults["message"]);
+        pinController.clear();
+        isLoading.value = false;
+        // loadsuccess.value = false;
+      }
+    } catch (e) {
+      showErrorDialog(context, e.toString());
+      isLoading.value = false;
+    }
+  }
+
+  // void handleFailure(String message) {
+  //   pinController.clear();
+  //   loadsuccess.value = false;
+  // }
+
+  void showSuccessDialog(BuildContext context) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    pinController.clear();
+    numberController.clear;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(17),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            height: 350,
+            width: screenWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(17),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(languagesController.tr("SUCCESS")),
+                SizedBox(height: 15),
+                Text(
+                  languagesController.tr("RECHARGE_SUCCESSFULL"),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close success dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                  ),
+                  child: Text(
+                    languagesController.tr("CLOSE"),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showErrorDialog(BuildContext context, String errorMessage) {
+    var screenWidth = MediaQuery.of(context).size.width;
+    pinController.clear();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(17),
+          ),
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            height: 350,
+            width: screenWidth,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(17),
+              color: Colors.white,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(languagesController.tr("FAILED")),
+                SizedBox(height: 15),
+                Text(
+                  languagesController.tr("RECHARGE_FAILED"),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.black),
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Close error dialog
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text(
+                    languagesController.tr("CLOSE"),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

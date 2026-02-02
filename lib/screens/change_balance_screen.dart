@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/controllers/change_balance_controller.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/controllers/change_balance_controller.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
+
+import '../global_controller/languages_controller.dart';
 
 class ChangeBalanceScreen extends StatefulWidget {
   String? subID;
@@ -17,6 +19,8 @@ class ChangeBalanceScreen extends StatefulWidget {
 
 class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
   final BalanceController balanceController = Get.put(BalanceController());
+
+  LanguagesController languagesController = Get.put(LanguagesController());
   bool isCreditSelected = false;
   bool isDebitSelected = false;
   final box = GetStorage();
@@ -37,7 +41,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          "Change Balance",
+          languagesController.tr("CHANGE_BALANCE"),
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -54,7 +58,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Amount : ",
+                languagesController.tr("AMOUNT"),
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
               SizedBox(height: 10),
@@ -82,7 +86,9 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
                               controller: balanceController.amountController,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Enter amount",
+                                hintText: languagesController.tr(
+                                  "ENTER_AMOUNT",
+                                ),
                                 hintStyle: TextStyle(
                                   fontWeight: FontWeight.w300,
                                 ),
@@ -115,7 +121,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
                               child: TextField(
                                 readOnly: true,
                                 keyboardType: TextInputType.phone,
-                                controller: balanceController.amountController,
+
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: box.read("currency_code"),
@@ -138,7 +144,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
               // ),
               SizedBox(height: 10),
               Text(
-                "Select Type :",
+                languagesController.tr("SELECT_TYPE"),
                 style: TextStyle(fontSize: 18, color: Colors.black),
               ),
               SizedBox(height: 10),
@@ -162,7 +168,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          'Credit',
+                          languagesController.tr("CREDIT"),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -189,7 +195,7 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          'Debit',
+                          languagesController.tr("DEBIT"),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -205,13 +211,15 @@ class _ChangeBalanceScreenState extends State<ChangeBalanceScreen> {
               Obx(
                 () => DefaultButton(
                   buttonName: balanceController.isLoading.value == false
-                      ? "Confirm Now"
-                      : "Please wait..",
+                      ? languagesController.tr("CONFIRM_NOW")
+                      : languagesController.tr("PLEASE_WAIT"),
                   onPressed: () {
                     if (balanceController.amountController.text.isEmpty ||
                         balanceController.status.value == '') {
                       Fluttertoast.showToast(
-                        msg: "Enter Amount or Select Type",
+                        msg: languagesController.tr(
+                          "ENTER_AMOUNT_OR_SELECT_TYPE",
+                        ),
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.BOTTOM,
                         timeInSecForIosWeb: 1,

@@ -1,4 +1,4 @@
-// import 'package:yawar_digital/controllers/language_controller.dart';
+// import 'package:arzan_digital/controllers/language_controller.dart';
 
 // import 'package:flutter/services.dart';
 // import 'package:get/get.dart';

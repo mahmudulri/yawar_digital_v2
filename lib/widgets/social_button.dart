@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yawar_digital/utils/colors.dart';
+import 'package:arzan_digital/utils/colors.dart';
 
 class SocialButton extends StatelessWidget {
   String? buttonName;

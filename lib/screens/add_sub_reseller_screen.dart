@@ -6,8 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 import '../controllers/add_sub_reseller_controller.dart';
 import '../controllers/commission_group_controller.dart';
 import '../controllers/country_list_controller.dart';
@@ -55,13 +55,13 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
 
   final DistrictController districtController = Get.put(DistrictController());
 
-  String selected_comissiongroup = "Select Comission Group";
+  String selected_comissiongroup = "";
 
-  String selected_country = "Select Country";
+  String selected_country = "";
 
-  String selected_province = "Select Province";
+  String selected_province = "";
 
-  String selected_district = "Select District";
+  String selected_district = "";
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final dashboardController = Get.find<DashboardController>();
@@ -72,8 +72,11 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    selected_country = languagesController.tr("SELECT_COUNTRY");
+    selected_province = languagesController.tr("SELECT_PROVINCE");
+    selected_district = languagesController.tr("SELECT_DISTRICT");
+    selected_comissiongroup = languagesController.tr("SELECT_COMMISSION_GROUP");
     commissionlistController.fetchGrouplist();
   }
 
@@ -191,7 +194,7 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                     ),
                     SizedBox(height: 5),
                     AuthTextField(
-                      hintText: languagesController.tr("CONTACT_NAME"),
+                      hintText: languagesController.tr("ENTER_CONTACT_NAME"),
                       controller:
                           addSubResellerController.contactNameController,
                     ),
@@ -228,7 +231,7 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 10),
                     AuthTextField(
                       hintText: languagesController.tr("ENTER_EMAIL_ADDRESS"),
                       controller: addSubResellerController.emailController,
@@ -243,107 +246,113 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                     ),
                     SizedBox(height: 5),
                     Container(
-                      height: 50,
+                      height: 55,
                       width: screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           width: 1,
-                          color: Colors.grey.shade300,
+                          color: AppColors.borderColor,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Obx(() {
-                          // Safe dynamic list extraction
-                          final List<dynamic> groups =
-                              (commissionlistController
-                                      .allgrouplist
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: Obx(() {
+                            final List<dynamic> groups =
+                                (commissionlistController
+                                        .allgrouplist
+                                        .value
+                                        .data
+                                        ?.groups
+                                    as List?) ??
+                                <dynamic>[];
+
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              alignment: box.read("language").toString() != "Fa"
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+
+                              // keep your selected state
+                              value:
+                                  (addSubResellerController
+                                      .groupId
                                       .value
-                                      .data
-                                      ?.groups
-                                  as List?) ??
-                              <dynamic>[];
+                                      .isEmpty)
+                                  ? null
+                                  : addSubResellerController.groupId.value,
 
-                          return DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            alignment: box.read("language").toString() != "Fa"
-                                ? Alignment.centerLeft
-                                : Alignment.centerRight,
-
-                            // keep your selected state
-                            value:
-                                (addSubResellerController.groupId.value.isEmpty)
-                                ? null
-                                : addSubResellerController.groupId.value,
-
-                            // build items from your controller
-                            items: groups.map<DropdownMenuItem<String>>((g) {
-                              final String idStr = ((g?.id) ?? '').toString();
-                              final String name = ((g?.groupName) ?? '')
-                                  .toString();
-                              return DropdownMenuItem<String>(
-                                value: idStr,
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: (screenHeight * 0.020),
-                                    color: Colors.grey.shade600,
+                              // build items from your controller
+                              items: groups.map<DropdownMenuItem<String>>((g) {
+                                final String idStr = ((g?.id) ?? '').toString();
+                                final String name = ((g?.groupName) ?? '')
+                                    .toString();
+                                return DropdownMenuItem<String>(
+                                  value: idStr,
+                                  child: Text(
+                                    name,
+                                    style: TextStyle(
+                                      fontSize: (screenHeight * 0.020),
+                                      color: Colors.grey.shade600,
+                                    ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
+                                );
+                              }).toList(),
 
-                            // update both selected text and id (kept same as your logic)
-                            onChanged: (value) {
-                              if (value == null) return;
+                              // update both selected text and id (kept same as your logic)
+                              onChanged: (value) {
+                                if (value == null) return;
 
-                              dynamic picked;
-                              for (final g in groups) {
-                                if (((g?.id) ?? '').toString() == value) {
-                                  picked = g;
-                                  break;
+                                dynamic picked;
+                                for (final g in groups) {
+                                  if (((g?.id) ?? '').toString() == value) {
+                                    picked = g;
+                                    break;
+                                  }
                                 }
-                              }
-                              picked ??= groups.isNotEmpty
-                                  ? groups.first
-                                  : null;
+                                picked ??= groups.isNotEmpty
+                                    ? groups.first
+                                    : null;
 
-                              addSubResellerController.groupId.value = value;
-                              selected_comissiongroup =
-                                  ((picked?.groupName) ?? '').toString();
-                              // Optional: setState(() {}); if needed in a StatefulWidget context
-                            },
+                                addSubResellerController.groupId.value = value;
+                                selected_comissiongroup =
+                                    ((picked?.groupName) ?? '').toString();
+                              },
 
-                            // keep the same text look when nothing selected yet
-                            hint: Text(
-                              selected_comissiongroup,
-                              style: TextStyle(
-                                fontSize: (screenHeight * 0.020),
-                                color: Colors.grey.shade600,
+                              hint: Text(
+                                selected_comissiongroup,
+
+                                style: TextStyle(
+                                  fontSize: (screenHeight * 0.020),
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
 
-                            // remove default underline/padding to match your Container design
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-
-                            // keep your CircleAvatar + chevron on the right
-                            icon: CircleAvatar(
-                              backgroundColor: AppColors.defaultColor
-                                  .withOpacity(0.7),
-                              radius: 18,
-                              child: const Icon(
-                                FontAwesomeIcons.chevronDown,
-                                color: Colors.white,
-                                size: 17,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical:
+                                      8, // 👈 adjust for perfect centering
+                                  horizontal: 0,
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+
+                              icon: CircleAvatar(
+                                backgroundColor: AppColors.defaultColor
+                                    .withOpacity(0.7),
+                                radius: 18,
+                                child: Icon(
+                                  FontAwesomeIcons.chevronDown,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                     SizedBox(height: 5),
@@ -356,7 +365,7 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                     ),
                     SizedBox(height: 7),
                     Container(
-                      height: 50,
+                      height: 55,
                       width: screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -366,138 +375,148 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                           color: Colors.grey.shade300,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Obx(() {
-                          // Safe list extraction
-                          final countries =
-                              countryListController
-                                  .allcountryListData
-                                  .value
-                                  .data
-                                  ?.countries ??
-                              <dynamic>[];
-
-                          return DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            alignment: box.read("language").toString() != "Fa"
-                                ? Alignment.centerLeft
-                                : Alignment.centerRight,
-
-                            // keep your selected state
-                            value:
-                                (addSubResellerController
-                                    .countryId
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: Obx(() {
+                            // Safe list extraction
+                            final countries =
+                                countryListController
+                                    .allcountryListData
                                     .value
-                                    .isEmpty)
-                                ? null
-                                : addSubResellerController.countryId.value,
+                                    .data
+                                    ?.countries ??
+                                <dynamic>[];
 
-                            // items with flag + name
-                            items: countries.map<DropdownMenuItem<String>>((c) {
-                              final String idStr = ((c?.id) ?? '').toString();
-                              final String name = ((c?.countryName) ?? '')
-                                  .toString();
-                              final String flagUrl =
-                                  ((c?.countryFlagImageUrl) ?? '').toString();
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              alignment: box.read("language").toString() != "Fa"
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
 
-                              return DropdownMenuItem<String>(
-                                value: idStr,
-                                child: Row(
-                                  children: [
-                                    // Flag
-                                    if (flagUrl.isNotEmpty)
-                                      Image.network(
-                                        flagUrl,
-                                        height: 40,
-                                        width: 60,
-                                        fit: BoxFit.cover,
+                              // keep your selected state
+                              value:
+                                  (addSubResellerController
+                                      .countryId
+                                      .value
+                                      .isEmpty)
+                                  ? null
+                                  : addSubResellerController.countryId.value,
+
+                              // items with flag + name
+                              items: countries.map<DropdownMenuItem<String>>((
+                                c,
+                              ) {
+                                final String idStr = ((c?.id) ?? '').toString();
+                                final String name = ((c?.countryName) ?? '')
+                                    .toString();
+                                final String flagUrl =
+                                    ((c?.countryFlagImageUrl) ?? '').toString();
+
+                                return DropdownMenuItem<String>(
+                                  value: idStr,
+                                  child: Row(
+                                    children: [
+                                      // Flag
+                                      if (flagUrl.isNotEmpty)
+                                        Image.network(
+                                          flagUrl,
+                                          height: 40,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      const SizedBox(width: 10),
+                                      // Name
+                                      Text(
+                                        name,
+                                        style: TextStyle(
+                                          fontSize: (screenHeight * 0.020),
+                                          color: Colors.grey.shade600,
+                                        ),
                                       ),
-                                    const SizedBox(width: 10),
-                                    // Name
-                                    Text(
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+
+                              // Show just the text (no flag) in the closed field to match your design
+                              selectedItemBuilder: (context) {
+                                return countries.map<Widget>((c) {
+                                  final String name = ((c?.countryName) ?? '')
+                                      .toString();
+                                  return Align(
+                                    alignment:
+                                        box.read("language").toString() != "Fa"
+                                        ? Alignment.centerLeft
+                                        : Alignment.centerRight,
+                                    child: Text(
                                       name,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontSize: (screenHeight * 0.020),
                                         color: Colors.grey.shade600,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
+                                  );
+                                }).toList();
+                              },
 
-                            // Show just the text (no flag) in the closed field to match your design
-                            selectedItemBuilder: (context) {
-                              return countries.map<Widget>((c) {
-                                final String name = ((c?.countryName) ?? '')
-                                    .toString();
-                                return Align(
-                                  alignment:
-                                      box.read("language").toString() != "Fa"
-                                      ? Alignment.centerLeft
-                                      : Alignment.centerRight,
-                                  child: Text(
-                                    name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: (screenHeight * 0.020),
-                                      color: Colors.grey.shade600,
-                                    ),
-                                  ),
-                                );
-                              }).toList();
-                            },
+                              // update both selected text and id
+                              onChanged: (value) {
+                                if (value == null) return;
 
-                            // update both selected text and id
-                            onChanged: (value) {
-                              if (value == null) return;
-
-                              dynamic picked;
-                              for (final c in countries) {
-                                if (((c?.id) ?? '').toString() == value) {
-                                  picked = c;
-                                  break;
+                                dynamic picked;
+                                for (final c in countries) {
+                                  if (((c?.id) ?? '').toString() == value) {
+                                    picked = c;
+                                    break;
+                                  }
                                 }
-                              }
-                              picked ??= countries.isNotEmpty
-                                  ? countries.first
-                                  : null;
+                                picked ??= countries.isNotEmpty
+                                    ? countries.first
+                                    : null;
 
-                              addSubResellerController.countryId.value = value;
-                              selected_country = ((picked?.countryName) ?? '')
-                                  .toString();
-                              // Optional: setState(() {}); if needed in a StatefulWidget
-                            },
+                                addSubResellerController.countryId.value =
+                                    value;
+                                selected_country = ((picked?.countryName) ?? '')
+                                    .toString();
+                                // Optional: setState(() {}); if needed in a StatefulWidget
+                              },
 
-                            // Keep same look when nothing selected yet (uses your selected_country text)
-                            hint: Text(
-                              selected_country,
-                              style: TextStyle(
-                                fontSize: (screenHeight * 0.020),
-                                color: Colors.grey.shade600,
+                              // Keep same look when nothing selected yet (uses your selected_country text)
+                              hint: Text(
+                                selected_country,
+                                style: TextStyle(
+                                  fontSize: (screenHeight * 0.020),
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
 
-                            // match your Container design: no underline, zero padding
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-
-                            // keep your CircleAvatar + chevron on the right
-                            icon: CircleAvatar(
-                              backgroundColor: AppColors.defaultColor
-                                  .withOpacity(0.7),
-                              radius: 18,
-                              child: const Icon(
-                                FontAwesomeIcons.chevronDown,
-                                color: Colors.white,
-                                size: 17,
+                              // match your Container design: no underline, zero padding
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical:
+                                      8, // 👈 adjust for perfect centering
+                                  horizontal: 0,
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+
+                              // keep your CircleAvatar + chevron on the right
+                              icon: CircleAvatar(
+                                backgroundColor: AppColors.defaultColor
+                                    .withOpacity(0.7),
+                                radius: 18,
+                                child: const Icon(
+                                  FontAwesomeIcons.chevronDown,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
 
@@ -511,7 +530,7 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                     ),
                     SizedBox(height: 5),
                     Container(
-                      height: 50,
+                      height: 55,
                       width: screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -521,106 +540,116 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                           color: Colors.grey.shade300,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Obx(() {
-                          final provinces =
-                              provinceController
-                                  .allprovincelist
-                                  .value
-                                  .data
-                                  ?.provinces ??
-                              <dynamic>[];
-
-                          return DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            alignment: box.read("language").toString() != "Fa"
-                                ? Alignment.centerLeft
-                                : Alignment.centerRight,
-                            value:
-                                (addSubResellerController
-                                    .provinceId
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Obx(() {
+                            final provinces =
+                                provinceController
+                                    .allprovincelist
                                     .value
-                                    .isEmpty)
-                                ? null
-                                : addSubResellerController.provinceId.value,
-                            items: provinces.map<DropdownMenuItem<String>>((p) {
-                              final String idStr = ((p?.id) ?? '').toString();
-                              final String name = ((p?.provinceName) ?? '')
-                                  .toString();
-                              return DropdownMenuItem<String>(
-                                value: idStr,
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: (screenHeight * 0.020),
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            selectedItemBuilder: (context) {
-                              return provinces.map<Widget>((p) {
+                                    .data
+                                    ?.provinces ??
+                                <dynamic>[];
+
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              alignment: box.read("language").toString() != "Fa"
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                              value:
+                                  (addSubResellerController
+                                      .provinceId
+                                      .value
+                                      .isEmpty)
+                                  ? null
+                                  : addSubResellerController.provinceId.value,
+                              items: provinces.map<DropdownMenuItem<String>>((
+                                p,
+                              ) {
+                                final String idStr = ((p?.id) ?? '').toString();
                                 final String name = ((p?.provinceName) ?? '')
                                     .toString();
-                                return Align(
-                                  alignment:
-                                      box.read("language").toString() != "Fa"
-                                      ? Alignment.centerLeft
-                                      : Alignment.centerRight,
+                                return DropdownMenuItem<String>(
+                                  value: idStr,
                                   child: Text(
                                     name,
-                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: (screenHeight * 0.020),
                                       color: Colors.grey.shade600,
                                     ),
                                   ),
                                 );
-                              }).toList();
-                            },
-                            onChanged: (value) {
-                              if (value == null) return;
+                              }).toList(),
+                              selectedItemBuilder: (context) {
+                                return provinces.map<Widget>((p) {
+                                  final String name = ((p?.provinceName) ?? '')
+                                      .toString();
+                                  return Align(
+                                    alignment:
+                                        box.read("language").toString() != "Fa"
+                                        ? Alignment.centerLeft
+                                        : Alignment.centerRight,
+                                    child: Text(
+                                      name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: (screenHeight * 0.020),
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                              onChanged: (value) {
+                                if (value == null) return;
 
-                              dynamic picked;
-                              for (final p in provinces) {
-                                if (((p?.id) ?? '').toString() == value) {
-                                  picked = p;
-                                  break;
+                                dynamic picked;
+                                for (final p in provinces) {
+                                  if (((p?.id) ?? '').toString() == value) {
+                                    picked = p;
+                                    break;
+                                  }
                                 }
-                              }
-                              picked ??= provinces.isNotEmpty
-                                  ? provinces.first
-                                  : null;
+                                picked ??= provinces.isNotEmpty
+                                    ? provinces.first
+                                    : null;
 
-                              addSubResellerController.provinceId.value = value;
-                              selected_province = ((picked?.provinceName) ?? '')
-                                  .toString();
-                              // Optional: setState(() {}); if inside a StatefulWidget and you need a rebuild here.
-                            },
-                            hint: Text(
-                              selected_province,
-                              style: TextStyle(
-                                fontSize: (screenHeight * 0.020),
-                                color: Colors.grey.shade600,
+                                addSubResellerController.provinceId.value =
+                                    value;
+                                selected_province =
+                                    ((picked?.provinceName) ?? '').toString();
+                                // Optional: setState(() {}); if inside a StatefulWidget and you need a rebuild here.
+                              },
+                              hint: Text(
+                                selected_province,
+                                style: TextStyle(
+                                  fontSize: (screenHeight * 0.020),
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                            icon: CircleAvatar(
-                              backgroundColor: AppColors.defaultColor
-                                  .withOpacity(0.7),
-                              radius: 18,
-                              child: const Icon(
-                                FontAwesomeIcons.chevronDown,
-                                color: Colors.white,
-                                size: 17,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical:
+                                      8, // 👈 adjust for perfect centering
+                                  horizontal: 0,
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+                              icon: CircleAvatar(
+                                backgroundColor: AppColors.defaultColor
+                                    .withOpacity(0.7),
+                                radius: 18,
+                                child: const Icon(
+                                  FontAwesomeIcons.chevronDown,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                     SizedBox(height: 5),
@@ -643,106 +672,116 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                           color: Colors.grey.shade300,
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Obx(() {
-                          final districts =
-                              districtController
-                                  .alldistrictList
-                                  .value
-                                  .data
-                                  ?.districts ??
-                              <dynamic>[];
-
-                          return DropdownButtonFormField<String>(
-                            isExpanded: true,
-                            alignment: box.read("language").toString() != "Fa"
-                                ? Alignment.centerLeft
-                                : Alignment.centerRight,
-                            value:
-                                (addSubResellerController
-                                    .districtID
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Obx(() {
+                            final districts =
+                                districtController
+                                    .alldistrictList
                                     .value
-                                    .isEmpty)
-                                ? null
-                                : addSubResellerController.districtID.value,
-                            items: districts.map<DropdownMenuItem<String>>((d) {
-                              final String idStr = ((d?.id) ?? '').toString();
-                              final String name = ((d?.districtName) ?? '')
-                                  .toString();
-                              return DropdownMenuItem<String>(
-                                value: idStr,
-                                child: Text(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: (screenHeight * 0.020),
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            selectedItemBuilder: (context) {
-                              return districts.map<Widget>((d) {
+                                    .data
+                                    ?.districts ??
+                                <dynamic>[];
+
+                            return DropdownButtonFormField<String>(
+                              isExpanded: true,
+                              alignment: box.read("language").toString() != "Fa"
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                              value:
+                                  (addSubResellerController
+                                      .districtID
+                                      .value
+                                      .isEmpty)
+                                  ? null
+                                  : addSubResellerController.districtID.value,
+                              items: districts.map<DropdownMenuItem<String>>((
+                                d,
+                              ) {
+                                final String idStr = ((d?.id) ?? '').toString();
                                 final String name = ((d?.districtName) ?? '')
                                     .toString();
-                                return Align(
-                                  alignment:
-                                      box.read("language").toString() != "Fa"
-                                      ? Alignment.centerLeft
-                                      : Alignment.centerRight,
+                                return DropdownMenuItem<String>(
+                                  value: idStr,
                                   child: Text(
                                     name,
-                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       fontSize: (screenHeight * 0.020),
                                       color: Colors.grey.shade600,
                                     ),
                                   ),
                                 );
-                              }).toList();
-                            },
-                            onChanged: (value) {
-                              if (value == null) return;
+                              }).toList(),
+                              selectedItemBuilder: (context) {
+                                return districts.map<Widget>((d) {
+                                  final String name = ((d?.districtName) ?? '')
+                                      .toString();
+                                  return Align(
+                                    alignment:
+                                        box.read("language").toString() != "Fa"
+                                        ? Alignment.centerLeft
+                                        : Alignment.centerRight,
+                                    child: Text(
+                                      name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: (screenHeight * 0.020),
+                                        color: Colors.grey.shade600,
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                              onChanged: (value) {
+                                if (value == null) return;
 
-                              dynamic picked;
-                              for (final d in districts) {
-                                if (((d?.id) ?? '').toString() == value) {
-                                  picked = d;
-                                  break;
+                                dynamic picked;
+                                for (final d in districts) {
+                                  if (((d?.id) ?? '').toString() == value) {
+                                    picked = d;
+                                    break;
+                                  }
                                 }
-                              }
-                              picked ??= districts.isNotEmpty
-                                  ? districts.first
-                                  : null;
+                                picked ??= districts.isNotEmpty
+                                    ? districts.first
+                                    : null;
 
-                              addSubResellerController.districtID.value = value;
-                              selected_district = ((picked?.districtName) ?? '')
-                                  .toString();
-                              // Optional: setState(() {}); if you need an immediate rebuild.
-                            },
-                            hint: Text(
-                              selected_district,
-                              style: TextStyle(
-                                fontSize: (screenHeight * 0.020),
-                                color: Colors.grey.shade600,
+                                addSubResellerController.districtID.value =
+                                    value;
+                                selected_district =
+                                    ((picked?.districtName) ?? '').toString();
+                                // Optional: setState(() {}); if you need an immediate rebuild.
+                              },
+                              hint: Text(
+                                selected_district,
+                                style: TextStyle(
+                                  fontSize: (screenHeight * 0.020),
+                                  color: Colors.grey.shade600,
+                                ),
                               ),
-                            ),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                            icon: CircleAvatar(
-                              backgroundColor: AppColors.defaultColor
-                                  .withOpacity(0.7),
-                              radius: 18,
-                              child: const Icon(
-                                FontAwesomeIcons.chevronDown,
-                                color: Colors.white,
-                                size: 17,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(
+                                  vertical:
+                                      8, // 👈 adjust for perfect centering
+                                  horizontal: 0,
+                                ),
                               ),
-                            ),
-                          );
-                        }),
+                              icon: CircleAvatar(
+                                backgroundColor: AppColors.defaultColor
+                                    .withOpacity(0.7),
+                                radius: 18,
+                                child: const Icon(
+                                  FontAwesomeIcons.chevronDown,
+                                  color: Colors.white,
+                                  size: 17,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
                       ),
                     ),
                     SizedBox(height: 12),
@@ -755,7 +794,7 @@ class _AddSubResellerScreenState extends State<AddSubResellerScreen> {
                     ),
                     SizedBox(height: 7),
                     Container(
-                      height: 45,
+                      height: 55,
                       width: screenWidth,
                       decoration: BoxDecoration(
                         color: Colors.white,

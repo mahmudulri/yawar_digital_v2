@@ -66,7 +66,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       body: Container(
-        color: AppColors.backgroundColor,
         height: screenHeight,
         width: screenWidth,
         child: Padding(

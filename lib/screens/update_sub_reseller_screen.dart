@@ -4,17 +4,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:yawar_digital/controllers/add_sub_reseller_controller.dart';
-import 'package:yawar_digital/controllers/country_list_controller.dart';
-import 'package:yawar_digital/controllers/currency_controller.dart';
-import 'package:yawar_digital/controllers/district_controller.dart';
-import 'package:yawar_digital/controllers/province_controller.dart';
-import 'package:yawar_digital/controllers/sub_reseller_controller.dart';
-import 'package:yawar_digital/controllers/update_subreseller_controller.dart';
-import 'package:yawar_digital/utils/colors.dart';
-import 'package:yawar_digital/widgets/auth_textfield.dart';
-import 'package:yawar_digital/widgets/default_button.dart';
-import 'package:yawar_digital/widgets/register_textfield.dart';
+import 'package:arzan_digital/controllers/add_sub_reseller_controller.dart';
+import 'package:arzan_digital/controllers/country_list_controller.dart';
+import 'package:arzan_digital/controllers/currency_controller.dart';
+import 'package:arzan_digital/controllers/district_controller.dart';
+import 'package:arzan_digital/controllers/province_controller.dart';
+import 'package:arzan_digital/controllers/sub_reseller_controller.dart';
+import 'package:arzan_digital/controllers/update_subreseller_controller.dart';
+import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
+import 'package:arzan_digital/widgets/register_textfield.dart';
 
 class UpdateSubResellerScreen extends StatefulWidget {
   UpdateSubResellerScreen({super.key});

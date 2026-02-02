@@ -1,32 +1,32 @@
-import 'package:yawar_digital/bindings/add_sub_reseller_binding.dart';
-import 'package:yawar_digital/bindings/baseview_binding.dart';
-import 'package:yawar_digital/bindings/custom_recharge_binding.dart';
-import 'package:yawar_digital/bindings/myprofile_binding.dart';
-import 'package:yawar_digital/bindings/recharge_binding.dart';
-import 'package:yawar_digital/bindings/newservice_binding.dart';
-import 'package:yawar_digital/bindings/sign_in_binding.dart';
-import 'package:yawar_digital/bindings/splash_binding.dart';
-import 'package:yawar_digital/bottom_nav.dart';
-import 'package:yawar_digital/screens/add_card_screen.dart';
-import 'package:yawar_digital/screens/add_sub_reseller_screen.dart';
-import 'package:yawar_digital/screens/change_balance_screen.dart';
-import 'package:yawar_digital/screens/change_pin.dart';
-import 'package:yawar_digital/screens/change_sub_pass_screen.dart';
-import 'package:yawar_digital/screens/confirm_pin.dart';
-import 'package:yawar_digital/screens/custom_recharge_screen.dart';
-import 'package:yawar_digital/screens/edit_profile_screen.dart';
-import 'package:yawar_digital/screens/myprofile_screen.dart';
-import 'package:yawar_digital/screens/onboarding.dart';
-import 'package:yawar_digital/screens/new_service_screen.dart';
+import 'package:arzan_digital/bindings/add_sub_reseller_binding.dart';
+import 'package:arzan_digital/bindings/baseview_binding.dart';
+import 'package:arzan_digital/bindings/custom_recharge_binding.dart';
+import 'package:arzan_digital/bindings/myprofile_binding.dart';
+import 'package:arzan_digital/bindings/recharge_binding.dart';
+import 'package:arzan_digital/bindings/newservice_binding.dart';
+import 'package:arzan_digital/bindings/sign_in_binding.dart';
+import 'package:arzan_digital/bindings/splash_binding.dart';
+import 'package:arzan_digital/bottom_nav.dart';
+import 'package:arzan_digital/screens/add_card_screen.dart';
+import 'package:arzan_digital/screens/add_sub_reseller_screen.dart';
+import 'package:arzan_digital/screens/change_balance_screen.dart';
+import 'package:arzan_digital/screens/change_pin.dart';
+import 'package:arzan_digital/screens/change_sub_pass_screen.dart';
+import 'package:arzan_digital/screens/confirm_pin.dart';
+import 'package:arzan_digital/screens/custom_recharge_screen.dart';
+import 'package:arzan_digital/screens/edit_profile_screen.dart';
+import 'package:arzan_digital/screens/myprofile_screen.dart';
+import 'package:arzan_digital/screens/onboarding.dart';
+import 'package:arzan_digital/screens/new_service_screen.dart';
 
-import 'package:yawar_digital/screens/order_details.dart';
-import 'package:yawar_digital/screens/recharge_screen.dart';
-import 'package:yawar_digital/screens/result_screen.dart';
-import 'package:yawar_digital/screens/sign_up_screen.dart';
-import 'package:yawar_digital/screens/social_recharge.dart';
+import 'package:arzan_digital/screens/order_details.dart';
+import 'package:arzan_digital/screens/recharge_screen.dart';
+import 'package:arzan_digital/screens/result_screen.dart';
+import 'package:arzan_digital/screens/sign_up_screen.dart';
+import 'package:arzan_digital/screens/social_recharge.dart';
 
 import 'package:get/get.dart';
-import 'package:yawar_digital/splash_screen.dart';
+import 'package:arzan_digital/splash_screen.dart';
 
 const String splash = '/splash-screen';
 // const String newsigninscreen = '/newsign-in-screen';
@@ -77,7 +77,7 @@ List<GetPage> myroutes = [
   GetPage(name: changebalancescreen, page: () => ChangeBalanceScreen()),
   GetPage(name: changepinscreen, page: () => ChangePin()),
   GetPage(name: changesubpassscreen, page: () => ChangeSubPasswordScreen()),
-  GetPage(name: confirmpinscreen, page: () => ConfirmPinScreen()),
+
   GetPage(name: editprofilescreen, page: () => EditProfileScreen()),
   GetPage(
     name: myprofilescreen,
