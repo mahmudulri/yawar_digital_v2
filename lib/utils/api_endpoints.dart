@@ -6,14 +6,14 @@ class ApiEndPoints {
   //     "https://app-yw-api-2025-v2.yawardigital.com/api/reseller/";
   // .............................................................//
 
-  // static String baseUrl =
-  //     "https://app-api-vpro-wl-waslat.milliekit.com/api/reseller/";
+  static String baseUrl =
+      "https://app-api-vpro-wl-waslat.milliekit.com/api/reseller/";
 
-  // static String publicUrl =
-  //     "https://app-api-vpro-wl-waslat.milliekit.com/api/public/";
+  static String publicUrl =
+      "https://app-api-vpro-wl-waslat.milliekit.com/api/public/";
 
-  static String baseUrl = "https://app-api-vpro-yd.milliekit.com/api/reseller/";
-  static String publicUrl = "https://app-api-vpro-yd.milliekit.com/api/public/";
+  // static String baseUrl = "https://app-api-vpro-yd.milliekit.com/api/reseller/";
+  // static String publicUrl = "https://app-api-vpro-yd.milliekit.com/api/public/";
 
   static OtherendPoints otherendpoints = OtherendPoints();
 }

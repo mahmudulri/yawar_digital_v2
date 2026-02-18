@@ -3,6 +3,7 @@ import 'package:arzan_digital/controllers/history_controller.dart';
 import 'package:arzan_digital/controllers/slider_controller.dart';
 import 'package:arzan_digital/global_controller/languages_controller.dart';
 import 'package:arzan_digital/routes/routes.dart';
+import 'package:arzan_digital/utils/mystring.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -147,7 +148,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ),
               Text(
-                "Yawar Digital",
+                MyString.appname,
                 style: GoogleFonts.bebasNeue(
                   // color: Color(0xff46558A),
                   color: Colors.white,
