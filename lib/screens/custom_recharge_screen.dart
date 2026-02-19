@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/company_controller.dart';
@@ -89,10 +90,10 @@ class _CustomRechargeScreenState extends State<CustomRechargeScreen> {
   void initState() {
     super.initState();
     conversationController.resetConversion();
-    // customhistoryController.finalList.clear();
-    // customhistoryController.initialpage = 1;
+    customhistoryController.finalList.clear();
+    customhistoryController.initialpage = 1;
 
-    // customhistoryController.fetchHistory();
+    customhistoryController.fetchHistory();
     currencyController.fetchCurrency();
 
     scrollController.addListener(refresh);
@@ -123,7 +124,10 @@ class _CustomRechargeScreenState extends State<CustomRechargeScreen> {
         centerTitle: true,
         title: GestureDetector(
           onTap: () {
-            currencyController.fetchCurrency();
+            customhistoryController.finalList.clear();
+            customhistoryController.initialpage = 1;
+
+            customhistoryController.fetchHistory();
           },
           child: Text(
             languageController.tr("DIRECT_RECHARGE"),
@@ -538,7 +542,7 @@ class _CustomRechargeScreenState extends State<CustomRechargeScreen> {
 
                                                       Text(
                                                         languageController.tr(
-                                                          "ARE_YOU_SURE_TO_TRANSFER",
+                                                          "ARE_YOU_SURE",
                                                         ),
                                                         style: TextStyle(
                                                           fontSize: 18,
@@ -647,498 +651,463 @@ class _CustomRechargeScreenState extends State<CustomRechargeScreen> {
                 ),
               ),
               SizedBox(height: 5),
-              // Obx(
-              //   () => customhistoryController.isLoading.value == false
-              //       ? Container(
-              //           child:
-              //               customhistoryController
-              //                   .allorderlist
-              //                   .value
-              //                   .data!
-              //                   .orders
-              //                   .isNotEmpty
-              //               ? SizedBox()
-              //               : Center(
-              //                   child: Column(
-              //                     mainAxisAlignment: MainAxisAlignment.center,
-              //                     children: [
-              //                       Image.asset(
-              //                         "assets/icons/empty.png",
-              //                         height: 80,
-              //                       ),
-              //                       Text("No Data found"),
-              //                     ],
-              //                   ),
-              //                 ),
-              //         )
-              //       : SizedBox(),
-              // ),
-              //............................................
-              // Expanded(
-              //   child: Obx(
-              //     () =>
-              //         customhistoryController.isLoading.value == false &&
-              //             customhistoryController.finalList.isNotEmpty
-              //         ? RefreshIndicator(
-              //             onRefresh: refresh,
-              //             child: ListView.separated(
-              //               shrinkWrap: false,
-              //               physics: AlwaysScrollableScrollPhysics(),
-              //               controller: scrollController,
-              //               separatorBuilder: (context, index) {
-              //                 return SizedBox(height: 5);
-              //               },
-              //               itemCount: customhistoryController.finalList.length,
-              //               itemBuilder: (context, index) {
-              //                 final data =
-              //                     customhistoryController.finalList[index];
-              //                 return GestureDetector(
-              //                   onTap: () {
-              //                     Navigator.push(
-              //                       context,
-              //                       MaterialPageRoute(
-              //                         builder: (context) => CustomOrderDetails(
-              //                           createDate: data.createdAt.toString(),
-              //                           status: data.status.toString(),
-              //                           rejectReason: data.rejectReason
-              //                               .toString(),
-              //                           companyName: data
-              //                               .bundle!
-              //                               .service!
-              //                               .company!
-              //                               .companyName
-              //                               .toString(),
-              //                           amount: data.bundle.amount.toString(),
-              //                           rechargebleAccount: data
-              //                               .rechargebleAccount!
-              //                               .toString(),
-              //                           // validityType:
-              //                           //     data.bundle!.validityType!.toString(),
-              //                           sellingPrice: data.bundle!.sellingPrice
-              //                               .toString(),
-              //                           // amount: data.bundle!.amount.toString(),
-              //                           // buyingPrice:
-              //                           //     data.bundle!.buyingPrice.toString(),
-              //                           orderID: data.id!.toString(),
-              //                           resellerName: dashboardController
-              //                               .alldashboardData
-              //                               .value
-              //                               .data!
-              //                               .userInfo!
-              //                               .contactName
-              //                               .toString(),
-              //                           resellerPhone: dashboardController
-              //                               .alldashboardData
-              //                               .value
-              //                               .data!
-              //                               .userInfo!
-              //                               .phone
-              //                               .toString(),
-              //                           companyLogo: data
-              //                               .bundle!
-              //                               .service!
-              //                               .company!
-              //                               .companyLogo
-              //                               .toString(),
-              //                         ),
-              //                       ),
-              //                     );
-              //                   },
-              //                   child: Container(
-              //                     height: 50,
-              //                     width: screenWidth,
-              //                     decoration: BoxDecoration(
-              //                       // border: Border.all(
-              //                       //   width: 1,
-              //                       //   color: Colors.grey,
-              //                       // ),
-              //                       borderRadius: BorderRadius.circular(10),
-              //                       color: AppColors.listbuilderboxColor,
-              //                     ),
-              //                     child: Padding(
-              //                       padding: const EdgeInsets.all(5.0),
-              //                       child: Row(
-              //                         children: [
-              //                           Container(
-              //                             height: 40,
-              //                             width: 40,
-              //                             decoration: BoxDecoration(
-              //                               image: DecorationImage(
-              //                                 fit: BoxFit.fill,
-              //                                 image: CachedNetworkImageProvider(
-              //                                   data
-              //                                       .bundle!
-              //                                       .service!
-              //                                       .company!
-              //                                       .companyLogo
-              //                                       .toString(),
-              //                                 ),
-              //                               ),
-              //                               shape: BoxShape.circle,
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Padding(
-              //                               padding: const EdgeInsets.only(
-              //                                 left: 5,
-              //                               ),
-              //                               child: Column(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment.center,
-              //                                 crossAxisAlignment:
-              //                                     CrossAxisAlignment.start,
-              //                                 children: [
-              //                                   Flexible(
-              //                                     child: Text(
-              //                                       data.bundle!.bundleTitle
-              //                                           .toString(),
-              //                                       style: TextStyle(
-              //                                         fontWeight:
-              //                                             FontWeight.w600,
-              //                                         fontSize: 14,
-              //                                       ),
-              //                                     ),
-              //                                   ),
-              //                                   Text(
-              //                                     data.rechargebleAccount
-              //                                         .toString(),
-              //                                     style: TextStyle(
-              //                                       fontWeight: FontWeight.w500,
-              //                                       fontSize: 12,
-              //                                       color: Colors.grey,
-              //                                     ),
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Row(
-              //                               children: [
-              //                                 // Text(
-              //                                 //   NumberFormat.currency(
-              //                                 //     locale: 'en_US',
-              //                                 //     symbol: '',
-              //                                 //     decimalDigits: 2,
-              //                                 //   ).format(
-              //                                 //     double.parse(
-              //                                 //       data.bundle!.sellingPrice
-              //                                 //           .toString(),
-              //                                 //     ),
-              //                                 //   ),
-              //                                 //   style: TextStyle(
-              //                                 //     fontSize: 11,
-              //                                 //     fontWeight: FontWeight.w600,
-              //                                 //   ),
-              //                                 // ),
-              //                                 // SizedBox(
-              //                                 //   width: 2,
-              //                                 // ),
-              //                                 Text(
-              //                                   data.bundle!.amount.toString(),
-              //                                   style: TextStyle(
-              //                                     fontWeight: FontWeight.w500,
-              //                                     fontSize: 15,
-              //                                     color: Colors.black,
-              //                                   ),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                           ),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Container(
-              //                               child: Row(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment.center,
-              //                                 children: [
-              //                                   Text(
-              //                                     data.status.toString() == "0"
-              //                                         ? languageController.tr(
-              //                                             "PENDING",
-              //                                           )
-              //                                         : data.status
-              //                                                   .toString() ==
-              //                                               "1"
-              //                                         ? languageController.tr(
-              //                                             "CONFIRMED",
-              //                                           )
-              //                                         : languageController.tr(
-              //                                             "REJECTED",
-              //                                           ),
-              //                                     style: TextStyle(
-              //                                       fontSize: 12,
-              //                                       color: Colors.black,
-              //                                       fontWeight: FontWeight.w600,
-              //                                     ),
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Container(
-              //                             decoration: BoxDecoration(
-              //                               color: Colors.white,
-              //                               shape: BoxShape.circle,
-              //                             ),
-              //                             child: Padding(
-              //                               padding: EdgeInsets.all(10.0),
-              //                               child: Image.asset(
-              //                                 data.status.toString() == "0"
-              //                                     ? "assets/icons/pending.png"
-              //                                     : data.status.toString() ==
-              //                                           "1"
-              //                                     ? "assets/icons/success.png"
-              //                                     : "assets/icons/reject.png",
-              //                                 height: 26,
-              //                               ),
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 );
-              //               },
-              //             ),
-              //           )
-              //         : customhistoryController.finalList.isEmpty
-              //         ? SizedBox()
-              //         : RefreshIndicator(
-              //             onRefresh: refresh,
-              //             child: ListView.separated(
-              //               shrinkWrap: false,
-              //               physics: AlwaysScrollableScrollPhysics(),
-              //               controller: scrollController,
-              //               separatorBuilder: (context, index) {
-              //                 return SizedBox(height: 5);
-              //               },
-              //               itemCount: customhistoryController.finalList.length,
-              //               itemBuilder: (context, index) {
-              //                 final data =
-              //                     customhistoryController.finalList[index];
-              //                 return GestureDetector(
-              //                   onTap: () {
-              //                     Navigator.push(
-              //                       context,
-              //                       MaterialPageRoute(
-              //                         builder: (context) => CustomOrderDetails(
-              //                           createDate: data.createdAt.toString(),
-              //                           status: data.status.toString(),
-              //                           rejectReason: data.rejectReason
-              //                               .toString(),
-              //                           companyName: data
-              //                               .bundle!
-              //                               .service!
-              //                               .company!
-              //                               .companyName
-              //                               .toString(),
-              //                           amount: data.bundle.amount.toString(),
-              //                           rechargebleAccount: data
-              //                               .rechargebleAccount!
-              //                               .toString(),
-              //                           // validityType:
-              //                           //     data.bundle!.validityType!.toString(),
-              //                           sellingPrice: data.bundle!.sellingPrice
-              //                               .toString(),
-              //                           // amount: data.bundle!.amount.toString(),
-              //                           // buyingPrice: data.bundle!.buyingPrice
-              //                           //     .toString(),
-              //                           orderID: data.id!.toString(),
-              //                           resellerName: dashboardController
-              //                               .alldashboardData
-              //                               .value
-              //                               .data!
-              //                               .userInfo!
-              //                               .contactName
-              //                               .toString(),
-              //                           resellerPhone: dashboardController
-              //                               .alldashboardData
-              //                               .value
-              //                               .data!
-              //                               .userInfo!
-              //                               .phone
-              //                               .toString(),
-              //                           companyLogo: data
-              //                               .bundle!
-              //                               .service!
-              //                               .company!
-              //                               .companyLogo
-              //                               .toString(),
-              //                         ),
-              //                       ),
-              //                     );
-              //                   },
-              //                   child: Container(
-              //                     height: 50,
-              //                     width: screenWidth,
-              //                     decoration: BoxDecoration(
-              //                       // border: Border.all(
-              //                       //   width: 1,
-              //                       //   color: Colors.grey,
-              //                       // ),
-              //                       borderRadius: BorderRadius.circular(10),
-              //                       color: AppColors.listbuilderboxColor,
-              //                     ),
-              //                     child: Padding(
-              //                       padding: const EdgeInsets.all(5.0),
-              //                       child: Row(
-              //                         children: [
-              //                           Container(
-              //                             height: 40,
-              //                             width: 40,
-              //                             decoration: BoxDecoration(
-              //                               image: DecorationImage(
-              //                                 fit: BoxFit.fill,
-              //                                 image: CachedNetworkImageProvider(
-              //                                   data
-              //                                       .bundle!
-              //                                       .service!
-              //                                       .company!
-              //                                       .companyLogo
-              //                                       .toString(),
-              //                                 ),
-              //                               ),
-              //                               shape: BoxShape.circle,
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Padding(
-              //                               padding: const EdgeInsets.only(
-              //                                 left: 5,
-              //                               ),
-              //                               child: Column(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment.center,
-              //                                 crossAxisAlignment:
-              //                                     CrossAxisAlignment.start,
-              //                                 children: [
-              //                                   Flexible(
-              //                                     child: Text(
-              //                                       data.bundle!.bundleTitle
-              //                                           .toString(),
-              //                                       style: TextStyle(
-              //                                         fontWeight:
-              //                                             FontWeight.w600,
-              //                                         fontSize: 14,
-              //                                       ),
-              //                                     ),
-              //                                   ),
-              //                                   Text(
-              //                                     data.rechargebleAccount
-              //                                         .toString(),
-              //                                     style: TextStyle(
-              //                                       fontWeight: FontWeight.w500,
-              //                                       fontSize: 12,
-              //                                       color: Colors.grey,
-              //                                     ),
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Row(
-              //                               children: [
-              //                                 // Text(
-              //                                 //   NumberFormat.currency(
-              //                                 //     locale: 'en_US',
-              //                                 //     symbol: '',
-              //                                 //     decimalDigits: 2,
-              //                                 //   ).format(
-              //                                 //     double.parse(
-              //                                 //       data.bundle!.sellingPrice
-              //                                 //           .toString(),
-              //                                 //     ),
-              //                                 //   ),
-              //                                 //   style: TextStyle(
-              //                                 //     fontSize: 11,
-              //                                 //     fontWeight: FontWeight.w600,
-              //                                 //   ),
-              //                                 // ),
-              //                                 // SizedBox(
-              //                                 //   width: 2,
-              //                                 // ),
-              //                                 Text(
-              //                                   data.bundle!.amount.toString(),
-              //                                   style: TextStyle(
-              //                                     fontWeight: FontWeight.w500,
-              //                                     fontSize: 15,
-              //                                     color: Colors.black,
-              //                                   ),
-              //                                 ),
-              //                               ],
-              //                             ),
-              //                           ),
-              //                           Expanded(
-              //                             flex: 2,
-              //                             child: Container(
-              //                               child: Row(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment.center,
-              //                                 children: [
-              //                                   Text(
-              //                                     data.status.toString() == "0"
-              //                                         ? languageController.tr(
-              //                                             "PENDING",
-              //                                           )
-              //                                         : data.status
-              //                                                   .toString() ==
-              //                                               "1"
-              //                                         ? languageController.tr(
-              //                                             "CONFIRMED",
-              //                                           )
-              //                                         : languageController.tr(
-              //                                             "REJECTED",
-              //                                           ),
-              //                                     style: TextStyle(
-              //                                       fontSize: 12,
-              //                                       color: Colors.black,
-              //                                       fontWeight: FontWeight.w600,
-              //                                     ),
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ),
-              //                           SizedBox(width: 5),
-              //                           Container(
-              //                             decoration: BoxDecoration(
-              //                               color: Colors.white,
-              //                               shape: BoxShape.circle,
-              //                             ),
-              //                             child: Padding(
-              //                               padding: EdgeInsets.all(10.0),
-              //                               child: Image.asset(
-              //                                 data.status.toString() == "0"
-              //                                     ? "assets/icons/pending.png"
-              //                                     : data.status.toString() ==
-              //                                           "1"
-              //                                     ? "assets/icons/success.png"
-              //                                     : "assets/icons/reject.png",
-              //                                 height: 26,
-              //                               ),
-              //                             ),
-              //                           ),
-              //                         ],
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 );
-              //               },
-              //             ),
-              //           ),
-              //   ),
-              // ),
+              Obx(
+                () => customhistoryController.isLoading.value == false
+                    ? Container(
+                        child:
+                            customhistoryController
+                                .allorderlist
+                                .value
+                                .data!
+                                .orders
+                                .isNotEmpty
+                            ? SizedBox()
+                            : Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      "assets/icons/empty.png",
+                                      height: 80,
+                                    ),
+                                    Text("No Data found"),
+                                  ],
+                                ),
+                              ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+              ),
+
+              Expanded(
+                child: Obx(
+                  () =>
+                      customhistoryController.isLoading.value == false &&
+                          customhistoryController.finalList.isNotEmpty
+                      ? RefreshIndicator(
+                          onRefresh: refresh,
+                          child: ListView.separated(
+                            shrinkWrap: false,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            controller: scrollController,
+                            separatorBuilder: (context, index) {
+                              return SizedBox(height: 5);
+                            },
+                            itemCount: customhistoryController.finalList.length,
+                            itemBuilder: (context, index) {
+                              final data =
+                                  customhistoryController.finalList[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CustomOrderDetails(
+                                        createDate: data.createdAt.toString(),
+                                        status: data.status.toString(),
+                                        rejectReason: data.rejectReason
+                                            .toString(),
+                                        companyName: data
+                                            .bundle!
+                                            .service!
+                                            .company!
+                                            .companyName
+                                            .toString(),
+                                        amount: data.bundle.amount.toString(),
+                                        rechargebleAccount: data
+                                            .rechargebleAccount!
+                                            .toString(),
+                                        // validityType:
+                                        //     data.bundle!.validityType!.toString(),
+                                        sellingPrice: data.bundle!.sellingPrice
+                                            .toString(),
+                                        // amount: data.bundle!.amount.toString(),
+                                        // buyingPrice:
+                                        //     data.bundle!.buyingPrice.toString(),
+                                        orderID: data.id!.toString(),
+                                        resellerName: dashboardController
+                                            .alldashboardData
+                                            .value
+                                            .data!
+                                            .userInfo!
+                                            .contactName
+                                            .toString(),
+                                        resellerPhone: dashboardController
+                                            .alldashboardData
+                                            .value
+                                            .data!
+                                            .userInfo!
+                                            .phone
+                                            .toString(),
+                                        companyLogo: data
+                                            .bundle!
+                                            .service!
+                                            .company!
+                                            .companyLogo
+                                            .toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 55,
+                                  width: screenWidth,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.listbuilderboxColor,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: CachedNetworkImageProvider(
+                                                data
+                                                    .bundle!
+                                                    .service!
+                                                    .company!
+                                                    .companyLogo
+                                                    .toString(),
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 5,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    data.bundle!.bundleTitle
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  data.rechargebleAccount
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        // Expanded(
+                                        //   flex: 2,
+                                        //   child: Row(
+                                        //     children: [
+                                        //       Text(
+                                        //         data.bundle!.amount.toString(),
+                                        //         style: TextStyle(
+                                        //           fontWeight: FontWeight.w500,
+                                        //           fontSize: 15,
+                                        //           color: Colors.black,
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  data.status.toString() == "0"
+                                                      ? languageController.tr(
+                                                          "PENDING",
+                                                        )
+                                                      : data.status
+                                                                .toString() ==
+                                                            "1"
+                                                      ? languageController.tr(
+                                                          "CONFIRMED",
+                                                        )
+                                                      : languageController.tr(
+                                                          "REJECTED",
+                                                        ),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: Image.asset(
+                                              data.status.toString() == "0"
+                                                  ? "assets/icons/pending.png"
+                                                  : data.status.toString() ==
+                                                        "1"
+                                                  ? "assets/icons/success.png"
+                                                  : "assets/icons/reject.png",
+                                              height: 26,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : customhistoryController.finalList.isEmpty
+                      ? SizedBox()
+                      : RefreshIndicator(
+                          onRefresh: refresh,
+                          child: ListView.separated(
+                            shrinkWrap: false,
+                            physics: AlwaysScrollableScrollPhysics(),
+                            controller: scrollController,
+                            separatorBuilder: (context, index) {
+                              return SizedBox(height: 5);
+                            },
+                            itemCount: customhistoryController.finalList.length,
+                            itemBuilder: (context, index) {
+                              final data =
+                                  customhistoryController.finalList[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CustomOrderDetails(
+                                        createDate: data.createdAt.toString(),
+                                        status: data.status.toString(),
+                                        rejectReason: data.rejectReason
+                                            .toString(),
+                                        companyName: data
+                                            .bundle!
+                                            .service!
+                                            .company!
+                                            .companyName
+                                            .toString(),
+                                        amount: data.bundle.amount.toString(),
+                                        rechargebleAccount: data
+                                            .rechargebleAccount!
+                                            .toString(),
+                                        // validityType:
+                                        //     data.bundle!.validityType!.toString(),
+                                        sellingPrice: data.bundle!.sellingPrice
+                                            .toString(),
+                                        // amount: data.bundle!.amount.toString(),
+                                        // buyingPrice:
+                                        //     data.bundle!.buyingPrice.toString(),
+                                        orderID: data.id!.toString(),
+                                        resellerName: dashboardController
+                                            .alldashboardData
+                                            .value
+                                            .data!
+                                            .userInfo!
+                                            .contactName
+                                            .toString(),
+                                        resellerPhone: dashboardController
+                                            .alldashboardData
+                                            .value
+                                            .data!
+                                            .userInfo!
+                                            .phone
+                                            .toString(),
+                                        companyLogo: data
+                                            .bundle!
+                                            .service!
+                                            .company!
+                                            .companyLogo
+                                            .toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 55,
+                                  width: screenWidth,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: AppColors.listbuilderboxColor,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              fit: BoxFit.fill,
+                                              image: CachedNetworkImageProvider(
+                                                data
+                                                    .bundle!
+                                                    .service!
+                                                    .company!
+                                                    .companyLogo
+                                                    .toString(),
+                                              ),
+                                            ),
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 5,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    data.bundle!.bundleTitle
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  data.rechargebleAccount
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        // Expanded(
+                                        //   flex: 2,
+                                        //   child: Row(
+                                        //     children: [
+                                        //       Text(
+                                        //         data.bundle!.amount.toString(),
+                                        //         style: TextStyle(
+                                        //           fontWeight: FontWeight.w500,
+                                        //           fontSize: 15,
+                                        //           color: Colors.black,
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Container(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  data.status.toString() == "0"
+                                                      ? languageController.tr(
+                                                          "PENDING",
+                                                        )
+                                                      : data.status
+                                                                .toString() ==
+                                                            "1"
+                                                      ? languageController.tr(
+                                                          "CONFIRMED",
+                                                        )
+                                                      : languageController.tr(
+                                                          "REJECTED",
+                                                        ),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(10.0),
+                                            child: Image.asset(
+                                              data.status.toString() == "0"
+                                                  ? "assets/icons/pending.png"
+                                                  : data.status.toString() ==
+                                                        "1"
+                                                  ? "assets/icons/success.png"
+                                                  : "assets/icons/reject.png",
+                                              height: 26,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                ),
+              ),
             ],
           ),
         ),

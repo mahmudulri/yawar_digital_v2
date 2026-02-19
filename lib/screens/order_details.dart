@@ -6,6 +6,7 @@ import 'package:arzan_digital/helpers/language_helper.dart';
 import 'package:arzan_digital/helpers/localtime_helper.dart';
 import 'package:arzan_digital/pages/orders.dart';
 import 'package:arzan_digital/utils/colors.dart';
+import 'package:arzan_digital/utils/mystring.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -128,7 +129,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           ),
                                         ),
                                         Text(
-                                          "Yawar Digital",
+                                          MyString.appname,
                                           style: GoogleFonts.aBeeZee(
                                             fontWeight: FontWeight.w600,
                                             color: Colors.black,
@@ -352,7 +353,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       ),
                                     ),
                                     Text(
-                                      "YD#- " + widget.orderID.toString(),
+                                      "AD#- " + widget.orderID.toString(),
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: Colors.black,

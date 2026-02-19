@@ -352,16 +352,6 @@ class _OnboardingState extends State<Onboarding> {
                                     );
                                   } else {
                                     await signInController.signIn();
-
-                                    if (signInController.loginsuccess.value ==
-                                        false) {
-                                      countryListController.fetchCountryData();
-
-                                      dashboardController.fetchDashboardData();
-                                      Get.toNamed(bottomnavscreen);
-                                    } else {
-                                      print("Navigation conditions not met.");
-                                    }
                                   }
                                 },
                                 child: Container(

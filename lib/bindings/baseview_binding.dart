@@ -14,6 +14,8 @@ import 'package:arzan_digital/controllers/subreseller_details_controller.dart';
 import 'package:arzan_digital/controllers/transaction_controller.dart';
 import 'package:get/get.dart';
 
+import '../controllers/company_controller.dart';
+
 class BaseViewBinding implements Bindings {
   @override
   void dependencies() {
@@ -33,6 +35,7 @@ class BaseViewBinding implements Bindings {
       () => DeleteSubResellerController(),
     );
     Get.lazyPut<ChangeStatusController>(() => ChangeStatusController());
+    Get.lazyPut<CompanyController>(() => CompanyController());
 
     Get.lazyPut<CategorisListController>(() => CategorisListController());
     Get.lazyPut<CustomRechargeController>(() => CustomRechargeController());

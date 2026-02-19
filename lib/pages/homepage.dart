@@ -19,6 +19,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../controllers/company_controller.dart';
 import '../global_controller/languages_controller.dart';
 
 class Homepage extends StatefulWidget {
@@ -32,6 +33,8 @@ class _HomepageState extends State<Homepage> {
   final box = GetStorage();
   int currentindex = 0;
 
+  final companyController = Get.find<CompanyController>();
+
   PageController _pageController = PageController(
     initialPage: 0,
     viewportFraction: 1.0,
@@ -43,7 +46,12 @@ class _HomepageState extends State<Homepage> {
   void _startAutoSlide() {
     _timer = Timer.periodic(Duration(seconds: 3), (timer) {
       if (currentSliderindex <
-          sliderController.allsliderlist.value.data!.advertisements.length -
+          dashboardController
+                  .alldashboardData
+                  .value
+                  .data!
+                  .advertisementSliders!
+                  .length -
               1) {
         currentSliderindex++;
       } else {
@@ -66,7 +74,7 @@ class _HomepageState extends State<Homepage> {
     historyController.finalList.clear();
     historyController.initialpage = 1;
     historyController.fetchHistory();
-
+    companyController.fetchCompany();
     dashboardController.fetchDashboardData();
   }
 
@@ -104,7 +112,7 @@ class _HomepageState extends State<Homepage> {
   final dashboardController = Get.find<DashboardController>();
   final historyController = Get.find<HistoryController>();
   final languageController = Get.find<LanguagesController>();
-  final sliderController = Get.find<SliderController>();
+
   final countryListController = Get.find<CountryListController>();
 
   final ScrollController scrollController = ScrollController();
@@ -199,13 +207,13 @@ class _HomepageState extends State<Homepage> {
                             ),
                             height: 180,
                             child: Obx(
-                              () => sliderController.isLoading.value == false
+                              () => dashboardController.isLoading.value == false
                                   ? PageView.builder(
-                                      itemCount: sliderController
-                                          .allsliderlist
+                                      itemCount: dashboardController
+                                          .alldashboardData
                                           .value
                                           .data!
-                                          .advertisements
+                                          .advertisementSliders!
                                           .length,
                                       physics: BouncingScrollPhysics(),
                                       controller: _pageController,
@@ -226,11 +234,11 @@ class _HomepageState extends State<Homepage> {
                                           child: Stack(
                                             children: [
                                               CachedNetworkImage(
-                                                imageUrl: sliderController
-                                                    .allsliderlist
+                                                imageUrl: dashboardController
+                                                    .alldashboardData
                                                     .value
                                                     .data!
-                                                    .advertisements[index]
+                                                    .advertisementSliders![index]
                                                     .adSliderImageUrl
                                                     .toString(),
                                                 fit: BoxFit.fill,
@@ -907,8 +915,6 @@ class _HomepageState extends State<Homepage> {
                         child: GestureDetector(
                           onTap: () async {
                             Get.toNamed(customrechargescreen);
-                            // countryListController.fetchCountryData();
-                            // historyController.fetchHistory();
                           },
                           child: Container(
                             width: screenWidth,
