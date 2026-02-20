@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "د لېږد کمېسیون",
 "CREATE_TRANSFER_REQUEST": "د لېږد غوښتنه جوړه کړئ",
 "CLEAR_FILTER": "فلټر پاک کړئ",
-"ARE_YOU_SURE": "ایا تاسو ډاډه یاست؟"
-
+"ARE_YOU_SURE": "ایا تاسو ډاډه یاست؟",
+"UPDATE_NOW": "همدا اوس تازه کړئ",
+"CANCEL_ORDER": "فرمایش لغوه کړئ",
+"FILTER_TRANSACTION": "راکړه ورکړه فلټر کړئ",
+"TYPE": "ډول",
+"ADMIN_TO_RESELLER": "له اډمین څخه پلورونکي ته",
+"RESELLER_TO_ADMIN": "له پلورونکي څخه اډمین ته",
+"ORDER": "فرمایش",
+"MONEY_TRANSFER": "د پیسو لېږد",
+"SELECT_START_DATE_FIRST": "مهرباني وکړئ لومړی د پیل نېټه وټاکئ",
+"WARNING": "خبرداری",
+"SELECT_CATEGORY": "کټګوري وټاکئ",
+"SELECT_PURPOSE": "موخه وټاکئ",
+"START_DATE": "د پیل نېټه",
+"END_DATE": "د پای نېټه"
 
 
 

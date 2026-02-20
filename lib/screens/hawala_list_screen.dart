@@ -25,195 +25,220 @@ class _HawalaListScreenState extends State<HawalaListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
+    hawalalistController.finalList.clear();
+    hawalalistController.initialpage = 1;
+
     hawalalistController.fetchhawala();
+    scrollController.addListener(refresh);
+
+    hawalalistController.fetchhawala();
+  }
+
+  final ScrollController scrollController = ScrollController();
+  Future<void> refresh() async {
+    final int totalPages =
+        hawalalistController.allhawalalist.value.data!.pagination!.totalPages ??
+        0;
+    final int currentPage = hawalalistController.initialpage;
+
+    // Prevent loading more pages if we've reached the last page
+    if (currentPage >= totalPages) {
+      print(
+        "End..........................................End.....................",
+      );
+      return;
+    }
+
+    // Check if the scroll position is at the bottom
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      hawalalistController.initialpage++;
+
+      // Prevent fetching if the next page exceeds total pages
+      if (hawalalistController.initialpage <= totalPages) {
+        print("Load More...................");
+        hawalalistController.fetchhawala();
+      } else {
+        hawalalistController.initialpage =
+            totalPages; // Reset to the last valid page
+        print("Already on the last page");
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            Get.back();
-          },
-          child: Icon(Icons.arrow_back, color: Colors.black),
-        ),
-        elevation: 0.0,
-        scrolledUnderElevation: 0.0,
+    return SafeArea(
+      top: false,
+      child: Scaffold(
         backgroundColor: AppColors.backgroundColor,
-        centerTitle: true,
-        title: Text(
-          languagesController.tr("HAWALA_ORDER_LIST"),
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        appBar: AppBar(
+          leading: GestureDetector(
+            onTap: () {
+              Get.back();
+            },
+            child: Icon(Icons.arrow_back, color: Colors.black),
+          ),
+          elevation: 0.0,
+          scrolledUnderElevation: 0.0,
+          backgroundColor: AppColors.backgroundColor,
+          centerTitle: true,
+          title: Text(
+            languagesController.tr("HAWALA_ORDER_LIST"),
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        height: screenHeight,
-        width: screenWidth,
-        decoration: BoxDecoration(color: AppColors.backgroundColor),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            children: [
-              SizedBox(height: 7),
-              Container(
-                height: 50,
-                width: screenWidth,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey.shade400,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: languagesController.tr("SEARCH"),
-                              hintStyle: TextStyle(
-                                color: Colors.grey,
-                                fontSize: screenHeight * 0.020,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      flex: 4,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HawalaScreen(),
-                            ),
-                          );
-                        },
+        body: Container(
+          height: screenHeight,
+          width: screenWidth,
+          decoration: BoxDecoration(color: AppColors.backgroundColor),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Column(
+              children: [
+                SizedBox(height: 7),
+                Container(
+                  height: 50,
+                  width: screenWidth,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
                         child: Container(
                           decoration: BoxDecoration(
+                            color: Colors.white,
                             border: Border.all(
                               width: 1,
                               color: Colors.grey.shade400,
                             ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(
-                            child: Text(
-                              languagesController.tr("NEW_ORDER"),
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: languagesController.tr("SEARCH"),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: screenHeight * 0.020,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Expanded(
-                child: Obx(
-                  () => hawalalistController.isLoading.value == false
-                      ? ListView.separated(
-                          physics: BouncingScrollPhysics(),
-                          separatorBuilder: (context, index) {
-                            return SizedBox(height: 5);
+                      SizedBox(width: 10),
+                      Expanded(
+                        flex: 4,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HawalaScreen(),
+                              ),
+                            );
                           },
-                          itemCount: hawalalistController
-                              .allhawalalist
-                              .value
-                              .data!
-                              .orders!
-                              .length,
-                          itemBuilder: (context, index) {
-                            final data = hawalalistController
-                                .allhawalalist
-                                .value
-                                .data!
-                                .orders![index];
-                            return GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      contentPadding: EdgeInsets.all(0),
-                                      content: HawalaDetailsDialog(
-                                        id: data.id.toString(),
-                                        hawalaNumber: data.hawalaNumber,
-                                        hawalaCustomNumber:
-                                            data.hawalaCustomNumber,
-                                        status: data.status,
-                                        branchID: data.hawalaBranchId,
-                                        senderName: data.senderName,
-                                        receiverName: data.receiverName,
-                                        fatherName: data.receiverFatherName,
-                                        idcardnumber: data.receiverIdCardNumber,
-                                        amount: data.hawalaAmount,
-                                        hawalacurrencyRate:
-                                            data.hawalaAmountCurrencyRate,
-                                        hawalacurrencyCode:
-                                            data.hawalaAmountCurrencyCode,
-                                        resellercurrencyCode:
-                                            data.resellerPreferedCurrencyCode,
-                                        resellCurrencyRate:
-                                            data.resellerPreferedCurrencyRate,
-                                        paidbysender: data
-                                            .commissionPaidBySender
-                                            .toString(),
-                                        paidbyreceiver: data
-                                            .commissionPaidByReceiver
-                                            .toString(),
-                                      ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 1,
+                                color: Colors.grey.shade400,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Text(
+                                languagesController.tr("NEW_ORDER"),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Expanded(
+                  child: Obx(
+                    () => hawalalistController.isLoading.value == false
+                        ? RefreshIndicator(
+                            onRefresh: refresh,
+                            child: ListView.separated(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              controller: scrollController,
+                              separatorBuilder: (context, index) {
+                                return SizedBox(height: 5);
+                              },
+                              itemCount: hawalalistController.finalList.length,
+                              itemBuilder: (context, index) {
+                                final data =
+                                    hawalalistController.finalList[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              17,
+                                            ),
+                                          ),
+                                          contentPadding: EdgeInsets.all(0),
+                                          content: HawalaDetailsDialog(
+                                            id: data.id.toString(),
+                                            hawalaNumber: data.hawalaNumber,
+                                            hawalaCustomNumber:
+                                                data.hawalaCustomNumber,
+                                            status: data.status,
+                                            branchID: data.hawalaBranchId,
+                                            senderName: data.senderName,
+                                            receiverName: data.receiverName,
+                                            fatherName: data.receiverFatherName,
+                                            idcardnumber:
+                                                data.receiverIdCardNumber,
+                                            amount: data.hawalaAmount,
+                                            hawalacurrencyRate:
+                                                data.hawalaAmountCurrencyRate,
+                                            hawalacurrencyCode:
+                                                data.hawalaAmountCurrencyCode,
+                                            resellercurrencyCode: data
+                                                .resellerPreferedCurrencyCode,
+                                            resellCurrencyRate: data
+                                                .resellerPreferedCurrencyRate,
+                                            paidbysender: data
+                                                .commissionPaidBySender
+                                                .toString(),
+                                            paidbyreceiver: data
+                                                .commissionPaidByReceiver
+                                                .toString(),
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
-                                );
-                              },
-                              child: Container(
-                                width: screenWidth,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
-                                    width: 1,
-                                    color: data.status.toString() == "pending"
-                                        ? Color(0xffFFC107)
-                                        : data.status.toString() == "confirmed"
-                                        ? Colors.green
-                                        : Color(0xffFF4842),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
+                                  child: Container(
+                                    width: screenWidth,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        width: 1,
                                         color:
                                             data.status.toString() == "pending"
                                             ? Color(0xffFFC107)
@@ -221,178 +246,215 @@ class _HawalaListScreenState extends State<HawalaListScreen> {
                                                   "confirmed"
                                             ? Colors.green
                                             : Color(0xffFF4842),
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10),
-                                        ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 5,
-                                          vertical: 5,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color:
+                                                data.status.toString() ==
+                                                    "pending"
+                                                ? Color(0xffFFC107)
+                                                : data.status.toString() ==
+                                                      "confirmed"
+                                                ? Colors.green
+                                                : Color(0xffFF4842),
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(10),
+                                              topLeft: Radius.circular(10),
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 5,
+                                              vertical: 5,
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                data.hawalaCustomNumber == null
+                                                    ? Text(
+                                                        languagesController.tr(
+                                                              "HAWALA_NUMBER",
+                                                            ) +
+                                                            " - " +
+                                                            data.hawalaNumber
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    : Text(
+                                                        languagesController.tr(
+                                                              "HAWALA_NUMBER",
+                                                            ) +
+                                                            " - " +
+                                                            data.hawalaCustomNumber
+                                                                .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                Text(
+                                                  data.status.toString(),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            data.hawalaCustomNumber == null
-                                                ? Text(
+                                        Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
                                                     languagesController.tr(
-                                                          "HAWALA_NUMBER",
-                                                        ) +
-                                                        " - " +
-                                                        data.hawalaNumber
-                                                            .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                                      "SENDER_NAME",
                                                     ),
-                                                  )
-                                                : Text(
-                                                    languagesController.tr(
-                                                          "HAWALA_NUMBER",
-                                                        ) +
-                                                        " - " +
-                                                        data.hawalaCustomNumber
-                                                            .toString(),
                                                     style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15,
+                                                      color:
+                                                          Colors.grey.shade700,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
                                                     ),
                                                   ),
-                                            Text(
-                                              data.status.toString(),
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
+                                                  Text(
+                                                    data.senderName.toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
+                                              SizedBox(height: 3),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    languagesController.tr(
+                                                      "RECEIVER_NAME",
+                                                    ),
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade700,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    data.receiverName
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    languagesController.tr(
+                                                      "HAWALA_AMOUNT",
+                                                    ),
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade700,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    data.hawalaAmount
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 3),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    languagesController.tr(
+                                                      "PAYABLE_AMOUNT",
+                                                    ),
+                                                    style: TextStyle(
+                                                      color:
+                                                          Colors.grey.shade700,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    data.hawalaAmountCurrencyRate
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                languagesController.tr(
-                                                  "SENDER_NAME",
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade700,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              Text(
-                                                data.senderName.toString(),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 3),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                languagesController.tr(
-                                                  "RECEIVER_NAME",
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade700,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              Text(
-                                                data.receiverName.toString(),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 3),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                languagesController.tr(
-                                                  "HAWALA_AMOUNT",
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade700,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              Text(
-                                                data.hawalaAmount.toString(),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(height: 3),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                languagesController.tr(
-                                                  "PAYABLE_AMOUNT",
-                                                ),
-                                                style: TextStyle(
-                                                  color: Colors.grey.shade700,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                              Text(
-                                                data.hawalaAmountCurrencyRate
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        )
-                      : Center(child: CircularProgressIndicator()),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Center(child: CircularProgressIndicator()),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -492,8 +554,8 @@ class HawalaDetailsDialog extends StatelessWidget {
                               status.toString() == "pending"
                                   ? "assets/icons/pending.png"
                                   : status.toString() == "confirmed"
-                                  ? "assets/icons/successful.png"
-                                  : "assets/icons/rejected.png",
+                                  ? "assets/icons/success.png"
+                                  : "assets/icons/reject.png",
                               height: 60,
                             ),
                           ),

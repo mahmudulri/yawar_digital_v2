@@ -11,6 +11,5 @@ class SplashBinding implements Bindings {
     Get.lazyPut<IscoCodeController>(() => IscoCodeController());
     Get.lazyPut<SliderController>(() => SliderController());
     Get.lazyPut<HistoryController>(() => HistoryController());
-    Get.lazyPut<DashboardController>(() => DashboardController());
   }
 }

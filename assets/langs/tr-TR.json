@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "Transfer komisyonu",
 "CREATE_TRANSFER_REQUEST": "Transfer talebi oluştur",
 "CLEAR_FILTER": "Filtreyi temizle",
-"ARE_YOU_SURE": "Emin misiniz?"
-
+"ARE_YOU_SURE": "Emin misiniz?",
+"UPDATE_NOW": "Şimdi güncelle",
+"CANCEL_ORDER": "Siparişi iptal et",
+"FILTER_TRANSACTION": "İşlemleri filtrele",
+"TYPE": "Tür",
+"ADMIN_TO_RESELLER": "Yöneticiden bayiye",
+"RESELLER_TO_ADMIN": "Bayiden yöneticiye",
+"ORDER": "Sipariş",
+"MONEY_TRANSFER": "Para transferi",
+"SELECT_START_DATE_FIRST": "Önce başlangıç tarihini seçin",
+"WARNING": "Uyarı",
+"SELECT_CATEGORY": "Kategori seç",
+"SELECT_PURPOSE": "Amaç seç",
+"START_DATE": "Başlangıç tarihi",
+"END_DATE": "Bitiş tarihi"
 
 
 

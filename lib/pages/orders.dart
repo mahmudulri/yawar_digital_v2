@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:arzan_digital/controllers/dashboard_controller.dart';
 import 'package:arzan_digital/global_controller/languages_controller.dart';
 import 'package:arzan_digital/helpers/localtime_helper.dart';
+import 'package:arzan_digital/widgets/custom_text.dart';
 
 import 'package:flutter/material.dart';
 
@@ -31,9 +32,16 @@ class _OrdersPageState extends State<OrdersPage> {
   void initState() {
     super.initState();
 
+    orderStatus = [
+      {"title": languageController.tr("PENDING"), "value": "order_status=0"},
+      {"title": languageController.tr("CONFIRMED"), "value": "order_status=1"},
+      {"title": languageController.tr("REJECTED"), "value": "order_status=2"},
+    ];
+    box.write("date", "");
+    box.write("orderstatus", "");
+    box.write("search_target", "");
     orderlistController.finalList.clear();
     orderlistController.initialpage = 1;
-
     orderlistController.fetchOrderlistdata();
 
     scrollController.addListener(refresh);
@@ -43,19 +51,40 @@ class _OrdersPageState extends State<OrdersPage> {
 
   bool isvisible = false;
 
-  List orderStatus = [
-    {"title": "Pending", "value": "order_status=0"},
-    {"title": "Confirmed", "value": "order_status=1"},
-    {"title": "Rejected", "value": "order_status=2"},
-  ];
   String defaultValue = "";
   String secondDropDown = "";
+
+  List orderStatus = [];
+
+  String search = "";
+
+  final RxString selectedDate = ''.obs;
+
+  Timer? _debounce;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // default date
+      firstDate: DateTime(2000), // earliest date
+      lastDate: DateTime(2100), // latest date
+    );
+
+    if (picked != null) {
+      // Format the selected date as yyyy-MM-dd
+      String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
+      selectedDate.value = formattedDate;
+      print(formattedDate); // Print to console
+      box.write("date", "selected_date=" + formattedDate.toString());
+      orderlistController.finalList.clear();
+      orderlistController.initialpage = 1;
+      orderlistController.fetchOrderlistdata();
+    }
+  }
 
   // String selectedStatus = "Select Status";
 
   TextEditingController searchController = TextEditingController();
-
-  String search = "";
 
   Future<void> refresh() async {
     final int totalPages =
@@ -129,298 +158,249 @@ class _OrdersPageState extends State<OrdersPage> {
         height: screenHeight,
         width: screenWidth,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(width: 1, color: Colors.grey),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 5,
-                              ),
-                              child: TextField(
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    search = value.toString();
-                                  });
-                                },
-                                controller: searchController,
-                                keyboardType: TextInputType.phone,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: languageController.tr(
-                                    "ENTER_YOUR_NUMBER",
-                                  ),
-
-                                  hintStyle: TextStyle(fontSize: 14),
-                                ),
-                              ),
-                            ),
-                          ),
-                          // Icon(
-                          //   Icons.search,
-                          //   color: Colors.grey,
-                          //   size: 30,
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isvisible = !isvisible;
-                        print(isvisible);
-                      });
-                    },
-                    child: Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        // color: Color(0xff46558A),
-                        color: AppColors.defaultColor,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          children: [
-                            Text(
-                              languageController.tr("FILTER"),
-
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(
-                              FontAwesomeIcons.filter,
-                              color: Colors.white,
-                              size: 15,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 0),
-              Visibility(
-                visible: isvisible,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4),
                 child: Container(
-                  height: 120,
                   width: screenWidth,
                   decoration: BoxDecoration(
-                    // border: Border.all(
-                    //     width: 1,
-                    //     color: Colors.grey), // color: Colors.black12,
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(languageController.tr("ORDER_STATUS")),
-                                Container(
-                                  height: 40,
-                                  width: 160,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        isDense: true,
-                                        value: defaultValue,
-                                        isExpanded: true,
-                                        items: [
-                                          DropdownMenuItem(
-                                            value: "",
-                                            child: Text(
-                                              languageController.tr(
-                                                "SELECT_STATUS",
-                                              ),
-
-                                              style: TextStyle(fontSize: 15),
-                                            ),
-                                          ),
-                                          ...orderStatus
-                                              .map<DropdownMenuItem<String>>((
-                                                data,
-                                              ) {
-                                                return DropdownMenuItem(
-                                                  value: data['value'],
-                                                  child: Text(data['title']),
-                                                );
-                                              })
-                                              .toList(),
-                                        ],
-                                        onChanged: (value) {
-                                          box.write("orderstatus", value);
-                                          // print(
-                                          //     "selected Value $value");
-                                          setState(() {
-                                            defaultValue = value!;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(languageController.tr("SELECTED_DATE")),
-                                Container(
-                                  height: 30,
-                                  width: 160,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 3,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            languageController.tr(
-                                              "SELECTED_DATE",
-                                            ),
-                                          ),
-                                        ),
-                                        Icon(Icons.arrow_downward),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  orderlistController.initialpage = 1;
-                                  orderlistController.finalList.clear();
-                                  orderlistController.fetchOrderlistdata();
-                                  print(box.read("orderstatus"));
-                                },
-                                child: Container(
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.defaultColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        languageController.tr("APPLY_FILTER"),
-
-                                        style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 10),
-                              GestureDetector(
-                                onTap: () {
-                                  box.write("orderstatus", "");
-
-                                  orderlistController.initialpage = 1;
-                                  orderlistController.finalList.clear();
-
-                                  orderlistController.fetchOrderlistdata();
-
-                                  defaultValue = "";
-                                  setState(() {
-                                    isvisible = !isvisible;
-                                  });
-                                },
-                                child: Container(
-                                  height: 35,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.defaultColor,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 5,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        languageController.tr("CLEAR_FILTER"),
-
-                                        style: TextStyle(
-                                          color: Color(0xffFFFFFF),
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                    color: AppColors.defaultColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(0, 0),
                       ),
                     ],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 12,
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                icon: Icon(
+                                  FontAwesomeIcons.chevronDown,
+                                  color: Colors.grey,
+                                ),
+                                isDense: true,
+                                value: defaultValue,
+                                isExpanded: true,
+                                items: [
+                                  DropdownMenuItem(
+                                    value: "",
+                                    child: KText(
+                                      text: languageController.tr("ALL"),
+                                      fontSize: screenWidth * 0.040,
+                                    ),
+                                  ),
+                                  ...orderStatus.map<DropdownMenuItem<String>>((
+                                    data,
+                                  ) {
+                                    return DropdownMenuItem(
+                                      value: data['value'],
+                                      child: KText(text: data['title']),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  box.write("orderstatus", value);
+                                  orderlistController.finalList.clear();
+                                  orderlistController.initialpage = 1;
+                                  orderlistController.fetchOrderlistdata();
+                                  print("selected Value $value");
+                                  setState(() {
+                                    defaultValue = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Obx(
+                                  () => KText(
+                                    text: selectedDate.value == ""
+                                        ? languageController.tr("DATE")
+                                        : selectedDate.value.toString(),
+                                    fontSize: screenWidth * 0.040,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => _selectDate(context),
+                                  child: Icon(
+                                    Icons.calendar_month,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Icon(
+                                  Icons.search_sharp,
+                                  color: Colors.grey,
+                                  size: screenHeight * 0.040,
+                                ),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Obx(
+                                    () => TextField(
+                                      keyboardType: TextInputType.phone,
+                                      onChanged: (value) {
+                                        // আগের timer থাকলে cancel
+                                        if (_debounce?.isActive ?? false)
+                                          _debounce!.cancel();
+
+                                        _debounce = Timer(
+                                          const Duration(seconds: 1),
+                                          () {
+                                            orderlistController.finalList
+                                                .clear();
+                                            orderlistController.initialpage = 1;
+
+                                            box.write("search_target", value);
+
+                                            orderlistController
+                                                .fetchOrderlistdata();
+                                            print(value);
+                                          },
+                                        );
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: languageController.tr(
+                                          "SEARCH_BY_PHOENUMBER",
+                                        ),
+                                        border: InputBorder.none,
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: screenWidth * 0.040,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // SizedBox(
+                        //   height: 10,
+                        // ),
+                        // Container(
+                        //   height: 45,
+                        //   width: screenWidth,
+                        //   child: Row(
+                        //     children: [
+                        //       Expanded(
+                        //         flex: 5,
+                        //         child: Container(
+                        //           decoration: BoxDecoration(
+                        //             color: AppColors.primaryColor,
+                        //             borderRadius: BorderRadius.circular(25),
+                        //           ),
+                        //           child: Center(
+                        //             child: Obx(
+                        //               () => Text(
+                        //                 languagesController.tr("APPLY_FILTER"),
+                        //                 style: TextStyle(
+                        //                   color: Colors.white,
+                        //                   fontWeight: FontWeight.w600,
+                        //                   fontSize: 11,
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 10,
+                        //       ),
+                        //       Expanded(
+                        //         flex: 4,
+                        //         child: Container(
+                        //           decoration: BoxDecoration(
+                        //             color: Colors.white,
+                        //             border: Border.all(
+                        //               width: 1,
+                        //               color: Colors.red,
+                        //             ),
+                        //             borderRadius: BorderRadius.circular(25),
+                        //           ),
+                        //           child: Center(
+                        //             child: Obx(
+                        //               () => Text(
+                        //                 languagesController.tr("REMOVE_FILTER"),
+                        //                 style: TextStyle(
+                        //                   color: Colors.red,
+                        //                   fontWeight: FontWeight.w600,
+                        //                   fontSize: 11,
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-
-              SizedBox(height: 5),
-
+              SizedBox(height: 8),
               Expanded(
                 child: Obx(
                   () => orderlistController.isLoading.value == false
@@ -488,9 +468,7 @@ class _OrdersPageState extends State<OrdersPage> {
                                   child: Container(
                                     height: 200,
                                     width: screenWidth,
-                                    decoration: BoxDecoration(
-                                      // color: Colors.grey,
-                                    ),
+                                    decoration: BoxDecoration(),
                                     child: Column(
                                       children: [
                                         Expanded(

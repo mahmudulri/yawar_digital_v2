@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "عمولة التحويل",
 "CREATE_TRANSFER_REQUEST": "إنشاء طلب تحويل",
 "CLEAR_FILTER": "مسح الفلتر",
-"ARE_YOU_SURE": "هل أنت متأكد؟"
-
+"ARE_YOU_SURE": "هل أنت متأكد؟",
+"UPDATE_NOW": "التحديث الآن",
+"CANCEL_ORDER": "إلغاء الطلب",
+"FILTER_TRANSACTION": "تصفية المعاملات",
+"TYPE": "النوع",
+"ADMIN_TO_RESELLER": "من المشرف إلى الموزع",
+"RESELLER_TO_ADMIN": "من الموزع إلى المشرف",
+"ORDER": "طلب",
+"MONEY_TRANSFER": "تحويل الأموال",
+"SELECT_START_DATE_FIRST": "يرجى اختيار تاريخ البدء أولاً",
+"WARNING": "تحذير",
+"SELECT_CATEGORY": "اختر الفئة",
+"SELECT_PURPOSE": "اختر الغرض",
+"START_DATE": "تاريخ البدء",
+"END_DATE": "تاريخ الانتهاء"
 
 
 

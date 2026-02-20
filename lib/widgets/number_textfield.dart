@@ -1,7 +1,7 @@
 import 'package:arzan_digital/controllers/bundles_controller.dart';
 import 'package:arzan_digital/controllers/reserve_digit_controller.dart';
 import 'package:arzan_digital/controllers/service_controller.dart';
-import 'package:arzan_digital/helpers/language_helper.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

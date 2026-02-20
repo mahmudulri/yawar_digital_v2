@@ -10,11 +10,12 @@ import '../utils/api_endpoints.dart';
 
 class TransactionApi {
   final box = GetStorage();
-  Future<TransactionModel> fetchTransaction() async {
+  Future<TransactionModel> fetchTransaction(int pageNo) async {
     final url = Uri.parse(
-      ApiEndPoints.baseUrl + ApiEndPoints.otherendpoints.transactions,
+      ApiEndPoints.baseUrl +
+          ApiEndPoints.otherendpoints.transactions +
+          "?page=$pageNo&items_per_page=300&search=${box.read("transactiontype")}${box.read("category")}${box.read("purpose")}${box.read("startdate")}${box.read("enddate")}",
     );
-    print(url);
 
     var response = await http.get(
       url,

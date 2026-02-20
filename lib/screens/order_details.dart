@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:arzan_digital/controllers/dashboard_controller.dart';
 import 'package:arzan_digital/controllers/language_controller.dart';
 import 'package:arzan_digital/controllers/time_zone_controller.dart';
-import 'package:arzan_digital/helpers/language_helper.dart';
+
 import 'package:arzan_digital/helpers/localtime_helper.dart';
 import 'package:arzan_digital/pages/orders.dart';
 import 'package:arzan_digital/utils/colors.dart';
@@ -195,6 +195,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                     ),
                                   ],
                                 ),
+
                                 SizedBox(height: 5),
                                 Visibility(
                                   visible: widget.status.toString() == "2",

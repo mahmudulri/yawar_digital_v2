@@ -19,7 +19,6 @@ import '../controllers/company_controller.dart';
 class BaseViewBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<DashboardController>(() => DashboardController());
     Get.lazyPut<OrderlistController>(() => OrderlistController());
     Get.lazyPut<TransactionController>(() => TransactionController());
     Get.lazyPut<HistoryController>(() => HistoryController());

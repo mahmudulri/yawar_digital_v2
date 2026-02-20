@@ -1,3 +1,4 @@
+import 'package:arzan_digital/controllers/dashboard_controller.dart';
 import 'package:arzan_digital/dependency_injection.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -20,6 +21,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await GetStorage.init();
+  Get.put(DashboardController(), permanent: true);
   Get.put(LanguagesController(), permanent: true);
   Get.put(SettingController(), permanent: true);
   Get.put(RechargeConfigController(), permanent: true);

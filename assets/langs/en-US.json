@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "Transfer commission",
 "CREATE_TRANSFER_REQUEST": "Create transfer request",
 "CLEAR_FILTER": "Clear filter",
-"ARE_YOU_SURE": "Are you sure?"
-
+"ARE_YOU_SURE": "Are you sure?",
+"UPDATE_NOW": "Update now",
+"CANCEL_ORDER": "Cancel order",
+"FILTER_TRANSACTION": "Filter transaction",
+"TYPE": "Type",
+"ADMIN_TO_RESELLER": "Admin to reseller",
+"RESELLER_TO_ADMIN": "Reseller to admin",
+"ORDER": "Order",
+"MONEY_TRANSFER": "Money transfer",
+"SELECT_START_DATE_FIRST": "Select start date first",
+"WARNING": "Warning",
+"SELECT_CATEGORY": "Select category",
+"SELECT_PURPOSE": "Select purpose",
+"START_DATE": "Start date",
+"END_DATE": "End date"
 
 
 

@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "ট্রান্সফার কমিশন",
 "CREATE_TRANSFER_REQUEST": "ট্রান্সফার অনুরোধ তৈরি করুন",
 "CLEAR_FILTER": "ফিল্টার মুছুন",
-"ARE_YOU_SURE": "আপনি কি নিশ্চিত?"
-
+"ARE_YOU_SURE": "আপনি কি নিশ্চিত?",
+"UPDATE_NOW": "এখনই আপডেট করুন",
+"CANCEL_ORDER": "অর্ডার বাতিল করুন",
+"FILTER_TRANSACTION": "লেনদেন ফিল্টার করুন",
+"TYPE": "ধরন",
+"ADMIN_TO_RESELLER": "অ্যাডমিন থেকে রিসেলার",
+"RESELLER_TO_ADMIN": "রিসেলার থেকে অ্যাডমিন",
+"ORDER": "অর্ডার",
+"MONEY_TRANSFER": "মানি ট্রান্সফার",
+"SELECT_START_DATE_FIRST": "অনুগ্রহ করে প্রথমে শুরুর তারিখ নির্বাচন করুন",
+"WARNING": "সতর্কতা",
+"SELECT_CATEGORY": "ক্যাটাগরি নির্বাচন করুন",
+"SELECT_PURPOSE": "উদ্দেশ্য নির্বাচন করুন",
+"START_DATE": "শুরুর তারিখ",
+"END_DATE": "শেষ তারিখ"
 
 
 

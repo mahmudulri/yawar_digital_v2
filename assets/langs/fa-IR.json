@@ -263,8 +263,21 @@
 "TRANSFER_COMISSION": "کارمزد انتقال",
 "CREATE_TRANSFER_REQUEST": "ایجاد درخواست انتقال",
 "CLEAR_FILTER": "پاک کردن فیلتر",
-"ARE_YOU_SURE": "آیا مطمئن هستید؟"
-
+"ARE_YOU_SURE": "آیا مطمئن هستید؟",
+"UPDATE_NOW": "همین حالا به‌روزرسانی کنید",
+"CANCEL_ORDER": "لغو سفارش",
+"FILTER_TRANSACTION": "فیلتر تراکنش",
+"TYPE": "نوع",
+"ADMIN_TO_RESELLER": "از مدیر به نماینده",
+"RESELLER_TO_ADMIN": "از نماینده به مدیر",
+"ORDER": "سفارش",
+"MONEY_TRANSFER": "انتقال پول",
+"SELECT_START_DATE_FIRST": "لطفاً ابتدا تاریخ شروع را انتخاب کنید",
+"WARNING": "هشدار",
+"SELECT_CATEGORY": "انتخاب دسته‌بندی",
+"SELECT_PURPOSE": "انتخاب هدف",
+"START_DATE": "تاریخ شروع",
+"END_DATE": "تاریخ پایان"
 
 
 

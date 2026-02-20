@@ -187,345 +187,1362 @@ class _RechargeScreenState extends State<RechargeScreen> {
         placeOrderController.numberController.clear();
         return true;
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.defaultColor,
-        appBar: AppBar(
-          leading: GestureDetector(
-            onTap: () {
-              placeOrderController.numberController.clear();
-              Get.back();
-            },
-            child: Icon(Icons.arrow_back, color: Colors.white),
-          ),
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: AppColors.defaultColor,
-          elevation: 0.0,
-          centerTitle: true,
-          title: GestureDetector(
-            onTap: () {
-              print(box.read("maxlength"));
-            },
-            child: Text(
-              languageController.tr("RECHARGE"),
+          appBar: AppBar(
+            leading: GestureDetector(
+              onTap: () {
+                placeOrderController.numberController.clear();
+                Get.back();
+              },
+              child: Icon(Icons.arrow_back, color: Colors.white),
+            ),
+            backgroundColor: AppColors.defaultColor,
+            elevation: 0.0,
+            centerTitle: true,
+            title: GestureDetector(
+              onTap: () {
+                print(box.read("maxlength"));
+              },
+              child: Text(
+                languageController.tr("RECHARGE"),
 
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
-        body: Container(
-          height: screenHeight,
-          width: screenWidth,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: BoxDecoration(color: AppColors.defaultColor),
-                  child: Padding(
-                    padding: const EdgeInsets.all(13.0),
-                    child: ListView(
-                      children: [
-                        CustomTextField(
-                          placeOrderController:
-                              placeOrderController.numberController,
-                          // numberLength: widget.numberlength,
-                          languageData: languageController.tr(
-                            "ENTER_YOUR_NUMBER",
+          body: Container(
+            height: screenHeight,
+            width: screenWidth,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: BoxDecoration(color: AppColors.defaultColor),
+                    child: Padding(
+                      padding: const EdgeInsets.all(13.0),
+                      child: ListView(
+                        children: [
+                          CustomTextField(
+                            placeOrderController:
+                                placeOrderController.numberController,
+                            // numberLength: widget.numberlength,
+                            languageData: languageController.tr(
+                              "ENTER_YOUR_NUMBER",
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 20),
-                        Container(
-                          height: 50,
-                          color: Colors.transparent,
-                          width: screenWidth,
-                          child: Obx(() {
-                            // Check if the allserviceslist is not null and contains data
-                            final services =
-                                serviceController
-                                    .allserviceslist
-                                    .value
-                                    .data
-                                    ?.services ??
-                                [];
+                          SizedBox(height: 20),
+                          Container(
+                            height: 50,
+                            color: Colors.transparent,
+                            width: screenWidth,
+                            child: Obx(() {
+                              // Check if the allserviceslist is not null and contains data
+                              final services =
+                                  serviceController
+                                      .allserviceslist
+                                      .value
+                                      .data
+                                      ?.services ??
+                                  [];
 
-                            // Show all services if input is empty, otherwise filter
-                            final filteredServices = inputNumber.isEmpty
-                                ? services
-                                : services.where((service) {
-                                    return service.company?.companycodes?.any((
-                                          code,
-                                        ) {
-                                          final reservedDigit =
-                                              code.reservedDigit ?? '';
-                                          return inputNumber.startsWith(
-                                            reservedDigit,
-                                          );
-                                        }) ??
-                                        false;
-                                  }).toList();
-
-                            return serviceController.isLoading.value == false
-                                ? Center(
-                                    child: ListView.separated(
-                                      shrinkWrap: true,
-                                      separatorBuilder: (context, index) {
-                                        return SizedBox(width: 5);
-                                      },
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: filteredServices.length,
-                                      itemBuilder: (context, index) {
-                                        final data = filteredServices[index];
-
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              bundleController.initialpage = 1;
-                                              bundleController.finalList
-                                                  .clear();
-                                              selectedIndex = index;
-                                              box.write(
-                                                "company_id",
-                                                data.companyId,
+                              // Show all services if input is empty, otherwise filter
+                              final filteredServices = inputNumber.isEmpty
+                                  ? services
+                                  : services.where((service) {
+                                      return service.company?.companycodes?.any(
+                                            (code) {
+                                              final reservedDigit =
+                                                  code.reservedDigit ?? '';
+                                              return inputNumber.startsWith(
+                                                reservedDigit,
                                               );
-                                              bundleController
-                                                  .fetchallbundles();
-                                            });
-                                          },
-                                          child: Container(
-                                            height: 50,
-                                            width: 65,
-                                            decoration: BoxDecoration(
-                                              color: selectedIndex == index
-                                                  ? Color(0xff34495e)
-                                                  : Colors.grey.shade100,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                horizontal: 5,
-                                                vertical: 5,
+                                            },
+                                          ) ??
+                                          false;
+                                    }).toList();
+
+                              return serviceController.isLoading.value == false
+                                  ? Center(
+                                      child: ListView.separated(
+                                        shrinkWrap: true,
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(width: 5);
+                                        },
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: filteredServices.length,
+                                        itemBuilder: (context, index) {
+                                          final data = filteredServices[index];
+
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                bundleController.initialpage =
+                                                    1;
+                                                bundleController.finalList
+                                                    .clear();
+                                                selectedIndex = index;
+                                                box.write(
+                                                  "company_id",
+                                                  data.companyId,
+                                                );
+                                                bundleController
+                                                    .fetchallbundles();
+                                              });
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              width: 65,
+                                              decoration: BoxDecoration(
+                                                color: selectedIndex == index
+                                                    ? Color(0xff34495e)
+                                                    : Colors.grey.shade100,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
                                               ),
-                                              child: CachedNetworkImage(
-                                                imageUrl:
-                                                    data.company?.companyLogo ??
-                                                    '',
-                                                placeholder: (context, url) {
-                                                  print('Loading image: $url');
-                                                  return Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                          color: Colors.white,
-                                                        ),
-                                                  );
-                                                },
-                                                errorWidget: (context, url, error) {
-                                                  print(
-                                                    'Error loading image: $url, error: $error',
-                                                  );
-                                                  return Icon(Icons.error);
-                                                },
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 5,
+                                                  vertical: 5,
+                                                ),
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      data
+                                                          .company
+                                                          ?.companyLogo ??
+                                                      '',
+                                                  placeholder: (context, url) {
+                                                    print(
+                                                      'Loading image: $url',
+                                                    );
+                                                    return Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                            color: Colors.white,
+                                                          ),
+                                                    );
+                                                  },
+                                                  errorWidget:
+                                                      (context, url, error) {
+                                                        print(
+                                                          'Error loading image: $url, error: $error',
+                                                        );
+                                                        return Icon(
+                                                          Icons.error,
+                                                        );
+                                                      },
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : Center(
-                                    child: CircularProgressIndicator(
-                                      color: Colors.grey,
-                                      strokeWidth: 1.0,
-                                    ),
-                                  );
-                          }),
-                        ),
-                        SizedBox(height: 8),
-                        SizedBox(
-                          height: 30,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: duration.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    duration_selectedIndex = index;
-                                    box.write(
-                                      "validity_type",
-                                      duration[index]["Value"],
-                                    );
-                                    bundleController.initialpage = 1;
-                                    bundleController.finalList.clear();
-                                    bundleController.fetchallbundles();
-                                  });
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(right: 5),
-                                  decoration: BoxDecoration(),
-                                  height: 30,
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 5,
-                                        vertical: 2,
+                                          );
+                                        },
                                       ),
-                                      child: Text(
-                                        duration[index]["Name"]!,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: duration_selectedIndex == index
-                                              ? Colors.white
-                                              : Colors.black,
+                                    )
+                                  : Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.grey,
+                                        strokeWidth: 1.0,
+                                      ),
+                                    );
+                            }),
+                          ),
+                          SizedBox(height: 8),
+                          SizedBox(
+                            height: 30,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: duration.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      duration_selectedIndex = index;
+                                      box.write(
+                                        "validity_type",
+                                        duration[index]["Value"],
+                                      );
+                                      bundleController.initialpage = 1;
+                                      bundleController.finalList.clear();
+                                      bundleController.fetchallbundles();
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(),
+                                    height: 30,
+                                    child: Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                          vertical: 2,
+                                        ),
+                                        child: Text(
+                                          duration[index]["Name"]!,
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color:
+                                                duration_selectedIndex == index
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 9,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
+                Expanded(
+                  flex: 9,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25),
+                      ),
+                      color: Colors.white,
                     ),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(13.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(width: 1, color: Colors.grey),
-                          ),
-                          height: 50,
-                          width: screenWidth,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 15, right: 15),
-                            child: TextField(
-                              onChanged: (value) {
-                                bundleController.finalList.clear();
-                                bundleController.initialpage = 1;
-                                box.write("search_tag", value.toString());
-                                bundleController.fetchallbundles();
-                                print(value.toString());
-                              },
-                              decoration: InputDecoration(
-                                suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    // bundleController.finalList.clear();
-                                    // box.write("search_tag", "1.5");
-                                    // bundleController.fetchallbundles();
-                                  },
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.grey,
-                                    size: 30,
+                    child: Padding(
+                      padding: EdgeInsets.all(13.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(width: 1, color: Colors.grey),
+                            ),
+                            height: 50,
+                            width: screenWidth,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 15, right: 15),
+                              child: TextField(
+                                onChanged: (value) {
+                                  bundleController.finalList.clear();
+                                  bundleController.initialpage = 1;
+                                  box.write("search_tag", value.toString());
+                                  bundleController.fetchallbundles();
+                                  print(value.toString());
+                                },
+                                decoration: InputDecoration(
+                                  suffixIcon: GestureDetector(
+                                    onTap: () {
+                                      // bundleController.finalList.clear();
+                                      // box.write("search_tag", "1.5");
+                                      // bundleController.fetchallbundles();
+                                    },
+                                    child: Icon(
+                                      Icons.search,
+                                      color: Colors.grey,
+                                      size: 30,
+                                    ),
                                   ),
-                                ),
-                                border: InputBorder.none,
-                                hintText: languageController.tr("SEARCH"),
+                                  border: InputBorder.none,
+                                  hintText: languageController.tr("SEARCH"),
 
-                                hintStyle: TextStyle(fontSize: 14),
+                                  hintStyle: TextStyle(fontSize: 14),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 5),
-                        Obx(
-                          () => bundleController.isLoading.value == false
-                              ? Container(
-                                  child:
-                                      bundleController
-                                          .allbundleslist
-                                          .value
-                                          .data!
-                                          .bundles!
-                                          .isNotEmpty
-                                      ? SizedBox()
-                                      : Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Image.asset(
-                                                "assets/icons/empty.png",
-                                                height: 80,
-                                              ),
-                                              Text(
-                                                languageController.tr(
-                                                  "NO_DATA_FOUND",
+                          SizedBox(height: 5),
+                          Obx(
+                            () => bundleController.isLoading.value == false
+                                ? Container(
+                                    child:
+                                        bundleController
+                                            .allbundleslist
+                                            .value
+                                            .data!
+                                            .bundles!
+                                            .isNotEmpty
+                                        ? SizedBox()
+                                        : Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset(
+                                                  "assets/icons/empty.png",
+                                                  height: 80,
+                                                ),
+                                                Text(
+                                                  languageController.tr(
+                                                    "NO_DATA_FOUND",
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                  )
+                                : SizedBox(),
+                          ),
+                          Expanded(
+                            child: Obx(
+                              () =>
+                                  bundleController.isLoading.value == false &&
+                                      bundleController.finalList.isNotEmpty
+                                  ? RefreshIndicator(
+                                      onRefresh: refresh,
+                                      child: ListView.separated(
+                                        shrinkWrap: false,
+                                        physics:
+                                            AlwaysScrollableScrollPhysics(),
+                                        controller: scrollController,
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(height: 5);
+                                        },
+                                        itemCount:
+                                            bundleController.finalList.length,
+                                        itemBuilder: (context, index) {
+                                          final data =
+                                              bundleController.finalList[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              if (placeOrderController
+                                                  .numberController
+                                                  .text
+                                                  .isEmpty) {
+                                                Fluttertoast.showToast(
+                                                  msg: "Enter Number ",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.black,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0,
+                                                );
+                                              } else {
+                                                if (box.read("permission") ==
+                                                        "no" ||
+                                                    placeOrderController
+                                                            .numberController
+                                                            .text
+                                                            .length
+                                                            .toString() !=
+                                                        box
+                                                            .read("maxlength")
+                                                            .toString()) {
+                                                  Fluttertoast.showToast(
+                                                    msg:
+                                                        "Enter Correct Number ",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.black,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  );
+                                                  // Stop further execution if permission is "no"
+                                                } else {
+                                                  box.write(
+                                                    "bundleID",
+                                                    data.id.toString(),
+                                                  );
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                28,
+                                                              ),
+                                                        ),
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content: StatefulBuilder(
+                                                          builder: (context, setState) {
+                                                            return Container(
+                                                              decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      28,
+                                                                    ),
+                                                                gradient: LinearGradient(
+                                                                  begin: Alignment
+                                                                      .topCenter,
+                                                                  end: Alignment
+                                                                      .bottomCenter,
+                                                                  colors: [
+                                                                    Colors
+                                                                        .white,
+                                                                    Colors
+                                                                        .grey
+                                                                        .shade50,
+                                                                  ],
+                                                                ),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                          0.2,
+                                                                        ),
+                                                                    blurRadius:
+                                                                        30,
+                                                                    offset:
+                                                                        Offset(
+                                                                          0,
+                                                                          15,
+                                                                        ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              height: 480,
+                                                              width:
+                                                                  screenWidth,
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      28,
+                                                                    ),
+                                                                child: Obx(
+                                                                  () =>
+                                                                      placeOrderController
+                                                                              .isLoading
+                                                                              .value ==
+                                                                          false
+                                                                      ? ListView(
+                                                                          padding: EdgeInsets.all(
+                                                                            24,
+                                                                          ),
+                                                                          children: [
+                                                                            // Header Section with Company Logo & Info
+                                                                            Container(
+                                                                              padding: EdgeInsets.all(
+                                                                                20,
+                                                                              ),
+                                                                              decoration: BoxDecoration(
+                                                                                gradient: LinearGradient(
+                                                                                  colors: [
+                                                                                    AppColors.defaultColor.withOpacity(
+                                                                                      0.1,
+                                                                                    ),
+                                                                                    AppColors.defaultColor.withOpacity(
+                                                                                      0.05,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  20,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: AppColors.defaultColor.withOpacity(
+                                                                                    0.2,
+                                                                                  ),
+                                                                                  width: 1.5,
+                                                                                ),
+                                                                              ),
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  // Company Logo
+                                                                                  Container(
+                                                                                    height: 60,
+                                                                                    width: 60,
+                                                                                    padding: EdgeInsets.all(
+                                                                                      8,
+                                                                                    ),
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      shape: BoxShape.circle,
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(
+                                                                                          color: Colors.black.withOpacity(
+                                                                                            0.1,
+                                                                                          ),
+                                                                                          blurRadius: 10,
+                                                                                          offset: Offset(
+                                                                                            0,
+                                                                                            4,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                    child: ClipOval(
+                                                                                      child: CachedNetworkImage(
+                                                                                        imageUrl: data.service!.company!.companyLogo.toString(),
+                                                                                        fit: BoxFit.cover,
+                                                                                        errorWidget:
+                                                                                            (
+                                                                                              context,
+                                                                                              url,
+                                                                                              error,
+                                                                                            ) => Icon(
+                                                                                              Icons.business,
+                                                                                              color: Colors.grey.shade400,
+                                                                                              size: 30,
+                                                                                            ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 16,
+                                                                                  ),
+
+                                                                                  // Company Details
+                                                                                  Expanded(
+                                                                                    child: Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      children: [
+                                                                                        // Bundle Title
+                                                                                        Text(
+                                                                                          data.bundleTitle.toString(),
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 15,
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey.shade800,
+                                                                                          ),
+                                                                                          maxLines: 1,
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 8,
+                                                                                        ),
+
+                                                                                        // Validity Badge
+                                                                                        Container(
+                                                                                          padding: EdgeInsets.symmetric(
+                                                                                            horizontal: 12,
+                                                                                            vertical: 4,
+                                                                                          ),
+                                                                                          decoration: BoxDecoration(
+                                                                                            color:
+                                                                                                Color(
+                                                                                                  0xff826AF9,
+                                                                                                ).withOpacity(
+                                                                                                  0.15,
+                                                                                                ),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              8,
+                                                                                            ),
+                                                                                          ),
+                                                                                          child: Text(
+                                                                                            data.validityType.toString() ==
+                                                                                                    "unlimited"
+                                                                                                ? languageController.tr(
+                                                                                                    "UNLIMITED",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "monthly"
+                                                                                                ? languageController.tr(
+                                                                                                    "MONTHLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "weekly"
+                                                                                                ? languageController.tr(
+                                                                                                    "WEEKLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "daily"
+                                                                                                ? languageController.tr(
+                                                                                                    "DAILY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "hourly"
+                                                                                                ? languageController.tr(
+                                                                                                    "HOURLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "nightly"
+                                                                                                ? languageController.tr(
+                                                                                                    "NIGHTLY",
+                                                                                                  )
+                                                                                                : "",
+                                                                                            style: TextStyle(
+                                                                                              color: Color(
+                                                                                                0xff826AF9,
+                                                                                              ),
+                                                                                              fontSize: 11,
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 8,
+                                                                            ),
+
+                                                                            // Pricing Section
+                                                                            Container(
+                                                                              padding: EdgeInsets.all(
+                                                                                18,
+                                                                              ),
+                                                                              decoration: BoxDecoration(
+                                                                                color: Colors.white,
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  16,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: Colors.grey.shade200,
+                                                                                  width: 1.5,
+                                                                                ),
+                                                                                boxShadow: [
+                                                                                  BoxShadow(
+                                                                                    color: Colors.black.withOpacity(
+                                                                                      0.04,
+                                                                                    ),
+                                                                                    blurRadius: 10,
+                                                                                    offset: Offset(
+                                                                                      0,
+                                                                                      4,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              child: Column(
+                                                                                children: [
+                                                                                  // Buy Price
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        padding: EdgeInsets.all(
+                                                                                          8,
+                                                                                        ),
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: AppColors.defaultColor.withOpacity(
+                                                                                            0.1,
+                                                                                          ),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10,
+                                                                                          ),
+                                                                                        ),
+                                                                                        child: Icon(
+                                                                                          Icons.shopping_bag_outlined,
+                                                                                          color: AppColors.defaultColor,
+                                                                                          size: 18,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 12,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        languageController.tr(
+                                                                                          "BUY",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.grey.shade600,
+                                                                                          fontSize: 13,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                        ),
+                                                                                      ),
+                                                                                      Spacer(),
+                                                                                      PriceTextView(
+                                                                                        price: data.buyingPrice.toString(),
+                                                                                        textStyle: TextStyle(
+                                                                                          color: Colors.black87,
+                                                                                          fontSize: 15,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 4,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        box.read(
+                                                                                          "currency_code",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          fontSize: 12,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                          color: Colors.grey.shade600,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+
+                                                                                  Padding(
+                                                                                    padding: EdgeInsets.symmetric(
+                                                                                      vertical: 12,
+                                                                                    ),
+                                                                                    child: Divider(
+                                                                                      height: 1,
+                                                                                      thickness: 1.5,
+                                                                                      color: Colors.grey.shade200,
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  // Sell Price
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        padding: EdgeInsets.all(
+                                                                                          8,
+                                                                                        ),
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: Colors.green.shade50,
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10,
+                                                                                          ),
+                                                                                        ),
+                                                                                        child: Icon(
+                                                                                          Icons.sell_outlined,
+                                                                                          color: Colors.green.shade600,
+                                                                                          size: 18,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 12,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        languageController.tr(
+                                                                                          "SELL",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.grey.shade600,
+                                                                                          fontSize: 13,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                        ),
+                                                                                      ),
+                                                                                      Spacer(),
+                                                                                      PriceTextView(
+                                                                                        price: data.sellingPrice.toString(),
+
+                                                                                        textStyle: TextStyle(
+                                                                                          color: Colors.green.shade600,
+                                                                                          fontSize: 15,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 4,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        box.read(
+                                                                                          "currency_code",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          fontSize: 12,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                          color: Colors.grey.shade600,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+
+                                                                            // Container(
+                                                                            //   padding:
+                                                                            //       EdgeInsets.all(
+                                                                            //         16,
+                                                                            //       ),
+                                                                            //   decoration: BoxDecoration(
+                                                                            //     color: Colors
+                                                                            //         .blue
+                                                                            //         .shade50,
+                                                                            //     borderRadius: BorderRadius.circular(
+                                                                            //       14,
+                                                                            //     ),
+                                                                            //     border: Border.all(
+                                                                            //       color:
+                                                                            //           Colors.blue.shade100,
+                                                                            //       width:
+                                                                            //           1,
+                                                                            //     ),
+                                                                            //   ),
+                                                                            //   child: Row(
+                                                                            //     crossAxisAlignment:
+                                                                            //         CrossAxisAlignment.start,
+                                                                            //     children: [
+                                                                            //       Icon(
+                                                                            //         Icons.info_outline_rounded,
+                                                                            //         color: Colors.blue.shade600,
+                                                                            //         size: 20,
+                                                                            //       ),
+                                                                            //       SizedBox(
+                                                                            //         width: 10,
+                                                                            //       ),
+                                                                            //       Expanded(
+                                                                            //         child: Text(
+                                                                            //           "If there is any explanation about the package, it will be included in this section...",
+                                                                            //           style: TextStyle(
+                                                                            //             color: Colors.grey.shade700,
+                                                                            //             fontSize: 12,
+                                                                            //             height: 1.4,
+                                                                            //           ),
+                                                                            //         ),
+                                                                            //       ),
+                                                                            //     ],
+                                                                            //   ),
+                                                                            // ),
+
+                                                                            // SizedBox(
+                                                                            //   height:
+                                                                            //       16,
+                                                                            // ),
+
+                                                                            // Phone Number Display
+                                                                            Container(
+                                                                              padding: EdgeInsets.symmetric(
+                                                                                horizontal: 16,
+                                                                                vertical: 12,
+                                                                              ),
+                                                                              decoration: BoxDecoration(
+                                                                                color: Colors.grey.shade50,
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  12,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: Colors.grey.shade200,
+                                                                                  width: 1,
+                                                                                ),
+                                                                              ),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    languageController.tr(
+                                                                                      "PHONENUMBER",
+                                                                                    ),
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.grey.shade600,
+                                                                                      fontSize: 13,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                                  ),
+                                                                                  Text(
+                                                                                    placeOrderController.numberController.text.toString(),
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.grey.shade800,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+
+                                                                            // PIN Input
+                                                                            Align(
+                                                                              alignment: Alignment.center,
+                                                                              child: Container(
+                                                                                height: 60,
+                                                                                width: 140,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Colors.white,
+                                                                                  border: Border.all(
+                                                                                    width: 2,
+                                                                                    color: Colors.grey.shade300,
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    16,
+                                                                                  ),
+                                                                                  boxShadow: [
+                                                                                    BoxShadow(
+                                                                                      color: Colors.black.withOpacity(
+                                                                                        0.05,
+                                                                                      ),
+                                                                                      blurRadius: 10,
+                                                                                      offset: Offset(
+                                                                                        0,
+                                                                                        4,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.lock_outline_rounded,
+                                                                                      color: AppColors.defaultColor,
+                                                                                      size: 18,
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 4,
+                                                                                    ),
+                                                                                    TextField(
+                                                                                      maxLength: 4,
+                                                                                      controller: placeOrderController.pinController,
+                                                                                      keyboardType: TextInputType.phone,
+                                                                                      textAlign: TextAlign.center,
+                                                                                      obscureText: true,
+                                                                                      decoration: InputDecoration(
+                                                                                        counterText: '',
+                                                                                        hintText: languageController.tr(
+                                                                                          "PIN",
+                                                                                        ),
+                                                                                        hintStyle: TextStyle(
+                                                                                          color: Colors.grey.shade400,
+                                                                                          fontSize: 13,
+                                                                                        ),
+                                                                                        border: InputBorder.none,
+                                                                                        isDense: true,
+                                                                                        contentPadding: EdgeInsets.zero,
+                                                                                      ),
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 20,
+                                                                            ),
+
+                                                                            // Action Buttons
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 3,
+                                                                                  child: GestureDetector(
+                                                                                    onTap: () async {
+                                                                                      if (!placeOrderController.isLoading.value) {
+                                                                                        if (placeOrderController.pinController.text.isEmpty ||
+                                                                                            placeOrderController.pinController.text.length !=
+                                                                                                4) {
+                                                                                          Fluttertoast.showToast(
+                                                                                            msg: languageController.tr(
+                                                                                              "ENTER_YOUR_PIN",
+                                                                                            ),
+                                                                                            toastLength: Toast.LENGTH_SHORT,
+                                                                                            gravity: ToastGravity.BOTTOM,
+                                                                                            timeInSecForIosWeb: 1,
+                                                                                            backgroundColor: Colors.black,
+                                                                                            textColor: Colors.white,
+                                                                                            fontSize: 16.0,
+                                                                                          );
+                                                                                        } else {
+                                                                                          await placeOrderController.placeOrder(
+                                                                                            context,
+                                                                                          );
+                                                                                          if (placeOrderController.loadsuccess.value ==
+                                                                                              true) {
+                                                                                            print(
+                                                                                              "recharge Done...........",
+                                                                                            );
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 52,
+                                                                                      decoration: BoxDecoration(
+                                                                                        gradient: LinearGradient(
+                                                                                          colors: [
+                                                                                            Colors.green.shade400,
+                                                                                            Colors.green.shade600,
+                                                                                          ],
+                                                                                        ),
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          16,
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(
+                                                                                            color: Colors.green.withOpacity(
+                                                                                              0.3,
+                                                                                            ),
+                                                                                            blurRadius: 12,
+                                                                                            offset: Offset(
+                                                                                              0,
+                                                                                              6,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        children: [
+                                                                                          Icon(
+                                                                                            Icons.check_circle_rounded,
+                                                                                            color: Colors.white,
+                                                                                            size: 20,
+                                                                                          ),
+                                                                                          SizedBox(
+                                                                                            width: 8,
+                                                                                          ),
+                                                                                          Text(
+                                                                                            languageController.tr(
+                                                                                              "CONFIRMATION",
+                                                                                            ),
+                                                                                            style: TextStyle(
+                                                                                              color: Colors.white,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 15,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                SizedBox(
+                                                                                  width: 12,
+                                                                                ),
+                                                                                Expanded(
+                                                                                  flex: 2,
+                                                                                  child: GestureDetector(
+                                                                                    onTap: () {
+                                                                                      Navigator.pop(
+                                                                                        context,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 52,
+                                                                                      decoration: BoxDecoration(
+                                                                                        color: Colors.white,
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          16,
+                                                                                        ),
+                                                                                        border: Border.all(
+                                                                                          width: 2,
+                                                                                          color: Colors.grey.shade300,
+                                                                                        ),
+                                                                                      ),
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        children: [
+                                                                                          Icon(
+                                                                                            Icons.close_rounded,
+                                                                                            color: Colors.grey.shade700,
+                                                                                            size: 20,
+                                                                                          ),
+                                                                                          SizedBox(
+                                                                                            width: 6,
+                                                                                          ),
+                                                                                          Text(
+                                                                                            languageController.tr(
+                                                                                              "CANCEL",
+                                                                                            ),
+                                                                                            style: TextStyle(
+                                                                                              color: Colors.grey.shade700,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 15,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      : Center(
+                                                                          child: Container(
+                                                                            height:
+                                                                                250,
+                                                                            width:
+                                                                                250,
+                                                                            child: Lottie.asset(
+                                                                              'assets/loties/recharge.json',
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                            },
+                                            child: Container(
+                                              width: screenWidth,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: AppColors
+                                                    .listbuilderboxColor,
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.grey,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                )
-                              : SizedBox(),
-                        ),
-                        Expanded(
-                          child: Obx(
-                            () =>
-                                bundleController.isLoading.value == false &&
-                                    bundleController.finalList.isNotEmpty
-                                ? RefreshIndicator(
-                                    onRefresh: refresh,
-                                    child: ListView.separated(
-                                      shrinkWrap: false,
-                                      physics: AlwaysScrollableScrollPhysics(),
-                                      controller: scrollController,
-                                      separatorBuilder: (context, index) {
-                                        return SizedBox(height: 5);
-                                      },
-                                      itemCount:
-                                          bundleController.finalList.length,
-                                      itemBuilder: (context, index) {
-                                        final data =
-                                            bundleController.finalList[index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            if (placeOrderController
-                                                .numberController
-                                                .text
-                                                .isEmpty) {
-                                              Fluttertoast.showToast(
-                                                msg: "Enter Number ",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 1,
-                                                backgroundColor: Colors.black,
-                                                textColor: Colors.white,
-                                                fontSize: 16.0,
-                                              );
-                                            } else {
-                                              if (box.read("permission") ==
-                                                      "no" ||
-                                                  placeOrderController
-                                                          .numberController
-                                                          .text
-                                                          .length
-                                                          .toString() !=
-                                                      box
-                                                          .read("maxlength")
-                                                          .toString()) {
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  5.0,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image:
+                                                              CachedNetworkImageProvider(
+                                                                (data
+                                                                    .service!
+                                                                    .company!
+                                                                    .companyLogo
+                                                                    .toString()),
+                                                              ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 10,
+                                                            ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              data.bundleTitle
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              data.validityType
+                                                                          .toString() ==
+                                                                      "unlimited"
+                                                                  ? languageController.tr(
+                                                                      "UNLIMITED",
+                                                                    )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "monthly"
+                                                                  ? languageController.tr(
+                                                                      "MONTHLY",
+                                                                    )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "weekly"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "WEEKLY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "daily"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "DAILY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "hourly"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "HOURLY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "nightly"
+                                                                  ? languageController.tr(
+                                                                      "NIGHTLY",
+                                                                    )
+                                                                  : "",
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 12,
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 2),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                languageController
+                                                                    .tr("SELL"),
+
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              PriceTextView(
+                                                                price: data
+                                                                    .sellingPrice
+                                                                    .toString(),
+                                                                textStyle: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 2,
+                                                              ),
+                                                              Text(
+                                                                " ${box.read("currency_code")}",
+                                                                style: TextStyle(
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                languageController
+                                                                    .tr("BUY"),
+
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              PriceTextView(
+                                                                price: data
+                                                                    .buyingPrice
+                                                                    .toString(),
+                                                                textStyle: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+
+                                                              Text(
+                                                                " ${box.read("currency_code")}",
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  : bundleController.finalList.isEmpty
+                                  ? SizedBox()
+                                  : RefreshIndicator(
+                                      onRefresh: refresh,
+                                      child: ListView.separated(
+                                        shrinkWrap: false,
+                                        physics:
+                                            AlwaysScrollableScrollPhysics(),
+                                        controller: scrollController,
+                                        separatorBuilder: (context, index) {
+                                          return SizedBox(height: 5);
+                                        },
+                                        itemCount:
+                                            bundleController.finalList.length,
+                                        itemBuilder: (context, index) {
+                                          final data =
+                                              bundleController.finalList[index];
+                                          return GestureDetector(
+                                            onTap: () {
+                                              if (placeOrderController
+                                                  .numberController
+                                                  .text
+                                                  .isEmpty) {
                                                 Fluttertoast.showToast(
-                                                  msg: "Enter Correct Number ",
+                                                  msg: "Enter Number ",
                                                   toastLength:
                                                       Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.BOTTOM,
@@ -534,525 +1551,286 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                   textColor: Colors.white,
                                                   fontSize: 16.0,
                                                 );
-                                                // Stop further execution if permission is "no"
                                               } else {
-                                                box.write(
-                                                  "bundleID",
-                                                  data.id.toString(),
-                                                );
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              28,
-                                                            ),
-                                                      ),
-                                                      contentPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      content: StatefulBuilder(
-                                                        builder: (context, setState) {
-                                                          return Container(
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    28,
+                                                if (box.read("permission") ==
+                                                        "no" ||
+                                                    placeOrderController
+                                                            .numberController
+                                                            .text
+                                                            .length
+                                                            .toString() !=
+                                                        box
+                                                            .read("maxlength")
+                                                            .toString()) {
+                                                  Fluttertoast.showToast(
+                                                    msg:
+                                                        "Enter Correct Number ",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.black,
+                                                    textColor: Colors.white,
+                                                    fontSize: 16.0,
+                                                  );
+                                                  // Stop further execution if permission is "no"
+                                                } else {
+                                                  box.write(
+                                                    "bundleID",
+                                                    data.id.toString(),
+                                                  );
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                28,
+                                                              ),
+                                                        ),
+                                                        contentPadding:
+                                                            EdgeInsets.zero,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        content: StatefulBuilder(
+                                                          builder: (context, setState) {
+                                                            return Container(
+                                                              decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      28,
+                                                                    ),
+                                                                gradient: LinearGradient(
+                                                                  begin: Alignment
+                                                                      .topCenter,
+                                                                  end: Alignment
+                                                                      .bottomCenter,
+                                                                  colors: [
+                                                                    Colors
+                                                                        .white,
+                                                                    Colors
+                                                                        .grey
+                                                                        .shade50,
+                                                                  ],
+                                                                ),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                          0.2,
+                                                                        ),
+                                                                    blurRadius:
+                                                                        30,
+                                                                    offset:
+                                                                        Offset(
+                                                                          0,
+                                                                          15,
+                                                                        ),
                                                                   ),
-                                                              gradient: LinearGradient(
-                                                                begin: Alignment
-                                                                    .topCenter,
-                                                                end: Alignment
-                                                                    .bottomCenter,
-                                                                colors: [
-                                                                  Colors.white,
-                                                                  Colors
-                                                                      .grey
-                                                                      .shade50,
                                                                 ],
                                                               ),
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                        0.2,
-                                                                      ),
-                                                                  blurRadius:
-                                                                      30,
-                                                                  offset:
-                                                                      Offset(
-                                                                        0,
-                                                                        15,
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            height: 480,
-                                                            width: screenWidth,
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    28,
-                                                                  ),
-                                                              child: Obx(
-                                                                () =>
-                                                                    placeOrderController
-                                                                            .isLoading
-                                                                            .value ==
-                                                                        false
-                                                                    ? ListView(
-                                                                        padding:
-                                                                            EdgeInsets.all(
-                                                                              24,
-                                                                            ),
-                                                                        children: [
-                                                                          // Header Section with Company Logo & Info
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              20,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              gradient: LinearGradient(
-                                                                                colors: [
-                                                                                  AppColors.defaultColor.withOpacity(
-                                                                                    0.1,
+                                                              height: 480,
+                                                              width:
+                                                                  screenWidth,
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      28,
+                                                                    ),
+                                                                child: Obx(
+                                                                  () =>
+                                                                      placeOrderController
+                                                                              .isLoading
+                                                                              .value ==
+                                                                          false
+                                                                      ? ListView(
+                                                                          padding: EdgeInsets.all(
+                                                                            24,
+                                                                          ),
+                                                                          children: [
+                                                                            // Header Section with Company Logo & Info
+                                                                            Container(
+                                                                              padding: EdgeInsets.all(
+                                                                                20,
+                                                                              ),
+                                                                              decoration: BoxDecoration(
+                                                                                gradient: LinearGradient(
+                                                                                  colors: [
+                                                                                    AppColors.defaultColor.withOpacity(
+                                                                                      0.1,
+                                                                                    ),
+                                                                                    AppColors.defaultColor.withOpacity(
+                                                                                      0.05,
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  20,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: AppColors.defaultColor.withOpacity(
+                                                                                    0.2,
                                                                                   ),
-                                                                                  AppColors.defaultColor.withOpacity(
-                                                                                    0.05,
+                                                                                  width: 1.5,
+                                                                                ),
+                                                                              ),
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  // Company Logo
+                                                                                  Container(
+                                                                                    height: 60,
+                                                                                    width: 60,
+                                                                                    padding: EdgeInsets.all(
+                                                                                      8,
+                                                                                    ),
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      shape: BoxShape.circle,
+                                                                                      boxShadow: [
+                                                                                        BoxShadow(
+                                                                                          color: Colors.black.withOpacity(
+                                                                                            0.1,
+                                                                                          ),
+                                                                                          blurRadius: 10,
+                                                                                          offset: Offset(
+                                                                                            0,
+                                                                                            4,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                    child: ClipOval(
+                                                                                      child: CachedNetworkImage(
+                                                                                        imageUrl: data.service!.company!.companyLogo.toString(),
+                                                                                        fit: BoxFit.cover,
+                                                                                        errorWidget:
+                                                                                            (
+                                                                                              context,
+                                                                                              url,
+                                                                                              error,
+                                                                                            ) => Icon(
+                                                                                              Icons.business,
+                                                                                              color: Colors.grey.shade400,
+                                                                                              size: 30,
+                                                                                            ),
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(
+                                                                                    width: 16,
+                                                                                  ),
+
+                                                                                  // Company Details
+                                                                                  Expanded(
+                                                                                    child: Column(
+                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      children: [
+                                                                                        // Bundle Title
+                                                                                        Text(
+                                                                                          data.bundleTitle.toString(),
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 15,
+                                                                                            fontWeight: FontWeight.bold,
+                                                                                            color: Colors.grey.shade800,
+                                                                                          ),
+                                                                                          maxLines: 1,
+                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                        ),
+                                                                                        SizedBox(
+                                                                                          height: 8,
+                                                                                        ),
+
+                                                                                        // Validity Badge
+                                                                                        Container(
+                                                                                          padding: EdgeInsets.symmetric(
+                                                                                            horizontal: 12,
+                                                                                            vertical: 4,
+                                                                                          ),
+                                                                                          decoration: BoxDecoration(
+                                                                                            color:
+                                                                                                Color(
+                                                                                                  0xff826AF9,
+                                                                                                ).withOpacity(
+                                                                                                  0.15,
+                                                                                                ),
+                                                                                            borderRadius: BorderRadius.circular(
+                                                                                              8,
+                                                                                            ),
+                                                                                          ),
+                                                                                          child: Text(
+                                                                                            data.validityType.toString() ==
+                                                                                                    "unlimited"
+                                                                                                ? languageController.tr(
+                                                                                                    "UNLIMITED",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "monthly"
+                                                                                                ? languageController.tr(
+                                                                                                    "MONTHLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "weekly"
+                                                                                                ? languageController.tr(
+                                                                                                    "WEEKLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "daily"
+                                                                                                ? languageController.tr(
+                                                                                                    "DAILY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "hourly"
+                                                                                                ? languageController.tr(
+                                                                                                    "HOURLY",
+                                                                                                  )
+                                                                                                : data.validityType.toString() ==
+                                                                                                      "nightly"
+                                                                                                ? languageController.tr(
+                                                                                                    "NIGHTLY",
+                                                                                                  )
+                                                                                                : "",
+                                                                                            style: TextStyle(
+                                                                                              color: Color(
+                                                                                                0xff826AF9,
+                                                                                              ),
+                                                                                              fontSize: 11,
+                                                                                              fontWeight: FontWeight.w600,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
                                                                                 ],
                                                                               ),
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                20,
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 8,
+                                                                            ),
+
+                                                                            // Pricing Section
+                                                                            Container(
+                                                                              padding: EdgeInsets.all(
+                                                                                18,
                                                                               ),
-                                                                              border: Border.all(
-                                                                                color: AppColors.defaultColor.withOpacity(
-                                                                                  0.2,
-                                                                                ),
-                                                                                width: 1.5,
-                                                                              ),
-                                                                            ),
-                                                                            child: Row(
-                                                                              children: [
-                                                                                // Company Logo
-                                                                                Container(
-                                                                                  height: 60,
-                                                                                  width: 60,
-                                                                                  padding: EdgeInsets.all(
-                                                                                    8,
-                                                                                  ),
-                                                                                  decoration: BoxDecoration(
-                                                                                    color: Colors.white,
-                                                                                    shape: BoxShape.circle,
-                                                                                    boxShadow: [
-                                                                                      BoxShadow(
-                                                                                        color: Colors.black.withOpacity(
-                                                                                          0.1,
-                                                                                        ),
-                                                                                        blurRadius: 10,
-                                                                                        offset: Offset(
-                                                                                          0,
-                                                                                          4,
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                  child: ClipOval(
-                                                                                    child: CachedNetworkImage(
-                                                                                      imageUrl: data.service!.company!.companyLogo.toString(),
-                                                                                      fit: BoxFit.cover,
-                                                                                      errorWidget:
-                                                                                          (
-                                                                                            context,
-                                                                                            url,
-                                                                                            error,
-                                                                                          ) => Icon(
-                                                                                            Icons.business,
-                                                                                            color: Colors.grey.shade400,
-                                                                                            size: 30,
-                                                                                          ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                                SizedBox(
-                                                                                  width: 16,
-                                                                                ),
-
-                                                                                // Company Details
-                                                                                Expanded(
-                                                                                  child: Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      // Bundle Title
-                                                                                      Text(
-                                                                                        data.bundleTitle.toString(),
-                                                                                        style: TextStyle(
-                                                                                          fontSize: 15,
-                                                                                          fontWeight: FontWeight.bold,
-                                                                                          color: Colors.grey.shade800,
-                                                                                        ),
-                                                                                        maxLines: 1,
-                                                                                        overflow: TextOverflow.ellipsis,
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        height: 8,
-                                                                                      ),
-
-                                                                                      // Validity Badge
-                                                                                      Container(
-                                                                                        padding: EdgeInsets.symmetric(
-                                                                                          horizontal: 12,
-                                                                                          vertical: 4,
-                                                                                        ),
-                                                                                        decoration: BoxDecoration(
-                                                                                          color:
-                                                                                              Color(
-                                                                                                0xff826AF9,
-                                                                                              ).withOpacity(
-                                                                                                0.15,
-                                                                                              ),
-                                                                                          borderRadius: BorderRadius.circular(
-                                                                                            8,
-                                                                                          ),
-                                                                                        ),
-                                                                                        child: Text(
-                                                                                          data.validityType.toString() ==
-                                                                                                  "unlimited"
-                                                                                              ? languageController.tr(
-                                                                                                  "UNLIMITED",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "monthly"
-                                                                                              ? languageController.tr(
-                                                                                                  "MONTHLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "weekly"
-                                                                                              ? languageController.tr(
-                                                                                                  "WEEKLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "daily"
-                                                                                              ? languageController.tr(
-                                                                                                  "DAILY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "hourly"
-                                                                                              ? languageController.tr(
-                                                                                                  "HOURLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "nightly"
-                                                                                              ? languageController.tr(
-                                                                                                  "NIGHTLY",
-                                                                                                )
-                                                                                              : "",
-                                                                                          style: TextStyle(
-                                                                                            color: Color(
-                                                                                              0xff826AF9,
-                                                                                            ),
-                                                                                            fontSize: 11,
-                                                                                            fontWeight: FontWeight.w600,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                8,
-                                                                          ),
-
-                                                                          // Pricing Section
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              18,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.white,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                16,
-                                                                              ),
-                                                                              border: Border.all(
-                                                                                color: Colors.grey.shade200,
-                                                                                width: 1.5,
-                                                                              ),
-                                                                              boxShadow: [
-                                                                                BoxShadow(
-                                                                                  color: Colors.black.withOpacity(
-                                                                                    0.04,
-                                                                                  ),
-                                                                                  blurRadius: 10,
-                                                                                  offset: Offset(
-                                                                                    0,
-                                                                                    4,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            child: Column(
-                                                                              children: [
-                                                                                // Buy Price
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      padding: EdgeInsets.all(
-                                                                                        8,
-                                                                                      ),
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: AppColors.defaultColor.withOpacity(
-                                                                                          0.1,
-                                                                                        ),
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          10,
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: Icon(
-                                                                                        Icons.shopping_bag_outlined,
-                                                                                        color: AppColors.defaultColor,
-                                                                                        size: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 12,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      languageController.tr(
-                                                                                        "BUY",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.grey.shade600,
-                                                                                        fontSize: 13,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Spacer(),
-                                                                                    PriceTextView(
-                                                                                      price: data.buyingPrice.toString(),
-                                                                                      textStyle: TextStyle(
-                                                                                        color: Colors.black87,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      box.read(
-                                                                                        "currency_code",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: Colors.grey.shade600,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.symmetric(
-                                                                                    vertical: 12,
-                                                                                  ),
-                                                                                  child: Divider(
-                                                                                    height: 1,
-                                                                                    thickness: 1.5,
-                                                                                    color: Colors.grey.shade200,
-                                                                                  ),
-                                                                                ),
-
-                                                                                // Sell Price
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      padding: EdgeInsets.all(
-                                                                                        8,
-                                                                                      ),
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: Colors.green.shade50,
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          10,
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: Icon(
-                                                                                        Icons.sell_outlined,
-                                                                                        color: Colors.green.shade600,
-                                                                                        size: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 12,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      languageController.tr(
-                                                                                        "SELL",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.grey.shade600,
-                                                                                        fontSize: 13,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Spacer(),
-                                                                                    PriceTextView(
-                                                                                      price: data.sellingPrice.toString(),
-
-                                                                                      textStyle: TextStyle(
-                                                                                        color: Colors.green.shade600,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      box.read(
-                                                                                        "currency_code",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: Colors.grey.shade600,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-
-                                                                          // Container(
-                                                                          //   padding:
-                                                                          //       EdgeInsets.all(
-                                                                          //         16,
-                                                                          //       ),
-                                                                          //   decoration: BoxDecoration(
-                                                                          //     color: Colors
-                                                                          //         .blue
-                                                                          //         .shade50,
-                                                                          //     borderRadius: BorderRadius.circular(
-                                                                          //       14,
-                                                                          //     ),
-                                                                          //     border: Border.all(
-                                                                          //       color:
-                                                                          //           Colors.blue.shade100,
-                                                                          //       width:
-                                                                          //           1,
-                                                                          //     ),
-                                                                          //   ),
-                                                                          //   child: Row(
-                                                                          //     crossAxisAlignment:
-                                                                          //         CrossAxisAlignment.start,
-                                                                          //     children: [
-                                                                          //       Icon(
-                                                                          //         Icons.info_outline_rounded,
-                                                                          //         color: Colors.blue.shade600,
-                                                                          //         size: 20,
-                                                                          //       ),
-                                                                          //       SizedBox(
-                                                                          //         width: 10,
-                                                                          //       ),
-                                                                          //       Expanded(
-                                                                          //         child: Text(
-                                                                          //           "If there is any explanation about the package, it will be included in this section...",
-                                                                          //           style: TextStyle(
-                                                                          //             color: Colors.grey.shade700,
-                                                                          //             fontSize: 12,
-                                                                          //             height: 1.4,
-                                                                          //           ),
-                                                                          //         ),
-                                                                          //       ),
-                                                                          //     ],
-                                                                          //   ),
-                                                                          // ),
-
-                                                                          // SizedBox(
-                                                                          //   height:
-                                                                          //       16,
-                                                                          // ),
-
-                                                                          // Phone Number Display
-                                                                          Container(
-                                                                            padding: EdgeInsets.symmetric(
-                                                                              horizontal: 16,
-                                                                              vertical: 12,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.grey.shade50,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                12,
-                                                                              ),
-                                                                              border: Border.all(
-                                                                                color: Colors.grey.shade200,
-                                                                                width: 1,
-                                                                              ),
-                                                                            ),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                Text(
-                                                                                  languageController.tr(
-                                                                                    "PHONENUMBER",
-                                                                                  ),
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.grey.shade600,
-                                                                                    fontSize: 13,
-                                                                                    fontWeight: FontWeight.w500,
-                                                                                  ),
-                                                                                ),
-                                                                                Text(
-                                                                                  placeOrderController.numberController.text.toString(),
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.grey.shade800,
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-
-                                                                          // PIN Input
-                                                                          Align(
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            child: Container(
-                                                                              height: 60,
-                                                                              width: 140,
                                                                               decoration: BoxDecoration(
                                                                                 color: Colors.white,
-                                                                                border: Border.all(
-                                                                                  width: 2,
-                                                                                  color: Colors.grey.shade300,
-                                                                                ),
                                                                                 borderRadius: BorderRadius.circular(
                                                                                   16,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: Colors.grey.shade200,
+                                                                                  width: 1.5,
                                                                                 ),
                                                                                 boxShadow: [
                                                                                   BoxShadow(
                                                                                     color: Colors.black.withOpacity(
-                                                                                      0.05,
+                                                                                      0.04,
                                                                                     ),
                                                                                     blurRadius: 10,
                                                                                     offset: Offset(
@@ -1063,1493 +1841,729 @@ class _RechargeScreenState extends State<RechargeScreen> {
                                                                                 ],
                                                                               ),
                                                                               child: Column(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
                                                                                 children: [
-                                                                                  Icon(
-                                                                                    Icons.lock_outline_rounded,
-                                                                                    color: AppColors.defaultColor,
-                                                                                    size: 18,
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 4,
-                                                                                  ),
-                                                                                  TextField(
-                                                                                    maxLength: 4,
-                                                                                    controller: placeOrderController.pinController,
-                                                                                    keyboardType: TextInputType.phone,
-                                                                                    textAlign: TextAlign.center,
-                                                                                    obscureText: true,
-                                                                                    decoration: InputDecoration(
-                                                                                      counterText: '',
-                                                                                      hintText: languageController.tr(
-                                                                                        "PIN",
+                                                                                  // Buy Price
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        padding: EdgeInsets.all(
+                                                                                          8,
+                                                                                        ),
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: AppColors.defaultColor.withOpacity(
+                                                                                            0.1,
+                                                                                          ),
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10,
+                                                                                          ),
+                                                                                        ),
+                                                                                        child: Icon(
+                                                                                          Icons.shopping_bag_outlined,
+                                                                                          color: AppColors.defaultColor,
+                                                                                          size: 18,
+                                                                                        ),
                                                                                       ),
-                                                                                      hintStyle: TextStyle(
-                                                                                        color: Colors.grey.shade400,
-                                                                                        fontSize: 13,
+                                                                                      SizedBox(
+                                                                                        width: 12,
                                                                                       ),
-                                                                                      border: InputBorder.none,
-                                                                                      isDense: true,
-                                                                                      contentPadding: EdgeInsets.zero,
-                                                                                    ),
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 18,
-                                                                                      fontWeight: FontWeight.bold,
-                                                                                      letterSpacing: 8,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                20,
-                                                                          ),
-
-                                                                          // Action Buttons
-                                                                          Row(
-                                                                            children: [
-                                                                              Expanded(
-                                                                                flex: 3,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () async {
-                                                                                    if (!placeOrderController.isLoading.value) {
-                                                                                      if (placeOrderController.pinController.text.isEmpty ||
-                                                                                          placeOrderController.pinController.text.length !=
-                                                                                              4) {
-                                                                                        Fluttertoast.showToast(
-                                                                                          msg: languageController.tr(
-                                                                                            "ENTER_YOUR_PIN",
-                                                                                          ),
-                                                                                          toastLength: Toast.LENGTH_SHORT,
-                                                                                          gravity: ToastGravity.BOTTOM,
-                                                                                          timeInSecForIosWeb: 1,
-                                                                                          backgroundColor: Colors.black,
-                                                                                          textColor: Colors.white,
-                                                                                          fontSize: 16.0,
-                                                                                        );
-                                                                                      } else {
-                                                                                        await placeOrderController.placeOrder(
-                                                                                          context,
-                                                                                        );
-                                                                                        if (placeOrderController.loadsuccess.value ==
-                                                                                            true) {
-                                                                                          print(
-                                                                                            "recharge Done...........",
-                                                                                          );
-                                                                                        }
-                                                                                      }
-                                                                                    }
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 52,
-                                                                                    decoration: BoxDecoration(
-                                                                                      gradient: LinearGradient(
-                                                                                        colors: [
-                                                                                          Colors.green.shade400,
-                                                                                          Colors.green.shade600,
-                                                                                        ],
+                                                                                      Text(
+                                                                                        languageController.tr(
+                                                                                          "BUY",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.grey.shade600,
+                                                                                          fontSize: 13,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                        ),
                                                                                       ),
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        16,
+                                                                                      Spacer(),
+                                                                                      PriceTextView(
+                                                                                        price: data.buyingPrice.toString(),
+                                                                                        textStyle: TextStyle(
+                                                                                          color: Colors.black87,
+                                                                                          fontSize: 15,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
                                                                                       ),
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(
-                                                                                          color: Colors.green.withOpacity(
-                                                                                            0.3,
-                                                                                          ),
-                                                                                          blurRadius: 12,
-                                                                                          offset: Offset(
-                                                                                            0,
-                                                                                            6,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      children: [
-                                                                                        Icon(
-                                                                                          Icons.check_circle_rounded,
-                                                                                          color: Colors.white,
-                                                                                          size: 20,
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          width: 8,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          languageController.tr(
-                                                                                            "CONFIRMATION",
-                                                                                          ),
-                                                                                          style: TextStyle(
-                                                                                            color: Colors.white,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: 12,
-                                                                              ),
-                                                                              Expanded(
-                                                                                flex: 2,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () {
-                                                                                    Navigator.pop(
-                                                                                      context,
-                                                                                    );
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 52,
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: Colors.white,
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        16,
+                                                                                      SizedBox(
+                                                                                        width: 4,
                                                                                       ),
-                                                                                      border: Border.all(
-                                                                                        width: 2,
-                                                                                        color: Colors.grey.shade300,
-                                                                                      ),
-                                                                                    ),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      children: [
-                                                                                        Icon(
-                                                                                          Icons.close_rounded,
-                                                                                          color: Colors.grey.shade700,
-                                                                                          size: 20,
+                                                                                      Text(
+                                                                                        box.read(
+                                                                                          "currency_code",
                                                                                         ),
-                                                                                        SizedBox(
-                                                                                          width: 6,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          languageController.tr(
-                                                                                            "CANCEL",
-                                                                                          ),
-                                                                                          style: TextStyle(
-                                                                                            color: Colors.grey.shade700,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      )
-                                                                    : Center(
-                                                                        child: Container(
-                                                                          height:
-                                                                              250,
-                                                                          width:
-                                                                              250,
-                                                                          child: Lottie.asset(
-                                                                            'assets/loties/recharge.json',
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              }
-                                            }
-                                          },
-                                          child: Container(
-                                            width: screenWidth,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color:
-                                                  AppColors.listbuilderboxColor,
-                                              border: Border.all(
-                                                width: 1,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                5.0,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image:
-                                                            CachedNetworkImageProvider(
-                                                              (data
-                                                                  .service!
-                                                                  .company!
-                                                                  .companyLogo
-                                                                  .toString()),
-                                                            ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                        left: 20,
-                                                        right: 10,
-                                                      ),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            data.bundleTitle
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            data.validityType
-                                                                        .toString() ==
-                                                                    "unlimited"
-                                                                ? languageController.tr(
-                                                                    "UNLIMITED",
-                                                                  )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "monthly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "MONTHLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "weekly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "WEEKLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "daily"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "DAILY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "hourly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "HOURLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "nightly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "NIGHTLY",
-                                                                      )
-                                                                : "",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 2),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              languageController
-                                                                  .tr("SELL"),
-
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            PriceTextView(
-                                                              price: data
-                                                                  .sellingPrice
-                                                                  .toString(),
-                                                              textStyle: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                            SizedBox(width: 2),
-                                                            Text(
-                                                              " ${box.read("currency_code")}",
-                                                              style: TextStyle(
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              languageController
-                                                                  .tr("BUY"),
-
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            PriceTextView(
-                                                              price: data
-                                                                  .buyingPrice
-                                                                  .toString(),
-                                                              textStyle: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-
-                                                            Text(
-                                                              " ${box.read("currency_code")}",
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                : bundleController.finalList.isEmpty
-                                ? SizedBox()
-                                : RefreshIndicator(
-                                    onRefresh: refresh,
-                                    child: ListView.separated(
-                                      shrinkWrap: false,
-                                      physics: AlwaysScrollableScrollPhysics(),
-                                      controller: scrollController,
-                                      separatorBuilder: (context, index) {
-                                        return SizedBox(height: 5);
-                                      },
-                                      itemCount:
-                                          bundleController.finalList.length,
-                                      itemBuilder: (context, index) {
-                                        final data =
-                                            bundleController.finalList[index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            if (placeOrderController
-                                                .numberController
-                                                .text
-                                                .isEmpty) {
-                                              Fluttertoast.showToast(
-                                                msg: "Enter Number ",
-                                                toastLength: Toast.LENGTH_SHORT,
-                                                gravity: ToastGravity.BOTTOM,
-                                                timeInSecForIosWeb: 1,
-                                                backgroundColor: Colors.black,
-                                                textColor: Colors.white,
-                                                fontSize: 16.0,
-                                              );
-                                            } else {
-                                              if (box.read("permission") ==
-                                                      "no" ||
-                                                  placeOrderController
-                                                          .numberController
-                                                          .text
-                                                          .length
-                                                          .toString() !=
-                                                      box
-                                                          .read("maxlength")
-                                                          .toString()) {
-                                                Fluttertoast.showToast(
-                                                  msg: "Enter Correct Number ",
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  timeInSecForIosWeb: 1,
-                                                  backgroundColor: Colors.black,
-                                                  textColor: Colors.white,
-                                                  fontSize: 16.0,
-                                                );
-                                                // Stop further execution if permission is "no"
-                                              } else {
-                                                box.write(
-                                                  "bundleID",
-                                                  data.id.toString(),
-                                                );
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return AlertDialog(
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                              28,
-                                                            ),
-                                                      ),
-                                                      contentPadding:
-                                                          EdgeInsets.zero,
-                                                      backgroundColor:
-                                                          Colors.transparent,
-                                                      content: StatefulBuilder(
-                                                        builder: (context, setState) {
-                                                          return Container(
-                                                            decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    28,
-                                                                  ),
-                                                              gradient: LinearGradient(
-                                                                begin: Alignment
-                                                                    .topCenter,
-                                                                end: Alignment
-                                                                    .bottomCenter,
-                                                                colors: [
-                                                                  Colors.white,
-                                                                  Colors
-                                                                      .grey
-                                                                      .shade50,
-                                                                ],
-                                                              ),
-                                                              boxShadow: [
-                                                                BoxShadow(
-                                                                  color: Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                        0.2,
-                                                                      ),
-                                                                  blurRadius:
-                                                                      30,
-                                                                  offset:
-                                                                      Offset(
-                                                                        0,
-                                                                        15,
-                                                                      ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            height: 480,
-                                                            width: screenWidth,
-                                                            child: ClipRRect(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    28,
-                                                                  ),
-                                                              child: Obx(
-                                                                () =>
-                                                                    placeOrderController
-                                                                            .isLoading
-                                                                            .value ==
-                                                                        false
-                                                                    ? ListView(
-                                                                        padding:
-                                                                            EdgeInsets.all(
-                                                                              24,
-                                                                            ),
-                                                                        children: [
-                                                                          // Header Section with Company Logo & Info
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              20,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              gradient: LinearGradient(
-                                                                                colors: [
-                                                                                  AppColors.defaultColor.withOpacity(
-                                                                                    0.1,
-                                                                                  ),
-                                                                                  AppColors.defaultColor.withOpacity(
-                                                                                    0.05,
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                20,
-                                                                              ),
-                                                                              border: Border.all(
-                                                                                color: AppColors.defaultColor.withOpacity(
-                                                                                  0.2,
-                                                                                ),
-                                                                                width: 1.5,
-                                                                              ),
-                                                                            ),
-                                                                            child: Row(
-                                                                              children: [
-                                                                                // Company Logo
-                                                                                Container(
-                                                                                  height: 60,
-                                                                                  width: 60,
-                                                                                  padding: EdgeInsets.all(
-                                                                                    8,
-                                                                                  ),
-                                                                                  decoration: BoxDecoration(
-                                                                                    color: Colors.white,
-                                                                                    shape: BoxShape.circle,
-                                                                                    boxShadow: [
-                                                                                      BoxShadow(
-                                                                                        color: Colors.black.withOpacity(
-                                                                                          0.1,
-                                                                                        ),
-                                                                                        blurRadius: 10,
-                                                                                        offset: Offset(
-                                                                                          0,
-                                                                                          4,
+                                                                                        style: TextStyle(
+                                                                                          fontSize: 12,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                          color: Colors.grey.shade600,
                                                                                         ),
                                                                                       ),
                                                                                     ],
                                                                                   ),
-                                                                                  child: ClipOval(
-                                                                                    child: CachedNetworkImage(
-                                                                                      imageUrl: data.service!.company!.companyLogo.toString(),
-                                                                                      fit: BoxFit.cover,
-                                                                                      errorWidget:
-                                                                                          (
-                                                                                            context,
-                                                                                            url,
-                                                                                            error,
-                                                                                          ) => Icon(
-                                                                                            Icons.business,
-                                                                                            color: Colors.grey.shade400,
-                                                                                            size: 30,
+
+                                                                                  Padding(
+                                                                                    padding: EdgeInsets.symmetric(
+                                                                                      vertical: 12,
+                                                                                    ),
+                                                                                    child: Divider(
+                                                                                      height: 1,
+                                                                                      thickness: 1.5,
+                                                                                      color: Colors.grey.shade200,
+                                                                                    ),
+                                                                                  ),
+
+                                                                                  // Sell Price
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        padding: EdgeInsets.all(
+                                                                                          8,
+                                                                                        ),
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: Colors.green.shade50,
+                                                                                          borderRadius: BorderRadius.circular(
+                                                                                            10,
                                                                                           ),
+                                                                                        ),
+                                                                                        child: Icon(
+                                                                                          Icons.sell_outlined,
+                                                                                          color: Colors.green.shade600,
+                                                                                          size: 18,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 12,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        languageController.tr(
+                                                                                          "SELL",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          color: Colors.grey.shade600,
+                                                                                          fontSize: 13,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                        ),
+                                                                                      ),
+                                                                                      Spacer(),
+                                                                                      PriceTextView(
+                                                                                        price: data.sellingPrice.toString(),
+
+                                                                                        textStyle: TextStyle(
+                                                                                          color: Colors.green.shade600,
+                                                                                          fontSize: 15,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                        ),
+                                                                                      ),
+                                                                                      SizedBox(
+                                                                                        width: 4,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        box.read(
+                                                                                          "currency_code",
+                                                                                        ),
+                                                                                        style: TextStyle(
+                                                                                          fontSize: 12,
+                                                                                          fontWeight: FontWeight.w600,
+                                                                                          color: Colors.grey.shade600,
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+
+                                                                            // Container(
+                                                                            //   padding:
+                                                                            //       EdgeInsets.all(
+                                                                            //         16,
+                                                                            //       ),
+                                                                            //   decoration: BoxDecoration(
+                                                                            //     color: Colors
+                                                                            //         .blue
+                                                                            //         .shade50,
+                                                                            //     borderRadius: BorderRadius.circular(
+                                                                            //       14,
+                                                                            //     ),
+                                                                            //     border: Border.all(
+                                                                            //       color:
+                                                                            //           Colors.blue.shade100,
+                                                                            //       width:
+                                                                            //           1,
+                                                                            //     ),
+                                                                            //   ),
+                                                                            //   child: Row(
+                                                                            //     crossAxisAlignment:
+                                                                            //         CrossAxisAlignment.start,
+                                                                            //     children: [
+                                                                            //       Icon(
+                                                                            //         Icons.info_outline_rounded,
+                                                                            //         color: Colors.blue.shade600,
+                                                                            //         size: 20,
+                                                                            //       ),
+                                                                            //       SizedBox(
+                                                                            //         width: 10,
+                                                                            //       ),
+                                                                            //       Expanded(
+                                                                            //         child: Text(
+                                                                            //           "If there is any explanation about the package, it will be included in this section...",
+                                                                            //           style: TextStyle(
+                                                                            //             color: Colors.grey.shade700,
+                                                                            //             fontSize: 12,
+                                                                            //             height: 1.4,
+                                                                            //           ),
+                                                                            //         ),
+                                                                            //       ),
+                                                                            //     ],
+                                                                            //   ),
+                                                                            // ),
+
+                                                                            // SizedBox(
+                                                                            //   height:
+                                                                            //       16,
+                                                                            // ),
+
+                                                                            // Phone Number Display
+                                                                            Container(
+                                                                              padding: EdgeInsets.symmetric(
+                                                                                horizontal: 16,
+                                                                                vertical: 12,
+                                                                              ),
+                                                                              decoration: BoxDecoration(
+                                                                                color: Colors.grey.shade50,
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  12,
+                                                                                ),
+                                                                                border: Border.all(
+                                                                                  color: Colors.grey.shade200,
+                                                                                  width: 1,
+                                                                                ),
+                                                                              ),
+                                                                              child: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    languageController.tr(
+                                                                                      "PHONENUMBER",
+                                                                                    ),
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.grey.shade600,
+                                                                                      fontSize: 13,
+                                                                                      fontWeight: FontWeight.w500,
+                                                                                    ),
+                                                                                  ),
+                                                                                  Text(
+                                                                                    placeOrderController.numberController.text.toString(),
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.grey.shade800,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 5,
+                                                                            ),
+
+                                                                            // PIN Input
+                                                                            Align(
+                                                                              alignment: Alignment.center,
+                                                                              child: Container(
+                                                                                height: 60,
+                                                                                width: 140,
+                                                                                decoration: BoxDecoration(
+                                                                                  color: Colors.white,
+                                                                                  border: Border.all(
+                                                                                    width: 2,
+                                                                                    color: Colors.grey.shade300,
+                                                                                  ),
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    16,
+                                                                                  ),
+                                                                                  boxShadow: [
+                                                                                    BoxShadow(
+                                                                                      color: Colors.black.withOpacity(
+                                                                                        0.05,
+                                                                                      ),
+                                                                                      blurRadius: 10,
+                                                                                      offset: Offset(
+                                                                                        0,
+                                                                                        4,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Icon(
+                                                                                      Icons.lock_outline_rounded,
+                                                                                      color: AppColors.defaultColor,
+                                                                                      size: 18,
+                                                                                    ),
+                                                                                    SizedBox(
+                                                                                      height: 4,
+                                                                                    ),
+                                                                                    TextField(
+                                                                                      maxLength: 4,
+                                                                                      controller: placeOrderController.pinController,
+                                                                                      keyboardType: TextInputType.phone,
+                                                                                      textAlign: TextAlign.center,
+                                                                                      obscureText: true,
+                                                                                      decoration: InputDecoration(
+                                                                                        counterText: '',
+                                                                                        hintText: languageController.tr(
+                                                                                          "PIN",
+                                                                                        ),
+                                                                                        hintStyle: TextStyle(
+                                                                                          color: Colors.grey.shade400,
+                                                                                          fontSize: 13,
+                                                                                        ),
+                                                                                        border: InputBorder.none,
+                                                                                        isDense: true,
+                                                                                        contentPadding: EdgeInsets.zero,
+                                                                                      ),
+                                                                                      style: TextStyle(
+                                                                                        fontSize: 18,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                            ),
+
+                                                                            SizedBox(
+                                                                              height: 20,
+                                                                            ),
+
+                                                                            // Action Buttons
+                                                                            Row(
+                                                                              children: [
+                                                                                Expanded(
+                                                                                  flex: 3,
+                                                                                  child: GestureDetector(
+                                                                                    onTap: () async {
+                                                                                      if (!placeOrderController.isLoading.value) {
+                                                                                        if (placeOrderController.pinController.text.isEmpty ||
+                                                                                            placeOrderController.pinController.text.length !=
+                                                                                                4) {
+                                                                                          Fluttertoast.showToast(
+                                                                                            msg: languageController.tr(
+                                                                                              "ENTER_YOUR_PIN",
+                                                                                            ),
+                                                                                            toastLength: Toast.LENGTH_SHORT,
+                                                                                            gravity: ToastGravity.BOTTOM,
+                                                                                            timeInSecForIosWeb: 1,
+                                                                                            backgroundColor: Colors.black,
+                                                                                            textColor: Colors.white,
+                                                                                            fontSize: 16.0,
+                                                                                          );
+                                                                                        } else {
+                                                                                          await placeOrderController.placeOrder(
+                                                                                            context,
+                                                                                          );
+                                                                                          if (placeOrderController.loadsuccess.value ==
+                                                                                              true) {
+                                                                                            print(
+                                                                                              "recharge Done...........",
+                                                                                            );
+                                                                                          }
+                                                                                        }
+                                                                                      }
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 52,
+                                                                                      decoration: BoxDecoration(
+                                                                                        gradient: LinearGradient(
+                                                                                          colors: [
+                                                                                            Colors.green.shade400,
+                                                                                            Colors.green.shade600,
+                                                                                          ],
+                                                                                        ),
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          16,
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(
+                                                                                            color: Colors.green.withOpacity(
+                                                                                              0.3,
+                                                                                            ),
+                                                                                            blurRadius: 12,
+                                                                                            offset: Offset(
+                                                                                              0,
+                                                                                              6,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        children: [
+                                                                                          Icon(
+                                                                                            Icons.check_circle_rounded,
+                                                                                            color: Colors.white,
+                                                                                            size: 20,
+                                                                                          ),
+                                                                                          SizedBox(
+                                                                                            width: 8,
+                                                                                          ),
+                                                                                          Text(
+                                                                                            languageController.tr(
+                                                                                              "CONFIRMATION",
+                                                                                            ),
+                                                                                            style: TextStyle(
+                                                                                              color: Colors.white,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 15,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
                                                                                     ),
                                                                                   ),
                                                                                 ),
                                                                                 SizedBox(
-                                                                                  width: 16,
+                                                                                  width: 12,
                                                                                 ),
-
-                                                                                // Company Details
                                                                                 Expanded(
-                                                                                  child: Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      // Bundle Title
-                                                                                      Text(
-                                                                                        data.bundleTitle.toString(),
-                                                                                        style: TextStyle(
-                                                                                          fontSize: 15,
-                                                                                          fontWeight: FontWeight.bold,
-                                                                                          color: Colors.grey.shade800,
+                                                                                  flex: 2,
+                                                                                  child: GestureDetector(
+                                                                                    onTap: () {
+                                                                                      Navigator.pop(
+                                                                                        context,
+                                                                                      );
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      height: 52,
+                                                                                      decoration: BoxDecoration(
+                                                                                        color: Colors.white,
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          16,
                                                                                         ),
-                                                                                        maxLines: 1,
-                                                                                        overflow: TextOverflow.ellipsis,
-                                                                                      ),
-                                                                                      SizedBox(
-                                                                                        height: 8,
-                                                                                      ),
-
-                                                                                      // Validity Badge
-                                                                                      Container(
-                                                                                        padding: EdgeInsets.symmetric(
-                                                                                          horizontal: 12,
-                                                                                          vertical: 4,
+                                                                                        border: Border.all(
+                                                                                          width: 2,
+                                                                                          color: Colors.grey.shade300,
                                                                                         ),
-                                                                                        decoration: BoxDecoration(
-                                                                                          color:
-                                                                                              Color(
-                                                                                                0xff826AF9,
-                                                                                              ).withOpacity(
-                                                                                                0.15,
-                                                                                              ),
-                                                                                          borderRadius: BorderRadius.circular(
-                                                                                            8,
+                                                                                      ),
+                                                                                      child: Row(
+                                                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                                                        children: [
+                                                                                          Icon(
+                                                                                            Icons.close_rounded,
+                                                                                            color: Colors.grey.shade700,
+                                                                                            size: 20,
                                                                                           ),
-                                                                                        ),
-                                                                                        child: Text(
-                                                                                          data.validityType.toString() ==
-                                                                                                  "unlimited"
-                                                                                              ? languageController.tr(
-                                                                                                  "UNLIMITED",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "monthly"
-                                                                                              ? languageController.tr(
-                                                                                                  "MONTHLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "weekly"
-                                                                                              ? languageController.tr(
-                                                                                                  "WEEKLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "daily"
-                                                                                              ? languageController.tr(
-                                                                                                  "DAILY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "hourly"
-                                                                                              ? languageController.tr(
-                                                                                                  "HOURLY",
-                                                                                                )
-                                                                                              : data.validityType.toString() ==
-                                                                                                    "nightly"
-                                                                                              ? languageController.tr(
-                                                                                                  "NIGHTLY",
-                                                                                                )
-                                                                                              : "",
-                                                                                          style: TextStyle(
-                                                                                            color: Color(
-                                                                                              0xff826AF9,
+                                                                                          SizedBox(
+                                                                                            width: 6,
+                                                                                          ),
+                                                                                          Text(
+                                                                                            languageController.tr(
+                                                                                              "CANCEL",
                                                                                             ),
-                                                                                            fontSize: 11,
-                                                                                            fontWeight: FontWeight.w600,
+                                                                                            style: TextStyle(
+                                                                                              color: Colors.grey.shade700,
+                                                                                              fontWeight: FontWeight.bold,
+                                                                                              fontSize: 15,
+                                                                                            ),
                                                                                           ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                8,
-                                                                          ),
-
-                                                                          // Pricing Section
-                                                                          Container(
-                                                                            padding: EdgeInsets.all(
-                                                                              18,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.white,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                16,
-                                                                              ),
-                                                                              border: Border.all(
-                                                                                color: Colors.grey.shade200,
-                                                                                width: 1.5,
-                                                                              ),
-                                                                              boxShadow: [
-                                                                                BoxShadow(
-                                                                                  color: Colors.black.withOpacity(
-                                                                                    0.04,
-                                                                                  ),
-                                                                                  blurRadius: 10,
-                                                                                  offset: Offset(
-                                                                                    0,
-                                                                                    4,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            child: Column(
-                                                                              children: [
-                                                                                // Buy Price
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      padding: EdgeInsets.all(
-                                                                                        8,
-                                                                                      ),
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: AppColors.defaultColor.withOpacity(
-                                                                                          0.1,
-                                                                                        ),
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          10,
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: Icon(
-                                                                                        Icons.shopping_bag_outlined,
-                                                                                        color: AppColors.defaultColor,
-                                                                                        size: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 12,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      languageController.tr(
-                                                                                        "BUY",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.grey.shade600,
-                                                                                        fontSize: 13,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Spacer(),
-                                                                                    PriceTextView(
-                                                                                      price: data.buyingPrice.toString(),
-                                                                                      textStyle: TextStyle(
-                                                                                        color: Colors.black87,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      box.read(
-                                                                                        "currency_code",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: Colors.grey.shade600,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-
-                                                                                Padding(
-                                                                                  padding: EdgeInsets.symmetric(
-                                                                                    vertical: 12,
-                                                                                  ),
-                                                                                  child: Divider(
-                                                                                    height: 1,
-                                                                                    thickness: 1.5,
-                                                                                    color: Colors.grey.shade200,
-                                                                                  ),
-                                                                                ),
-
-                                                                                // Sell Price
-                                                                                Row(
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      padding: EdgeInsets.all(
-                                                                                        8,
-                                                                                      ),
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: Colors.green.shade50,
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          10,
-                                                                                        ),
-                                                                                      ),
-                                                                                      child: Icon(
-                                                                                        Icons.sell_outlined,
-                                                                                        color: Colors.green.shade600,
-                                                                                        size: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 12,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      languageController.tr(
-                                                                                        "SELL",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        color: Colors.grey.shade600,
-                                                                                        fontSize: 13,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                      ),
-                                                                                    ),
-                                                                                    Spacer(),
-                                                                                    PriceTextView(
-                                                                                      price: data.sellingPrice.toString(),
-
-                                                                                      textStyle: TextStyle(
-                                                                                        color: Colors.green.shade600,
-                                                                                        fontSize: 15,
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                      ),
-                                                                                    ),
-                                                                                    SizedBox(
-                                                                                      width: 4,
-                                                                                    ),
-                                                                                    Text(
-                                                                                      box.read(
-                                                                                        "currency_code",
-                                                                                      ),
-                                                                                      style: TextStyle(
-                                                                                        fontSize: 12,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: Colors.grey.shade600,
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-
-                                                                          // Container(
-                                                                          //   padding:
-                                                                          //       EdgeInsets.all(
-                                                                          //         16,
-                                                                          //       ),
-                                                                          //   decoration: BoxDecoration(
-                                                                          //     color: Colors
-                                                                          //         .blue
-                                                                          //         .shade50,
-                                                                          //     borderRadius: BorderRadius.circular(
-                                                                          //       14,
-                                                                          //     ),
-                                                                          //     border: Border.all(
-                                                                          //       color:
-                                                                          //           Colors.blue.shade100,
-                                                                          //       width:
-                                                                          //           1,
-                                                                          //     ),
-                                                                          //   ),
-                                                                          //   child: Row(
-                                                                          //     crossAxisAlignment:
-                                                                          //         CrossAxisAlignment.start,
-                                                                          //     children: [
-                                                                          //       Icon(
-                                                                          //         Icons.info_outline_rounded,
-                                                                          //         color: Colors.blue.shade600,
-                                                                          //         size: 20,
-                                                                          //       ),
-                                                                          //       SizedBox(
-                                                                          //         width: 10,
-                                                                          //       ),
-                                                                          //       Expanded(
-                                                                          //         child: Text(
-                                                                          //           "If there is any explanation about the package, it will be included in this section...",
-                                                                          //           style: TextStyle(
-                                                                          //             color: Colors.grey.shade700,
-                                                                          //             fontSize: 12,
-                                                                          //             height: 1.4,
-                                                                          //           ),
-                                                                          //         ),
-                                                                          //       ),
-                                                                          //     ],
-                                                                          //   ),
-                                                                          // ),
-
-                                                                          // SizedBox(
-                                                                          //   height:
-                                                                          //       16,
-                                                                          // ),
-
-                                                                          // Phone Number Display
-                                                                          Container(
-                                                                            padding: EdgeInsets.symmetric(
-                                                                              horizontal: 16,
-                                                                              vertical: 12,
-                                                                            ),
-                                                                            decoration: BoxDecoration(
-                                                                              color: Colors.grey.shade50,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                12,
-                                                                              ),
-                                                                              border: Border.all(
-                                                                                color: Colors.grey.shade200,
-                                                                                width: 1,
-                                                                              ),
-                                                                            ),
-                                                                            child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                Text(
-                                                                                  languageController.tr(
-                                                                                    "PHONENUMBER",
-                                                                                  ),
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.grey.shade600,
-                                                                                    fontSize: 13,
-                                                                                    fontWeight: FontWeight.w500,
-                                                                                  ),
-                                                                                ),
-                                                                                Text(
-                                                                                  placeOrderController.numberController.text.toString(),
-                                                                                  style: TextStyle(
-                                                                                    color: Colors.grey.shade800,
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.bold,
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                5,
-                                                                          ),
-
-                                                                          // PIN Input
-                                                                          Align(
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            child: Container(
-                                                                              height: 60,
-                                                                              width: 140,
-                                                                              decoration: BoxDecoration(
-                                                                                color: Colors.white,
-                                                                                border: Border.all(
-                                                                                  width: 2,
-                                                                                  color: Colors.grey.shade300,
-                                                                                ),
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                  16,
-                                                                                ),
-                                                                                boxShadow: [
-                                                                                  BoxShadow(
-                                                                                    color: Colors.black.withOpacity(
-                                                                                      0.05,
-                                                                                    ),
-                                                                                    blurRadius: 10,
-                                                                                    offset: Offset(
-                                                                                      0,
-                                                                                      4,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                              child: Column(
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  Icon(
-                                                                                    Icons.lock_outline_rounded,
-                                                                                    color: AppColors.defaultColor,
-                                                                                    size: 18,
-                                                                                  ),
-                                                                                  SizedBox(
-                                                                                    height: 4,
-                                                                                  ),
-                                                                                  TextField(
-                                                                                    maxLength: 4,
-                                                                                    controller: placeOrderController.pinController,
-                                                                                    keyboardType: TextInputType.phone,
-                                                                                    textAlign: TextAlign.center,
-                                                                                    obscureText: true,
-                                                                                    decoration: InputDecoration(
-                                                                                      counterText: '',
-                                                                                      hintText: languageController.tr(
-                                                                                        "PIN",
-                                                                                      ),
-                                                                                      hintStyle: TextStyle(
-                                                                                        color: Colors.grey.shade400,
-                                                                                        fontSize: 13,
-                                                                                      ),
-                                                                                      border: InputBorder.none,
-                                                                                      isDense: true,
-                                                                                      contentPadding: EdgeInsets.zero,
-                                                                                    ),
-                                                                                    style: TextStyle(
-                                                                                      fontSize: 18,
-                                                                                      fontWeight: FontWeight.bold,
-                                                                                      letterSpacing: 8,
-                                                                                    ),
-                                                                                  ),
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ),
-
-                                                                          SizedBox(
-                                                                            height:
-                                                                                20,
-                                                                          ),
-
-                                                                          // Action Buttons
-                                                                          Row(
-                                                                            children: [
-                                                                              Expanded(
-                                                                                flex: 3,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () async {
-                                                                                    if (!placeOrderController.isLoading.value) {
-                                                                                      if (placeOrderController.pinController.text.isEmpty ||
-                                                                                          placeOrderController.pinController.text.length !=
-                                                                                              4) {
-                                                                                        Fluttertoast.showToast(
-                                                                                          msg: languageController.tr(
-                                                                                            "ENTER_YOUR_PIN",
-                                                                                          ),
-                                                                                          toastLength: Toast.LENGTH_SHORT,
-                                                                                          gravity: ToastGravity.BOTTOM,
-                                                                                          timeInSecForIosWeb: 1,
-                                                                                          backgroundColor: Colors.black,
-                                                                                          textColor: Colors.white,
-                                                                                          fontSize: 16.0,
-                                                                                        );
-                                                                                      } else {
-                                                                                        await placeOrderController.placeOrder(
-                                                                                          context,
-                                                                                        );
-                                                                                        if (placeOrderController.loadsuccess.value ==
-                                                                                            true) {
-                                                                                          print(
-                                                                                            "recharge Done...........",
-                                                                                          );
-                                                                                        }
-                                                                                      }
-                                                                                    }
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 52,
-                                                                                    decoration: BoxDecoration(
-                                                                                      gradient: LinearGradient(
-                                                                                        colors: [
-                                                                                          Colors.green.shade400,
-                                                                                          Colors.green.shade600,
                                                                                         ],
                                                                                       ),
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        16,
-                                                                                      ),
-                                                                                      boxShadow: [
-                                                                                        BoxShadow(
-                                                                                          color: Colors.green.withOpacity(
-                                                                                            0.3,
-                                                                                          ),
-                                                                                          blurRadius: 12,
-                                                                                          offset: Offset(
-                                                                                            0,
-                                                                                            6,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      children: [
-                                                                                        Icon(
-                                                                                          Icons.check_circle_rounded,
-                                                                                          color: Colors.white,
-                                                                                          size: 20,
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          width: 8,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          languageController.tr(
-                                                                                            "CONFIRMATION",
-                                                                                          ),
-                                                                                          style: TextStyle(
-                                                                                            color: Colors.white,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
                                                                                     ),
                                                                                   ),
                                                                                 ),
-                                                                              ),
-                                                                              SizedBox(
-                                                                                width: 12,
-                                                                              ),
-                                                                              Expanded(
-                                                                                flex: 2,
-                                                                                child: GestureDetector(
-                                                                                  onTap: () {
-                                                                                    Navigator.pop(
-                                                                                      context,
-                                                                                    );
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    height: 52,
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: Colors.white,
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        16,
-                                                                                      ),
-                                                                                      border: Border.all(
-                                                                                        width: 2,
-                                                                                        color: Colors.grey.shade300,
-                                                                                      ),
-                                                                                    ),
-                                                                                    child: Row(
-                                                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                                                      children: [
-                                                                                        Icon(
-                                                                                          Icons.close_rounded,
-                                                                                          color: Colors.grey.shade700,
-                                                                                          size: 20,
-                                                                                        ),
-                                                                                        SizedBox(
-                                                                                          width: 6,
-                                                                                        ),
-                                                                                        Text(
-                                                                                          languageController.tr(
-                                                                                            "CANCEL",
-                                                                                          ),
-                                                                                          style: TextStyle(
-                                                                                            color: Colors.grey.shade700,
-                                                                                            fontWeight: FontWeight.bold,
-                                                                                            fontSize: 15,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      )
-                                                                    : Center(
-                                                                        child: Container(
-                                                                          height:
-                                                                              250,
-                                                                          width:
-                                                                              250,
-                                                                          child: Lottie.asset(
-                                                                            'assets/loties/recharge.json',
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        )
+                                                                      : Center(
+                                                                          child: Container(
+                                                                            height:
+                                                                                250,
+                                                                            width:
+                                                                                250,
+                                                                            child: Lottie.asset(
+                                                                              'assets/loties/recharge.json',
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                    );
-                                                  },
-                                                );
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
                                               }
-                                            }
-                                          },
-                                          child: Container(
-                                            width: screenWidth,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color:
-                                                  AppColors.listbuilderboxColor,
-                                              border: Border.all(
-                                                width: 1,
-                                                color: Colors.grey,
+                                            },
+                                            child: Container(
+                                              width: screenWidth,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: AppColors
+                                                    .listbuilderboxColor,
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Colors.grey,
+                                                ),
                                               ),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                5.0,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    height: 50,
-                                                    width: 50,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      image: DecorationImage(
-                                                        fit: BoxFit.fill,
-                                                        image:
-                                                            CachedNetworkImageProvider(
-                                                              (data
-                                                                  .service!
-                                                                  .company!
-                                                                  .companyLogo
-                                                                  .toString()),
-                                                            ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(
+                                                  5.0,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        image: DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image:
+                                                              CachedNetworkImageProvider(
+                                                                (data
+                                                                    .service!
+                                                                    .company!
+                                                                    .companyLogo
+                                                                    .toString()),
+                                                              ),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Padding(
-                                                      padding: EdgeInsets.only(
-                                                        left: 20,
-                                                        right: 10,
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                              left: 20,
+                                                              right: 10,
+                                                            ),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              data.bundleTitle
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 12,
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                              data.validityType
+                                                                          .toString() ==
+                                                                      "unlimited"
+                                                                  ? languageController.tr(
+                                                                      "UNLIMITED",
+                                                                    )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "monthly"
+                                                                  ? languageController.tr(
+                                                                      "MONTHLY",
+                                                                    )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "weekly"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "WEEKLY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "daily"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "DAILY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "hourly"
+                                                                  ? languageController
+                                                                        .tr(
+                                                                          "HOURLY",
+                                                                        )
+                                                                  : data.validityType
+                                                                            .toString() ==
+                                                                        "nightly"
+                                                                  ? languageController.tr(
+                                                                      "NIGHTLY",
+                                                                    )
+                                                                  : "",
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 12,
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
+                                                    ),
+                                                    SizedBox(width: 2),
+                                                    Expanded(
+                                                      flex: 2,
                                                       child: Column(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
                                                         children: [
-                                                          Text(
-                                                            data.bundleTitle
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 12,
-                                                            ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                languageController
+                                                                    .tr("SELL"),
+
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          Text(
-                                                            data.validityType
-                                                                        .toString() ==
-                                                                    "unlimited"
-                                                                ? languageController.tr(
-                                                                    "UNLIMITED",
-                                                                  )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "monthly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "MONTHLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "weekly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "WEEKLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "daily"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "DAILY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "hourly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "HOURLY",
-                                                                      )
-                                                                : data.validityType
-                                                                          .toString() ==
-                                                                      "nightly"
-                                                                ? languageController
-                                                                      .tr(
-                                                                        "NIGHTLY",
-                                                                      )
-                                                                : "",
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
+                                                          Row(
+                                                            children: [
+                                                              PriceTextView(
+                                                                price: data
+                                                                    .sellingPrice
+                                                                    .toString(),
+                                                                textStyle: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 2,
+                                                              ),
+                                                              Text(
+                                                                " ${box.read("currency_code")}",
+                                                                style: TextStyle(
+                                                                  fontSize: 11,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 2),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              languageController
-                                                                  .tr("SELL"),
+                                                    Expanded(
+                                                      flex: 2,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                languageController
+                                                                    .tr("BUY"),
 
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            PriceTextView(
-                                                              price: data
-                                                                  .sellingPrice
-                                                                  .toString(),
-                                                              textStyle: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                            ],
+                                                          ),
+                                                          Row(
+                                                            children: [
+                                                              PriceTextView(
+                                                                price: data
+                                                                    .buyingPrice
+                                                                    .toString(),
+                                                                textStyle: TextStyle(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            SizedBox(width: 2),
-                                                            Text(
-                                                              " ${box.read("currency_code")}",
-                                                              style: TextStyle(
-                                                                fontSize: 11,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Colors
-                                                                    .black,
+
+                                                              Text(
+                                                                " ${box.read("currency_code")}",
+                                                                style: TextStyle(
+                                                                  fontSize: 10,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .black,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            Text(
-                                                              languageController
-                                                                  .tr("BUY"),
-
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        Row(
-                                                          children: [
-                                                            PriceTextView(
-                                                              price: data
-                                                                  .buyingPrice
-                                                                  .toString(),
-                                                              textStyle: TextStyle(
-                                                                fontSize: 12,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-
-                                                            Text(
-                                                              " ${box.read("currency_code")}",
-                                                              style: TextStyle(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                color: Colors
-                                                                    .black,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
-                        ),
-                        Obx(
-                          () => bundleController.isLoading.value == true
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CircularProgressIndicator(
-                                      color: AppColors.defaultColor,
-                                    ),
-                                  ],
-                                )
-                              : SizedBox(),
-                        ),
-                      ],
+                          Obx(
+                            () => bundleController.isLoading.value == true
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        color: AppColors.defaultColor,
+                                      ),
+                                    ],
+                                  )
+                                : SizedBox(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

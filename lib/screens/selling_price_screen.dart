@@ -1,4 +1,8 @@
+import 'package:arzan_digital/widgets/auth_textfield.dart';
+import 'package:arzan_digital/widgets/default_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:arzan_digital/screens/create_selling_price_screen.dart';
@@ -10,6 +14,7 @@ import '../controllers/only_cat_controller.dart';
 import '../controllers/only_service_controller.dart';
 import '../controllers/selling_price_controller.dart';
 
+import '../controllers/update_selling_price_controller.dart';
 import '../global_controller/languages_controller.dart';
 import '../models/categories_service_model.dart';
 import '../routes/routes.dart';
@@ -30,11 +35,16 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
   );
 
   final box = GetStorage();
+  List commissiontype = [];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    commissiontype = [
+      {"name": languagesController.tr("PERCENTAGE"), "value": "percentage"},
+      {"name": languagesController.tr("FIXED"), "value": "fixed"},
+    ];
     onlycatController.fetchcategories();
     sellingPriceController.fetchpriceData();
     serviceController.fetchservices();
@@ -44,6 +54,10 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
 
   OnlyCatController onlycatController = Get.put(OnlyCatController());
   OnlyServiceController serviceController = Get.put(OnlyServiceController());
+
+  UpdateSellingPriceController updateSellingPriceController = Get.put(
+    UpdateSellingPriceController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -152,6 +166,7 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
                         onlycatController.isLoading.value == false
                     ? Expanded(
                         child: ListView.builder(
+                          padding: EdgeInsets.all(0),
                           physics: BouncingScrollPhysics(),
                           itemCount: sellingPriceController
                               .allpricelist
@@ -166,6 +181,7 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
                                 .data!
                                 .pricings![index];
                             return Container(
+                              height: 100,
                               width: screenWidth,
                               margin: EdgeInsets.only(bottom: 5),
                               decoration: BoxDecoration(
@@ -181,8 +197,8 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: 60,
-                                      width: 60,
+                                      height: 55,
+                                      width: 55,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image: NetworkImage(
@@ -297,25 +313,388 @@ class _SellingPriceScreenState extends State<SellingPriceScreen> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              content: DeleteDialog(
-                                                priceID: data.id.toString(),
-                                              ),
+                                    SizedBox(width: 5),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            print(
+                                              data.commissionType.toString(),
+                                            );
+                                            updateSellingPriceController
+                                                .amountController
+                                                .text = data.amount
+                                                .toString();
+                                            // updateSellingPriceController
+                                            //         .commissiontype.value =
+                                            //     data.commissionType.toString();
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  contentPadding:
+                                                      EdgeInsets.all(0.0),
+                                                  content: Container(
+                                                    height: 500,
+                                                    width: screenWidth,
+                                                    decoration: BoxDecoration(
+                                                      color: Color(0xffEEF4FF),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.grey
+                                                              .withOpacity(0.2),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 2,
+                                                          offset: Offset(0, 0),
+                                                        ),
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            10,
+                                                          ),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                            horizontal: 12,
+                                                            vertical: 10,
+                                                          ),
+                                                      child: ListView(
+                                                        children: [
+                                                          Row(
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  print(
+                                                                    updateSellingPriceController
+                                                                        .commissiontype
+                                                                        .toString(),
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                  languagesController
+                                                                      .tr(
+                                                                        "AMOUNT",
+                                                                      ),
+                                                                  style: TextStyle(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade600,
+                                                                    fontSize:
+                                                                        18,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          AuthTextField(
+                                                            hintText:
+                                                                languagesController.tr(
+                                                                  "ENTER_AMOUNT",
+                                                                ),
+                                                            controller:
+                                                                updateSellingPriceController
+                                                                    .amountController,
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder: (context) {
+                                                                  return AlertDialog(
+                                                                    content: Container(
+                                                                      height:
+                                                                          150,
+                                                                      width:
+                                                                          screenWidth,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      child: ListView.builder(
+                                                                        itemCount:
+                                                                            commissiontype.length,
+                                                                        itemBuilder:
+                                                                            (
+                                                                              context,
+                                                                              index,
+                                                                            ) {
+                                                                              return GestureDetector(
+                                                                                onTap: () {
+                                                                                  updateSellingPriceController.commitype.value = commissiontype[index]["name"];
+                                                                                  updateSellingPriceController.commissiontype.value = commissiontype[index]["value"];
+                                                                                  Navigator.pop(
+                                                                                    context,
+                                                                                  );
+                                                                                },
+                                                                                child: Container(
+                                                                                  margin: EdgeInsets.only(
+                                                                                    bottom: 8,
+                                                                                  ),
+                                                                                  decoration: BoxDecoration(
+                                                                                    border: Border.all(
+                                                                                      width: 1,
+                                                                                      color: Colors.grey,
+                                                                                    ),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      8,
+                                                                                    ),
+                                                                                  ),
+                                                                                  height: 50,
+                                                                                  child: Padding(
+                                                                                    padding: EdgeInsets.all(
+                                                                                      10.0,
+                                                                                    ),
+                                                                                    child: Center(
+                                                                                      child: Text(
+                                                                                        commissiontype[index]["name"],
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              );
+                                                                            },
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            child: Container(
+                                                              height: 50,
+                                                              padding:
+                                                                  const EdgeInsets.symmetric(
+                                                                    horizontal:
+                                                                        12,
+                                                                  ),
+                                                              decoration: BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                border: Border.all(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade300,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                      10,
+                                                                    ),
+                                                              ),
+                                                              child: Row(
+                                                                children: [
+                                                                  Expanded(
+                                                                    child: Obx(
+                                                                      () => Text(
+                                                                        updateSellingPriceController
+                                                                            .commitype
+                                                                            .value
+                                                                            .toString(),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Icon(
+                                                                    FontAwesomeIcons
+                                                                        .chevronDown,
+                                                                    size:
+                                                                        screenHeight *
+                                                                        0.018,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 12),
+                                                          Row(
+                                                            children: [
+                                                              Text(
+                                                                languagesController
+                                                                    .tr(
+                                                                      "SERVICE",
+                                                                    ),
+                                                                style: TextStyle(
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade600,
+                                                                  fontSize:
+                                                                      screenHeight *
+                                                                      0.020,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 5),
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                height: 120,
+                                                                width: 140,
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius:
+                                                                      BorderRadius.circular(
+                                                                        12,
+                                                                      ),
+                                                                ),
+                                                                child: Center(
+                                                                  child: Obx(
+                                                                    () =>
+                                                                        updateSellingPriceController.catName.value !=
+                                                                            ''
+                                                                        ? Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: [
+                                                                              Image.network(
+                                                                                updateSellingPriceController.logolink.toString(),
+                                                                                height: 50,
+                                                                              ),
+                                                                              Text(
+                                                                                updateSellingPriceController.serviceName.toString(),
+                                                                              ),
+                                                                              Text(
+                                                                                updateSellingPriceController.catName.toString(),
+                                                                              ),
+                                                                            ],
+                                                                          )
+                                                                        : SizedBox(
+                                                                            child: Text(
+                                                                              "",
+                                                                            ),
+                                                                          ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              SizedBox(
+                                                                width: 20,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder: (context) {
+                                                                      return Dialog(
+                                                                        insetPadding:
+                                                                            EdgeInsets.zero,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        child:
+                                                                            UpdateServiceBox(),
+                                                                      );
+                                                                    },
+                                                                  );
+                                                                },
+                                                                child: CircleAvatar(
+                                                                  radius: 22,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  child: Center(
+                                                                    child: Icon(
+                                                                      FontAwesomeIcons
+                                                                          .chevronDown,
+                                                                      size: 14,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          SizedBox(height: 30),
+                                                          Obx(
+                                                            () => DefaultButton(
+                                                              buttonName:
+                                                                  updateSellingPriceController
+                                                                          .isLoading
+                                                                          .value ==
+                                                                      false
+                                                                  ? languagesController.tr(
+                                                                      "UPDATE_NOW",
+                                                                    )
+                                                                  : languagesController.tr(
+                                                                      "PLEASE_WAIT",
+                                                                    ),
+                                                              onPressed: () {
+                                                                if (updateSellingPriceController
+                                                                        .amountController
+                                                                        .text
+                                                                        .isNotEmpty &&
+                                                                    updateSellingPriceController
+                                                                            .commissiontype
+                                                                            .value !=
+                                                                        "" &&
+                                                                    updateSellingPriceController
+                                                                        .serviceidcontroller
+                                                                        .text
+                                                                        .isNotEmpty) {
+                                                                  updateSellingPriceController
+                                                                      .updatenow(
+                                                                        data.id
+                                                                            .toString(),
+                                                                      );
+                                                                } else {
+                                                                  Fluttertoast.showToast(
+                                                                    msg: languagesController.tr(
+                                                                      "FILL_DATA_CORRECTLY",
+                                                                    ),
+                                                                    toastLength:
+                                                                        Toast
+                                                                            .LENGTH_SHORT,
+                                                                    gravity:
+                                                                        ToastGravity
+                                                                            .CENTER,
+                                                                    timeInSecForIosWeb:
+                                                                        1,
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .red,
+                                                                    textColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    fontSize:
+                                                                        16.0,
+                                                                  );
+                                                                }
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
                                             );
                                           },
-                                        );
-                                      },
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: Colors.red,
-                                      ),
+                                          child: Icon(Icons.edit),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  content: DeleteDialog(
+                                                    priceID: data.id.toString(),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                    SizedBox(width: 8),
                                   ],
                                 ),
                               ),
@@ -420,6 +799,165 @@ class DeleteDialog extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class UpdateServiceBox extends StatelessWidget {
+  UpdateServiceBox({super.key});
+
+  final OnlyServiceController serviceController = Get.put(
+    OnlyServiceController(),
+  );
+
+  final categorisListController = Get.find<CategorisListController>();
+  UpdateSellingPriceController updateSellingPriceController = Get.put(
+    UpdateSellingPriceController(),
+  );
+  final box = GetStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Container(
+        height: 500,
+        width: screenWidth,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Obx(
+            () => serviceController.isLoading.value == false
+                ? GridView.builder(
+                    physics: BouncingScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 2.0,
+                      mainAxisSpacing: 4.0,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: serviceController
+                        .allservices
+                        .value
+                        .data!
+                        .services
+                        .length,
+                    itemBuilder: (context, index) {
+                      final data = serviceController
+                          .allservices
+                          .value
+                          .data!
+                          .services[index];
+                      return Padding(
+                        padding: EdgeInsets.all(3.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            updateSellingPriceController
+                                .serviceidcontroller
+                                .text = data.id
+                                .toString();
+
+                            updateSellingPriceController.catName.value =
+                                categorisListController
+                                    .allcategorieslist
+                                    .value!
+                                    .data!
+                                    .servicecategories!
+                                    .firstWhere(
+                                      (cat) =>
+                                          cat.id.toString() ==
+                                          data.serviceCategoryId.toString(),
+                                      orElse: () =>
+                                          Servicecategory(categoryName: ''),
+                                    )
+                                    .categoryName
+                                    .toString();
+
+                            updateSellingPriceController.logolink.value = data
+                                .company!
+                                .companyLogo
+                                .toString();
+
+                            updateSellingPriceController.serviceName.value =
+                                data.company!.companyName.toString();
+
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: Offset(0, 0),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                          data.company!.companyLogo.toString(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        textAlign: TextAlign.center,
+                                        data.company!.companyName.toString(),
+                                        style: TextStyle(fontSize: 12),
+                                      ),
+                                      // Text(data.serviceCategoryId.toString()),
+                                      Text(
+                                        categorisListController
+                                            .allcategorieslist
+                                            .value!
+                                            .data!
+                                            .servicecategories!
+                                            .firstWhere(
+                                              (cat) =>
+                                                  cat.id.toString() ==
+                                                  data.serviceCategoryId
+                                                      .toString(),
+                                              orElse: () => Servicecategory(
+                                                categoryName: '',
+                                              ),
+                                            )
+                                            .categoryName
+                                            .toString(),
+                                        style: TextStyle(),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : Center(child: CircularProgressIndicator()),
+          ),
+        ),
       ),
     );
   }

@@ -1,11 +1,4 @@
 class ApiEndPoints {
-  // static String baseUrl =
-  //     "https://app-yw-api-2025-v2.yawardigital.com/api/reseller/";
-
-  // static String publicUrl =
-  //     "https://app-yw-api-2025-v2.yawardigital.com/api/reseller/";
-  // .............................................................//
-
   static String baseUrl =
       "https://app-api-vpro-wl-waslat.milliekit.com/api/reseller/";
 

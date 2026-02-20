@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:arzan_digital/routes/routes.dart';
+import 'package:arzan_digital/utils/mystring.dart';
+import 'package:arzan_digital/widgets/contactbox.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,7 @@ import 'package:arzan_digital/pages/sub_reseller_screen.dart';
 import 'package:arzan_digital/screens/selling_price_screen.dart';
 import 'package:arzan_digital/utils/colors.dart';
 import 'package:arzan_digital/widgets/profile_menu_widget.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../global_controller/languages_controller.dart';
@@ -43,7 +46,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
   final dashboardController = Get.find<DashboardController>();
 
   whatsapp() async {
-    var contact = "+93788078985";
+    var contact = MyString.phoneNumber;
     var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
     var iosUrl = "https://wa.me/$contact?text=${Uri.parse('')}";
 
@@ -58,10 +61,19 @@ class _DrawerWidgetState extends State<DrawerWidget> {
     }
   }
 
+  String _version = '';
+
+  Future<void> _loadVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      _version = packageInfo.version;
+    });
+  }
+
   @override
   void initState() {
-    // dashboardController.fetchDashboardData();
     super.initState();
+    _loadVersion();
   }
 
   @override
@@ -92,20 +104,50 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               height: 80,
               width: 80,
               decoration: BoxDecoration(
-                color: Colors.red,
-                // image: DecorationImage(
-                //   image: NetworkImage(
-                //     dashboardController
-                //         .alldashboardData
-                //         .value
-                //         .data!
-                //         .userInfo!
-                //         .profileImageUrl
-                //         .toString(),
-                //   ),
-                //   fit: BoxFit.cover,
-                // ),
+                color: Colors.grey.shade200,
                 shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child:
+                    dashboardController
+                                .alldashboardData
+                                .value
+                                .data!
+                                .userInfo!
+                                .profileImageUrl !=
+                            null &&
+                        dashboardController
+                            .alldashboardData
+                            .value
+                            .data!
+                            .userInfo!
+                            .profileImageUrl!
+                            .isNotEmpty
+                    ? Image.network(
+                        dashboardController
+                            .alldashboardData
+                            .value
+                            .data!
+                            .userInfo!
+                            .profileImageUrl!,
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.person,
+                            size: 40,
+                            color: Colors.grey,
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          );
+                        },
+                      )
+                    : Icon(Icons.person, size: 40, color: Colors.grey),
               ),
             ),
             SizedBox(height: 5),
@@ -332,128 +374,33 @@ class _DrawerWidgetState extends State<DrawerWidget> {
 
               imageLink: "assets/icons/logout.png",
               onPressed: () {
-                Get.offAllNamed(onboardingscreen);
-                signInController.usernameController.clear();
-                signInController.passwordController.clear();
+                // Get.offAllNamed(onboardingscreen);
+                // signInController.usernameController.clear();
+                // signInController.passwordController.clear();
 
-                box.remove("userToken");
-
-                // showDialog(
-                //   context: context,
-                //   builder: (context) {
-                //     return AlertDialog(
-                //       content: Container(
-                //         height: 140,
-                //         width: screenWidth,
-                //         decoration: BoxDecoration(
-                //           color: Colors.white,
-                //         ),
-                //         child: Column(
-                //           children: [
-                //             Text(
-                //               languageController
-                //                   .alllanguageData
-                //                   .value
-                //                   .languageData![
-                //                       "DO_YOU_WANT_TO_LOGOUT"]
-                //                   .toString(),
-                //               style: TextStyle(
-                //                 fontSize: 17,
-                //                 fontWeight: FontWeight.w600,
-                //               ),
-                //             ),
-                //             SizedBox(
-                //               height: 40,
-                //             ),
-                //             Row(
-                //               mainAxisAlignment:
-                //                   MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 GestureDetector(
-                //                   onTap: () {
-                //                     historyController.finalList
-                //                         .clear();
-                //                     Navigator.push(
-                //                       context,
-                //                       MaterialPageRoute(
-                //                         builder: (context) {
-                //                           return SignInScreen();
-                //                         },
-                //                       ),
-                //                     );
-
-                //                     signInController
-                //                         .usernameController
-                //                         .clear();
-                //                     signInController
-                //                         .passwordController
-                //                         .clear();
-
-                //                     box.remove("userToken");
-                //                     signInController
-                //                         .loginsuccess.value = true;
-
-                //                     //...........................
-                //                   },
-                //                   child: Container(
-                //                     height: 40,
-                //                     width: 100,
-                //                     decoration: BoxDecoration(
-                //                       color: AppColors.borderColor,
-                //                       borderRadius:
-                //                           BorderRadius.circular(7),
-                //                     ),
-                //                     child: Center(
-                //                       child: Text(
-                //                         languageController
-                //                             .alllanguageData
-                //                             .value
-                //                             .languageData!["YES"]
-                //                             .toString(),
-                //                         style: TextStyle(
-                //                           color: Colors.white,
-                //                           fontWeight: FontWeight.w500,
-                //                         ),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //                 GestureDetector(
-                //                   onTap: () {
-                //                     Navigator.of(context).pop();
-                //                   },
-                //                   child: Container(
-                //                     height: 40,
-                //                     width: 100,
-                //                     decoration: BoxDecoration(
-                //                       color: AppColors.borderColor,
-                //                       borderRadius:
-                //                           BorderRadius.circular(7),
-                //                     ),
-                //                     child: Center(
-                //                       child: Text(
-                //                         languageController
-                //                             .alllanguageData
-                //                             .value
-                //                             .languageData!["NO"]
-                //                             .toString(),
-                //                         style: TextStyle(
-                //                           color: Colors.white,
-                //                           fontWeight: FontWeight.w500,
-                //                         ),
-                //                       ),
-                //                     ),
-                //                   ),
-                //                 ),
-                //               ],
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
+                // box.remove("userToken");
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      contentPadding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      content: LogoutDialogBox(),
+                    );
+                  },
+                );
               },
+            ),
+
+            SizedBox(height: 15),
+            Text(
+              "${languageController.tr("VERSION")} ${_version.isEmpty ? 'Loading...' : ': $_version'}",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ],
         ),

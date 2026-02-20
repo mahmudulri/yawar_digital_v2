@@ -1,4 +1,4 @@
-package com.example.arzan_digital
+package com.woosat.yawardigital
 
 import io.flutter.embedding.android.FlutterActivity
 
